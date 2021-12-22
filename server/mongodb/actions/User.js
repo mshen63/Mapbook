@@ -33,8 +33,15 @@ export async function login({ username, password }) {
   );
 }
 
-export async function signUp({ username, password }) {
-  if (username == null || password == null) {
+export async function signUp({ email, username, password }) {
+
+  if (email == null || username == null || password == null) {
+    console.log("email")
+    console.log(email)
+    console.log("username")
+    console.log(username)
+    console.log("pass")
+    console.log(password)
     throw new Error("All parameters must be provided!");
   }
 
@@ -44,6 +51,7 @@ export async function signUp({ username, password }) {
     .hash(password, 10)
     .then((hashedPassword) =>
       User.create({
+        email,
         username,
         password: hashedPassword,
       })

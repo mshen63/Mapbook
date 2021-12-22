@@ -10,10 +10,10 @@ const handleLogout = () =>
     .then(() => Router.replace(urls.pages.index))
     .catch(() => window.alert("An error occurred while trying to logout!"));
 
-const HomePage = ({ currentUser }) => (
+const HomePage = ({ currUser }) => (
   <div className={classes.root}>
     <h2 className={classes.centerText}>
-      Welcome to our app, {currentUser.username}!
+      Welcome to our app, {currUser.username}!
     </h2>
     <h3>
       This page can only be accessed by logged-in users, because _app.js
@@ -26,7 +26,7 @@ const HomePage = ({ currentUser }) => (
 );
 
 HomePage.propTypes = {
-  currentUser: PropTypes.shape({
+  currUser: PropTypes.shape({
     id: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
   }).isRequired,

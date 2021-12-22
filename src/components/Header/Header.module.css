@@ -16,9 +16,10 @@
     transition: 0.25s background-color;
 }
 
-.route:hover, .endRoute:hover, .selected {
+.route:hover, .selected, .endRoute:hover {
     background-color: #002d2d;
 }
+ 
 
 .endRoute {
     margin-left: auto;

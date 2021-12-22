@@ -17,6 +17,7 @@ const routes = [
     name: "App Home",
     link: urls.pages.app.home,
     auth: true,
+    atEnd: false
   },
   {
     name: "Login",
@@ -24,6 +25,7 @@ const routes = [
     auth: false,
     atEnd: true,
   },
+  
 ];
 
 export default routes;

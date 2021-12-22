@@ -1,11 +1,11 @@
 import { getCurrentUser } from "../actions/User";
-import LoginScreen from "../screens/Login";
+import RegisterScreen from "../screens/Register";
 import Router from "next/router";
 import urls from "../../utils/urls";
 
-const LoginPage = () => <LoginScreen />;
+const RegisterPage = () => <RegisterScreen />;
 
-LoginPage.getInitialProps = async ({ req, res }) => {
+RegisterPage.getInitialProps = async ({ req, res }) => {
     const cookies = req ? req.headers.cookie : null;
     const currUser = await getCurrentUser(cookies).catch(() => null)
 
@@ -20,4 +20,5 @@ LoginPage.getInitialProps = async ({ req, res }) => {
     console.log(currUser)
     return {currUser}
 }
-export default LoginPage;
+
+export default RegisterPage;
