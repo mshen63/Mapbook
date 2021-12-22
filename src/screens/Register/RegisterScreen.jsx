@@ -20,6 +20,8 @@ import {
   InputRightElement
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock, FaMailBulk } from "react-icons/fa";
+import toast, {Toaster} from 'react-hot-toast'
+
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
@@ -36,7 +38,18 @@ const RegisterScreen = () => {
     event.preventDefault();
     return signUp(email, username, password)
       .then(() => Router.replace(urls.pages.app.home))
-      .catch((error) => window.alert(error.message));
+      .catch((error) => {
+        if (error.message.includes("3")) {
+          toast.error(error.message)
+          return;
+        }
+        let error_mess = error.message.split(": ")[2].split(",")[0]
+        if (error_mess.split(" ")[1] === "dup") {
+          toast.error('Username taken!');
+        } else {
+          toast.error(error_mess)
+        }
+      });
 
   };
 
@@ -50,6 +63,13 @@ const RegisterScreen = () => {
       justifyContent="center"
       alignItems="center"
     >
+      <Toaster
+      toastOptions = {{
+        style: {
+          textAlign: "center"
+        }
+      }}
+      />
       <Stack
         flexDir="column"
         mb="2"
@@ -77,8 +97,8 @@ const RegisterScreen = () => {
                     children={<CFaMailBulk color="gray.300" />}
                   />
                   <Input
-                    required
-                    type="email"
+           
+                   
                     placeholder="Email"
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
@@ -92,7 +112,7 @@ const RegisterScreen = () => {
                     children={<CFaUserAlt color="gray.300" />}
                   />
                   <Input
-                    required
+               
  
                     placeholder="Username"
                     value={username}
@@ -110,17 +130,17 @@ const RegisterScreen = () => {
                   <Input
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
-                    required
+             
                     id="password"
-                    type="password"
+                    
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
                   />
 
                   <InputRightElement width="4.5rem">
-                    {/* <Button h="1.75rem" size="sm" onClick={handleShowClick}>
+                    <Button h="1.75rem" size="sm" onClick={handleShowClick}>
                       {showPassword ? "Hide" : "Show"}
-                    </Button> */}
+                    </Button>
                   </InputRightElement>
                 </InputGroup>
 
@@ -132,7 +152,7 @@ const RegisterScreen = () => {
                 colorScheme="teal"
                 width="full"
               >
-                Login
+                Register
               </Button>
             </Stack>
           </form>

@@ -17,9 +17,11 @@ import {
   Avatar,
   FormControl,
   FormHelperText,
-  InputRightElement
+  InputRightElement,
+  FormErrorMessage
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
+import toast, { Toaster } from 'react-hot-toast'
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
@@ -30,7 +32,6 @@ const LoginScreen = () => {
 
   const handleShowClick = () => {
     setShowPassword(!showPassword)
-    console.log(showPassword)
   };
 
   const handleSubmit = (event) => {
@@ -38,7 +39,9 @@ const LoginScreen = () => {
 
     return login(username, password)
       .then(() => Router.replace(urls.pages.app.home))
-      .catch((error) => window.alert(error.message));
+      .catch((error) =>
+        toast(error.message)
+      );
   };
 
   return (
@@ -51,6 +54,13 @@ const LoginScreen = () => {
       justifyContent="center"
       alignItems="center"
     >
+      <Toaster
+        toastOptions={{
+          style: {
+            textAlign: "center"
+          }
+        }}
+      />
       <Stack
         flexDir="column"
         mb="2"
@@ -78,7 +88,7 @@ const LoginScreen = () => {
                     children={<CFaUserAlt color="gray.300" />}
                   />
                   <Input
-                    required
+
                     placeholder="Username"
                     value={username}
                     onChange={(event) => setUsername(event.target.value)}
@@ -95,17 +105,17 @@ const LoginScreen = () => {
                   <Input
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
-                    required
+
                     id="password"
-                    type="password"
+
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
                   />
 
                   <InputRightElement width="4.5rem">
-                    {/* <Button h="1.75rem" size="sm" onClick={handleShowClick}>
+                    <Button h="1.75rem" size="sm" onClick={handleShowClick}>
                       {showPassword ? "Hide" : "Show"}
-                    </Button> */}
+                    </Button>
                   </InputRightElement>
                 </InputGroup>
                 <FormHelperText textAlign="right">

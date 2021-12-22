@@ -11,6 +11,7 @@ const UserSchema = new Schema({
     trim: true,
     lowercase: true,
     unique: true,
+    index: true, 
     required: [true, "Please enter an email!"],
     validate: [isEmail, "Please enter a valid email!"]
 
@@ -19,7 +20,7 @@ const UserSchema = new Schema({
     type: String,
     required: [true, "Please enter a username!"],
     index: true,
-    unique: true,
+    unique: true
   },
   password: {
     type: String,

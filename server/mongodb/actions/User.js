@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { string } from "prop-types";
 import mongoDB from "../index";
 import User from "../models/User";
 
@@ -34,15 +35,14 @@ export async function login({ username, password }) {
 }
 
 export async function signUp({ email, username, password }) {
+  
 
   if (email == null || username == null || password == null) {
-    console.log("email")
-    console.log(email)
-    console.log("username")
-    console.log(username)
-    console.log("pass")
-    console.log(password)
+    
     throw new Error("All parameters must be provided!");
+  }
+  if (password.length<=3) {
+    throw new Error("Please enter a password longer than 3 characters!")
   }
 
   await mongoDB();
