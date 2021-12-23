@@ -5,6 +5,19 @@ import { string } from "prop-types";
 import mongoDB from "../index";
 import User from "../models/User";
 
+export const verifyToken = async(req, res) => {
+  const token = req.cookies?.token
+  if (token==null) {
+    throw new Error("Mongodb/actions/verifyToken, user not logged in")
+  }
+  return jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (decoded) {
+      return decoded
+    }
+    res.setHeader("Set-Cookie", "token=; Max-Age=0; SameSite=Lax; Path=/");
+    throw new Error("Mongodb/actions/verifyToken, decode error")
+  })
+}
 export const getUserFromToken = async (token) => {
   if (token == null) {
     throw new Error("getUserFromToken error!");
@@ -122,7 +135,7 @@ export const getUserFriends = async (currUser) => {
 }
 
 export const addFriend = async (currUser, { friendId }) => {
-  if (currUser == null || friendIds == null) {
+  if (currUser == null || friendId == null) {
     throw new Error("addFriend error!")
   }
 
@@ -137,7 +150,7 @@ export const addFriend = async (currUser, { friendId }) => {
 };
 
 export const removeFriend = async (currUser, { friendId }) => {
-  if (currUser == null || friendIds == null) {
+  if (currUser == null || friendId == null) {
     throw new Error("removeFriend error!")
   }
 
