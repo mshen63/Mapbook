@@ -24,20 +24,25 @@ const MarkerSchema = new Schema({
     },
     likes: { 
         type: [Schema.Types.ObjectId], 
-        ref: 'user' 
+        ref: 'User' 
     },
     post_date: { 
         type: Date, 
         default: Date.now 
+    }, 
+    private: {
+        type: Boolean, 
+        default: false, 
+        index: true
     }
-}, { toJSON: { virtuals: true } })
+}
+// ,  { toJSON: { virtuals: true } }
+)
 
-MarkerSchema
-    .virtual('post_date_formatted')
-    .get(function () {
-        return DateTime.fromJSDate(this.post_date).toLocaleString(DateTime.DATE_MED)
-    })
+// MarkerSchema
+//     .virtual('post_date_formatted')
+//     .get(function () {
+//         return DateTime.fromJSDate(this.post_date).toLocaleString(DateTime.DATE_MED)
+//     })
 
-const Marker = mongoose.model('marker', MarkerSchema)
-
-module.exports = Marker
+export default mongoose.models.Marker || mongoose.model('Marker', MarkerSchema)

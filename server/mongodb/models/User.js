@@ -31,6 +31,15 @@ const UserSchema = new Schema({
     type: String,
     default: null
   },
+
+  color: {
+    type: String, 
+    required: true, 
+    default: "Green", 
+    enum: ["Green", "Red", "Blue"], 
+    index: true
+  }, 
+  
   location: {
     type: String,
     default: null
@@ -47,19 +56,28 @@ const UserSchema = new Schema({
   pendingFRequests: {
     type: [Schema.Types.ObjectId],
     ref: 'User'
-  }
+  }, 
+
+  markers: {
+    type: [Schema.Types.ObjectId], 
+    ref: 'Marker'
+  }, 
+
+  
 
 
-}, {
-  toJSON: {
-    virtuals: true
-  }
-});
+}
+// , {
+//   toJSON: {
+//     virtuals: true
+//   }
+// }
+);
 
-UserSchema
-  .virtual('formattedRegisterDate')
-  .get(function () {
-    return DateTime.fromJSDate(this.registerDate).toLocaleString(DateTime.DATE_MED)
-  })
+// UserSchema
+//   .virtual('formattedRegisterDate')
+//   .get(function () {
+//     return DateTime.fromJSDate(this.registerDate).toLocaleString(DateTime.DATE_MED)
+//   })
 
 export default mongoose.models.User ?? mongoose.model("User", UserSchema);
