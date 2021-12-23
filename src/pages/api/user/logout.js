@@ -4,6 +4,7 @@ import { removeCookie } from "../../../../utils/tokens";
 // @desc    Logout current user
 // @access  Public
 const handler = (req, res) => {
+
   res.setHeader("Set-Cookie", removeCookie());
 
   return res.status(200).json({

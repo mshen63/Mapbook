@@ -10,7 +10,10 @@ export default {
     login: "/login",
     register: "/register", 
     app: {
-      home: "/app",
+      map: "/app",
+      profile: "/app/profile", 
+      explore: "/app/explore"
+
     },
   },
   api: {

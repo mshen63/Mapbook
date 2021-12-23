@@ -38,7 +38,7 @@ const LoginScreen = () => {
     event.preventDefault();
 
     return login(username, password)
-      .then(() => Router.replace(urls.pages.app.home))
+      .then(() => Router.replace(urls.pages.app.map))
       .catch((error) =>
         toast(error.message)
       );

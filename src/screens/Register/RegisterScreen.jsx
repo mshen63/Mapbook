@@ -37,7 +37,7 @@ const RegisterScreen = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     return signUp(email, username, password)
-      .then(() => Router.replace(urls.pages.app.home))
+      .then(() => Router.replace(urls.pages.app.map))
       .catch((error) => {
         if (error.message.includes("3")) {
           toast.error(error.message)

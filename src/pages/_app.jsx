@@ -10,6 +10,7 @@ import "focus-visible/dist/focus-visible.min.js";
 import "normalize.css";
 import "../../public/static/styles/App.css";
 import { ChakraProvider } from "@chakra-ui/react";
+import "leaflet/dist/leaflet.css"
 
 const MyApp = ({ Component, pageProps, router, currUser }) => (
   <>
@@ -43,14 +44,20 @@ MyApp.getInitialProps = async (appContext) => {
   let currUser = null;
   let pageProps = {};
   try {
+    console.log("_app")
     currUser = await getCurrentUser(cookies);
+    console.log(currUser)
+    
+    
+    
 
-    if (route.startsWith("/app") && currUser==null) {
+    if (router.asPath.startsWith("/app") && currUser==null) {
+      console.log("should reroute")
       if (res) {
-        res.writeHead(301, { Location: urls.pages.index });
+        res.writeHead(301, { Location: urls.pages.login });
         res.end();
       } else {
-        return Router.replace(urls.pages.index);
+        return Router.push(urls.pages.login);
       }
     }
     

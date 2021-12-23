@@ -5,15 +5,11 @@ import { logout } from "../../../actions/User";
 import urls from "../../../../utils/urls";
 import classes from "./HomePage.module.css";
 
-const handleLogout = () =>
-  logout()
-    .then(() => Router.replace(urls.pages.index))
-    .catch(() => window.alert("An error occurred while trying to logout!"));
 
 const HomePage = ({ currUser }) => (
   <div className={classes.root}>
     <h2 className={classes.centerText}>
-      Welcome to our app, {currUser.username}!
+      Welcome to your map, {currUser.username}!
     </h2>
     <h3>
       This page can only be accessed by logged-in users, because _app.js
