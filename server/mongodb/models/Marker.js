@@ -5,7 +5,7 @@ const { DateTime } = require('luxon')
 const MarkerSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
-        ref: 'user',
+        ref: 'User',
         required: true
     },
     lat: { type: Number, required: true },
@@ -30,7 +30,7 @@ const MarkerSchema = new Schema({
         type: Date, 
         default: Date.now 
     }, 
-    private: {
+    priv: {
         type: Boolean, 
         default: false, 
         index: true

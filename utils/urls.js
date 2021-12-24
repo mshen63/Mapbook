@@ -33,5 +33,11 @@ export default {
       removeMarker: "/api/user/removeMarker",
       sendFriendRequest: "/api/user/sendFriendRequest",
     },
+    marker: {
+      createMarker: "/api/marker/createMarker",
+      deleteMarker: "/api/marker/deleteMarker",
+      getMarker: "/api/marker/getMarker",
+    }
+
   },
 };

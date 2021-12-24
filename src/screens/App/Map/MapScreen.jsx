@@ -3,6 +3,9 @@ import Router from "next/router";
 import urls from "../../../../utils/urls";
 import classes from "./MapScreen.module.css";
 import React, { useState, useEffect, useContext } from 'react';
+import { add, random } from "lodash";
+import { addMapFunctions } from "./addMapFunctions";
+import { initializeMap } from "./initializeMap";
 // import { MapContainer, TileLayer, useMap, Marker, Popup, useMapEvents } from 'react-leaflet';
 // import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 // import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
@@ -11,7 +14,9 @@ const mapboxgl = require("mapbox-gl/dist/mapbox-gl.js")
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY
 
 
-const MapScreen = ({ currUser }) => {
+const MapScreen = ({ currUser, markers }) => {
+
+
     const [pageIsMounted, setPageIsMounted] = useState(false);
     const [Map, setMap] = useState();
 
@@ -22,20 +27,17 @@ const MapScreen = ({ currUser }) => {
     useEffect(() => {
 
         if (pageIsMounted) {
-            const map = new mapboxgl.Map({
+            let map = new mapboxgl.Map({
                 container: "my-map",
                 style: "mapbox://styles/mapbox/streets-v11",
                 center: [-77.02, 38.887],
                 zoom: 5,
-                maxBounds: [
-                    [-77.875588, 38.50705], // Southwest coordinates
-                    [-76.15381, 39.548764], // Northeast coordinates
-                ],
+
             });
 
             map.addControl(
                 new MapboxGeocoder({
-                    accessToken: mapboxgl.accessToken, 
+                    accessToken: mapboxgl.accessToken,
                     mapboxgl: mapboxgl
                 })
             )
@@ -47,11 +49,8 @@ const MapScreen = ({ currUser }) => {
                     trackUserLocation: true
                 })
             )
-
-            
-            const container = map.getContainer();
-            let relocateB = container.getElementsByClassName('mapboxgl-ctrl-geolocate')
-            Array.prototype.slice.call(relocateB).forEach((button)=>button.click())
+            initializeMap(mapboxgl, map, markers)
+            addMapFunctions(mapboxgl, map, currUser)
 
         }
 
