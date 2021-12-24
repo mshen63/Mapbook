@@ -55,6 +55,7 @@
     "leaflet-geosearch": "^3.6.0",
     "lodash": "^4.17.21",
     "luxon": "^2.2.0",
+    "mapbox-gl": "^2.6.1",
     "mongodb": "^4.0.0",
     "mongoose": "^5.13.2",
     "next": "^11.0.1",
@@ -66,6 +67,7 @@
     "react-hot-toast": "^2.1.1",
     "react-icons": "^4.3.1",
     "react-leaflet": "^3.2.2",
+    "react-mapbox-gl": "^5.1.1",
     "validator": "^13.7.0"
   },
   "devDependencies": {

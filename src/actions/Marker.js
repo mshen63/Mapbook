@@ -1,4 +1,3 @@
-import fetch from "isomorphic-unfetch";
 import urls from "../../utils/urls";
 import { authedPostRequest, authedGetRequest } from "../../utils/requests";
 
