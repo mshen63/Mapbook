@@ -1,10 +1,10 @@
 import urls from "../../utils/urls";
 import { authedPostRequest, authedGetRequest } from "../../utils/requests";
 
-export const createMarker = (cookies, lat, lng, name, description, private) =>
+export const createMarker = (cookies, lat, lng, name, description, priv) =>
     authedPostRequest(
-        urls.baseUrl + urls.api.user.createMarker,
-        { lat, lng, name, description, private },
+        urls.baseUrl + urls.api.marker.createMarker,
+        { lat, lng, name, description, priv },
         cookies
     )
         .then((response) => response.json())
@@ -12,6 +12,7 @@ export const createMarker = (cookies, lat, lng, name, description, private) =>
             if (data == null) {
                 throw new Error("createMarker src/action/marker");
             } else if (!data.success) {
+
                 throw new Error(data.message);
             }
             return data.payload;
@@ -20,7 +21,7 @@ export const createMarker = (cookies, lat, lng, name, description, private) =>
 
 export const deleteMarker = (cookies, markerId) =>
     authedPostRequest(
-        urls.baseUrl + urls.api.user.deleteMarker,
+        urls.baseUrl + urls.api.marker.deleteMarker,
         { markerId },
         cookies
     )
@@ -38,7 +39,7 @@ export const deleteMarker = (cookies, markerId) =>
 
 export const getMarker = (cookies, markerId) =>
     authedPostRequest(
-        urls.baseUrl + urls.api.user.getMarker,
+        urls.baseUrl + urls.api.marker.getMarker,
         { markerId },
         cookies
     )

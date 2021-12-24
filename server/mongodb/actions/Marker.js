@@ -31,26 +31,22 @@ export const getMarker = async (currUser, { markerId }) => {
   }
 };
 
-export async function createMarker(currUser, { lat, lng, name, description, private }) {
+export async function createMarker(currUser, { lat, lng, name, description, priv }) {
   if (currUser == null) {
     throw new Error("You must be logged in to add a marker!");
   }
-  if (lat == null || lng == null || name == null || description == null || private == null) {
-    console.log("lat" + lat)
-    console.log("lng" + lng)
-    console.log("name" + name)
-    console.log("description" + description)
-    console.log("private" + private)
+  if (lat == null || lng == null || name == null || description == null || priv == null) {
+    
     throw new Error("Please provide all fields!")
   }
 
   return Marker.create({
-    user: currUser._id,
+    user: currUser.id,
     lat,
     lng,
     name,
     description,
-    private
+    priv
   }).then(async (marker) => {
     await addMarker(currUser, {
       markerId: marker._id,
@@ -69,7 +65,7 @@ export const deleteMarker = async (currUser, { markerId }) => {
 
   await mongoDB();
 
-  return Marker.findOneAndDelete({ _id: id, user: currUser._id}).then(async (deleted) => {
+  return Marker.findOneAndDelete({ _id: id, user: currUser.id}).then(async (deleted) => {
     if (deleted == null) {
       throw new Error(
         "No marker found to delete!"

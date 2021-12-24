@@ -1,5 +1,6 @@
 
 export const authedFetch = (url, options, cookies) => {
+
   const conditionals = {};
 
   if (

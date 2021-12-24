@@ -1,7 +1,10 @@
-import { createMarker, verifyToken } from "../../../../server/mongodb/actions/Marker";
+import { createMarker } from "../../../../server/mongodb/actions/Marker";
+
+import { verifyToken } from "../../../../server/mongodb/actions/User";
 
 
-const handler = (req, res) =>
+const handler = (req, res) => {
+
     verifyToken(req, res)
         .then((currUser) => createMarker(currUser, req.body))
         .then((data) =>
@@ -15,6 +18,7 @@ const handler = (req, res) =>
                 success: false,
                 message: error.message,
             });
-        });
+        })
+};
 
 export default handler;

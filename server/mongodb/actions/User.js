@@ -4,6 +4,7 @@ import { mongo } from "mongoose";
 import { string } from "prop-types";
 import mongoDB from "../index";
 import User from "../models/User";
+import Marker from "../models/Marker";
 
 export const verifyToken = async(req, res) => {
   const token = req.cookies?.token
@@ -12,6 +13,7 @@ export const verifyToken = async(req, res) => {
   }
   return jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (decoded) {
+
       return decoded
     }
     res.setHeader("Set-Cookie", "token=; Max-Age=0; SameSite=Lax; Path=/");
@@ -120,12 +122,13 @@ export const getUserFriends = async (currUser) => {
   }
   await mongoDB();
 
-  const user = User.findById(currUser._id)
+  const user = await User.findById(currUser.id)
     .populate({
       path: "friends",
       model: "User",
       select: "_id username color"
     })
+    .exec()
 
   if (user == null) {
     throw new Error("getUserFriends find error!")
@@ -141,11 +144,11 @@ export const addFriend = async (currUser, { friendId }) => {
 
   await mongoDB();
 
-  await User.findByIdAndUpdate(currUser._id, {
+  await User.findByIdAndUpdate(currUser.id, {
     $push: { friends: friendId },
   })
   await User.findByIdAndUpdate(friendId, {
-    $push: { friends: currUser._id },
+    $push: { friends: currUser.id },
   })
 };
 
@@ -156,11 +159,11 @@ export const removeFriend = async (currUser, { friendId }) => {
 
   await mongoDB();
 
-  await User.findByIdAndUpdate(currUser._id, {
+  await User.findByIdAndUpdate(currUser.id, {
     $pull: { friends: friendId },
   })
   await User.findByIdAndUpdate(friendId, {
-    $pull: { friends: currUser._id },
+    $pull: { friends: currUser.id },
   })
 };
 
@@ -172,12 +175,13 @@ export const getUserFriendRequests = async (currUser) => {
   }
   await mongoDB();
 
-  const user = User.findById(currUser._id)
+  const user = await User.findById(currUser.id)
     .populate({
       path: "pendingFRequests",
       model: "User",
       select: "_id username color"
     })
+    .exec()
 
   if (user == null) {
     throw new Error("getUserFriendRequests find error!")
@@ -193,7 +197,7 @@ export const sendFriendRequest = async (currUser, { friendRequestId }) => {
 
   await mongoDB();
   return User.findByIdAndUpdate(friendRequestId, {
-    $push: { pendingFRequests: currUser._id },
+    $push: { pendingFRequests: currUser.id },
   })
 }
 
@@ -203,7 +207,7 @@ export const rejectFriendRequest = async (currUser, { friendRequestId }) => {
   }
 
   await mongoDB();
-  return User.findByIdAndUpdate(currUser._id, {
+  return User.findByIdAndUpdate(currUser.id, {
     $pull: { pendingFRequests: friendRequestId },
   })
 }
@@ -216,17 +220,18 @@ export const getUserMarkers = async (currUser) => {
   }
   await mongoDB();
 
-  const user = User.findById(currUser._id)
+  const user = await User.findById(currUser.id)
     .populate({
       path: "markers",
       model: "Marker",
       select: "_id lat lng"
     })
+    .exec()
 
   if (user == null) {
     throw new Error("getUserMarkers find error!")
   } else {
-    return user.friends
+    return user.markers
   }
 }
 
@@ -238,7 +243,7 @@ export const addMarker = async (currUser, { markerId }) => {
 
   await mongoDB();
 
-  return User.findByIdAndUpdate(currUser._id, {
+  return User.findByIdAndUpdate(currUser.id, {
     $push: { markers: markerId },
   })
 };
@@ -250,7 +255,7 @@ export const removeMarker = async (currUser, { markerId }) => {
 
   await mongoDB();
 
-  return User.findByIdAndUpdate(currUser._id, {
+  return User.findByIdAndUpdate(currUser.id, {
     $pull: { markers: markerId },
   })
 };

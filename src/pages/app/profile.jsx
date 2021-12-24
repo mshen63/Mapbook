@@ -13,7 +13,6 @@ const ProfilePage = ({ currUser }) =>
     );
 
 ProfilePage.getInitialProps = async ({ pageProps, req, res }) => {
-    console.log(pageProps)
     const cookies = req ? req.headers.cookie : null;
     console.log("profile")
     const currUser = await getCurrentUser(cookies).catch(() => null)
