@@ -17,16 +17,17 @@ const MyApp = ({ Component, pageProps, router, currUser }) => (
     <Head>
       <title>Next.js-Starter</title>
       <link
-          href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css"
-          rel="stylesheet"
-        />    </Head>
+        href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css"
+        rel="stylesheet"
+      />    </Head>
     <ChakraProvider>
-    <div className="App">
-      <Header loggedIn={currUser != null} currentRoute={router.asPath} />
-      <div className="Content">
-        <Component {...pageProps} currUser={currUser} />
+      <div className="App">
+        <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
+          <Header loggedIn={currUser != null} currentRoute={router.asPath} />
+          <div className="Content">
+            <Component {...pageProps} currUser={currUser} />
+          </div>
       </div>
-    </div>
     </ChakraProvider>
   </>
 );
@@ -35,8 +36,8 @@ MyApp.getInitialProps = async (appContext) => {
 
   // TODO: THIS AUTH SYSTEM IS NOT BEST PRACTICE:
   // https://github.com/vvo/iron-session
-  
-  const {Component, router, ctx} = appContext;
+
+  const { Component, router, ctx } = appContext;
   const { req, res } = ctx;
   // const appProps = await App.getInitialProps(appContext);
 
@@ -50,11 +51,11 @@ MyApp.getInitialProps = async (appContext) => {
     console.log("_app")
     currUser = await getCurrentUser(cookies);
     console.log(currUser)
-    
-    
-    
 
-    if (router.asPath.startsWith("/app") && currUser==null) {
+
+
+
+    if (router.asPath.startsWith("/app") && currUser == null) {
       console.log("should reroute")
       if (res) {
         res.writeHead(301, { Location: urls.pages.login });
@@ -63,13 +64,13 @@ MyApp.getInitialProps = async (appContext) => {
         return Router.push(urls.pages.login);
       }
     }
-    
+
   } catch {
     console.error("Error in _app.js")
   }
   if (Component.getInitialProps) {
     pageProps = await Component.getInitialProps({
-      ...ctx, 
+      ...ctx,
       currUser,
     })
   }
