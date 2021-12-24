@@ -16,7 +16,10 @@ const MyApp = ({ Component, pageProps, router, currUser }) => (
   <>
     <Head>
       <title>Next.js-Starter</title>
-    </Head>
+      <link
+          href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css"
+          rel="stylesheet"
+        />    </Head>
     <ChakraProvider>
     <div className="App">
       <Header loggedIn={currUser != null} currentRoute={router.asPath} />

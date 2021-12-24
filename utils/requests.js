@@ -1,4 +1,3 @@
-import fetch from "isomorphic-unfetch";
 
 export const authedFetch = (url, options, cookies) => {
   const conditionals = {};

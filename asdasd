@@ -1,0 +1,6 @@
+BASE_URL=
+MONGO_DB=mongodb://localhost:27017/mafia?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false
+DB_NAME=nextjs
+MONGODB_URI=mongodb+srv://newmichelle:kKNwfk9G1aJBs0Sp@cluster0.rwgoi.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+JWT_SECRET=supersecrethehe
+MAPBOX_KEY=pk.eyJ1IjoibXNoZW42MyIsImEiOiJja2xnMXQydmgwcGdzMndvaWZ5Nmg3bW8wIn0.EYl-x2F30L10PyuJYkLwxA
