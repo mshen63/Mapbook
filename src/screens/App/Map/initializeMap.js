@@ -1,5 +1,6 @@
 import { setRTLTextPlugin } from "mapbox-gl"
-import { getMarker } from "../../../actions/Marker"
+import { getMarker, createMarker } from "../../../actions/Marker"
+
 
 export const initializeMap = async (mapboxgl, map, currUser, markers, setMarkers, setText, setIsMarker) => {
     map.addControl(
