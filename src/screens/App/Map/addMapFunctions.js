@@ -7,7 +7,9 @@ export const addMapFunctions = async (mapboxgl, map, currUser, isMarker, setIsMa
     map.on("click", async function (e) {
 
         // console.log("HLELLEOEEO")
+
         console.log("map func top")
+        console.log(isMarker)
         if (!isMarker) {
             console.log("isn't marker")
             var randomColor = "#" + (Math.floor(Math.random() * 16777215).toString(16));
