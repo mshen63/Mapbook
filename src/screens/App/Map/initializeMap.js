@@ -2,7 +2,7 @@ import { setRTLTextPlugin } from "mapbox-gl"
 import { getMarker, createMarker } from "../../../actions/Marker"
 
 
-export const initializeMap = async (mapboxgl, map, currUser, markers, setMarkers, setText, setIsMarker) => {
+export const initializeMap = async (mapboxgl, map, currUser, markers, setMarkers, setText) => {
     map.addControl(
         new MapboxGeocoder({
             accessToken: mapboxgl.accessToken,
@@ -25,21 +25,29 @@ export const initializeMap = async (mapboxgl, map, currUser, markers, setMarkers
             var randomColor = "#" + (Math.floor(Math.random() * 16777215).toString(16));
             let mark = new mapboxgl.Marker({ color: randomColor })
                 .setLngLat([marker.lng, marker.lat])
-                .setPopup(new mapboxgl.Popup({ offset: 25 })
-                    .setText(marker))
                 .addTo(map)
 
             mark.getElement().addEventListener('click', async (e) => {
-                console.log("is marker")
                 setText(marker._id)
-                setIsMarker(true)
-                // console.log("event listener")
+
+                e.stopPropagation();
                 
-
-
             })
         })
     }
+    map.on("click", async function (e) {
+
+        var randomColor = "#" + (Math.floor(Math.random() * 16777215).toString(16));
+        let marker = new mapboxgl.Marker({ color: randomColor }).setLngLat([e.lngLat.lng, e.lngLat.lat]).addTo(map)
+        marker.getElement().addEventListener('click', async (e) => {
+            setText(marker._id)
+            e.stopPropagation();
+            
+        })
+        marker = await createMarker(currUser, e.lngLat.lat, e.lngLat.lng, "Name here", "description here", true)
+        
+
+    })
 
 
 }
