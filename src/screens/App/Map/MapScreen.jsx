@@ -16,15 +16,28 @@ mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY
 
 const MapScreen = ({ currUser, markers }) => {
 
-
+    const [marks, setMarks] = useState(markers)
     const [pageIsMounted, setPageIsMounted] = useState(false);
     const [Map, setMap] = useState();
+    const [text, setText] = useState("hello there")
+    const [isMarker, setIsMarker] = useState(false)
 
     useEffect(() => {
         setPageIsMounted(true);
+
     }, [])
 
     useEffect(() => {
+        if (pageIsMounted) {
+            console.log(isMarker)
+
+            addMapFunctions(mapboxgl, Map, currUser, isMarker, setIsMarker)
+        }
+
+
+    }, [isMarker])
+    useEffect(() => {
+        console.log("here")
 
         if (pageIsMounted) {
             let map = new mapboxgl.Map({
@@ -35,22 +48,9 @@ const MapScreen = ({ currUser, markers }) => {
 
             });
 
-            map.addControl(
-                new MapboxGeocoder({
-                    accessToken: mapboxgl.accessToken,
-                    mapboxgl: mapboxgl
-                })
-            )
-            map.addControl(
-                new mapboxgl.GeolocateControl({
-                    positionOptions: {
-                        enableHighAccuracy: true,
-                    },
-                    trackUserLocation: true
-                })
-            )
-            initializeMap(mapboxgl, map, markers)
-            addMapFunctions(mapboxgl, map, currUser)
+            initializeMap(mapboxgl, map, currUser, marks, setMarks, setText, setIsMarker)
+            addMapFunctions(mapboxgl, map, currUser, isMarker, setIsMarker)
+            setMap(map)
 
         }
 
@@ -66,6 +66,7 @@ const MapScreen = ({ currUser, markers }) => {
 
     return (
         <div >
+            <p>{text}</p>
             <main >
                 <div id="my-map" style={{ height: 500 }} />
             </main>

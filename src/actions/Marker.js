@@ -37,18 +37,21 @@ export const deleteMarker = (cookies, markerId) =>
 
 
 
-export const getMarker = (cookies, markerId) =>
+export const getMarker = (cookies, markerId) =>{
     authedPostRequest(
         urls.baseUrl + urls.api.marker.getMarker,
         { markerId },
         cookies
     )
-        .then((response) => response.json())
+        .then((response) => {
+            return response.json()
+        })
         .then((data) => {
+            
             if (data == null) {
                 throw new Error("getMarker src/action/marker");
             } else if (!data.success) {
                 throw new Error(data.message);
             }
             return data.payload;
-        });
+        })};

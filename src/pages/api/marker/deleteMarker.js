@@ -1,4 +1,5 @@
-import { deleteMarker, verifyToken } from "../../../../server/mongodb/actions/Marker";
+import { deleteMarker} from "../../../../server/mongodb/actions/Marker";
+import { verifyToken } from "../../../../server/mongodb/actions/User";
 
 
 const handler = (req, res) =>
