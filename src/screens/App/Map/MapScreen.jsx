@@ -30,7 +30,6 @@ const MapScreen = ({ currUser, markers }) => {
     useEffect(() => {
 
         if (prevMarker && prevMarker.isNew) {
-            console.log("remove marker")
             prevMarker.marker.remove()
         }
         setPrevMarker(currMarker)
@@ -60,6 +59,7 @@ const MapScreen = ({ currUser, markers }) => {
                     currUser={currUser}
                     currMarker={currMarker}
                     map={theMap}
+                    setCurrMarker={setCurrMarker}
                 />}
 
                 <main >
