@@ -224,7 +224,7 @@ export const getUserMarkers = async (currUser) => {
     .populate({
       path: "markers",
       model: "Marker",
-      select: "_id lat lng"
+      select: "_id lat lng name imgUrl description likes post_date priv"
     })
     .exec()
 

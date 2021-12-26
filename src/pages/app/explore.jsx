@@ -24,9 +24,7 @@ const ExplorePage = ({ currUser, router }) => {
 
 ExplorePage.getInitialProps = async ({ req, res, router }) => {
     const cookies = req ? req.headers.cookie : null;
-    console.log("explore")
     const currUser = await getCurrentUser(cookies).catch(() => null)
-    console.log(currUser)
 
     return {currUser, router}
 }

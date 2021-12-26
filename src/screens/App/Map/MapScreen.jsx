@@ -6,25 +6,35 @@ import React, { useState, useEffect, useContext } from 'react';
 import { add, random } from "lodash";
 import { initializeMap } from "./initializeMap";
 import { createMarker } from "../../../actions/Marker";
-// import { MapContainer, TileLayer, useMap, Marker, Popup, useMapEvents } from 'react-leaflet';
-// import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
-// import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
-// import ReactMapGL from 'react-mapbox-gl'
+import Sidebar from "../../../components/Sidebar"
+import {
+    HStack
+} from "@chakra-ui/react";
 const mapboxgl = require("mapbox-gl/dist/mapbox-gl.js")
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY
 
 
 const MapScreen = ({ currUser, markers }) => {
 
-    const [marks, setMarks] = useState(markers)
+    // const [marks, setMarks] = useState([])
     const [pageIsMounted, setPageIsMounted] = useState(false);
     const [theMap, setTheMap] = useState(null);
-    const [text, setText] = useState("hello there")
-    const [addMode, setAddMode] = useState(false)
+    const [currMarker, setCurrMarker] = useState({ isNew: false, marker: null })
+    const [prevMarker, setPrevMarker] = useState(null)
+
 
     useEffect(() => {
         setPageIsMounted(true);
     }, [])
+
+    useEffect(() => {
+
+        if (prevMarker && prevMarker.isNew) {
+            console.log("remove marker")
+            prevMarker.marker.remove()
+        }
+        setPrevMarker(currMarker)
+    }, [currMarker])
 
     useEffect(() => {
 
@@ -37,29 +47,28 @@ const MapScreen = ({ currUser, markers }) => {
 
             });
             setTheMap(map)
-            initializeMap(mapboxgl, map, currUser, marks, setMarks, setText)
+            initializeMap(mapboxgl, map, currUser, markers, setCurrMarker)
         }
 
     }, [pageIsMounted]);
 
     return (
         <div >
-            <p>{text}</p>
-            
-            <main >
-                <div id="my-map" style={{ height: 500 }} />
-            </main>
-        </div>
+            <HStack spacing={8}>
+
+                {theMap && currMarker.marker && <Sidebar
+                    currUser={currUser}
+                    currMarker={currMarker}
+                    map={theMap}
+                />}
+
+                <main >
+                    <div id="my-map" style={{ height: "85vh", width: "80vw" }} />
+                </main>
+            </HStack>
+        </div >
     );
 
 }
-
-
-// MapScreen.propTypes = {
-//     currUser: PropTypes.shape({
-//         id: PropTypes.string.isRequired,
-//         username: PropTypes.string.isRequired,
-//     }).isRequired,
-// };
 
 export default MapScreen;

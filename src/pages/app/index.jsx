@@ -18,11 +18,8 @@ MapPage.getInitialProps = async ({ req }) => {
 
     try {
         const markers = await getUserMarkers(cookies)
-       
-        // const markers = [{lng: 30, lat:30},{lng: 33, lat:33} ]
-        console.log("map")
+        console.log(markers)
         const currUser = await getCurrentUser(cookies).catch(() => null)
-        console.log(currUser)
 
         return {
             currUser,
