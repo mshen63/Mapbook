@@ -7,9 +7,7 @@ const RegisterPage = () => <RegisterScreen />;
 
 RegisterPage.getInitialProps = async ({ req, res }) => {
     const cookies = req ? req.headers.cookie : null;
-    console.log("register")
     const currUser = await getCurrentUser(cookies).catch(() => null)
-    console.log(currUser)
 
     if (currUser != null) {
         if (res) {

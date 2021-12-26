@@ -48,15 +48,12 @@ MyApp.getInitialProps = async (appContext) => {
   let currUser = null;
   let pageProps = {};
   try {
-    console.log("_app")
     currUser = await getCurrentUser(cookies);
-    console.log(currUser)
 
 
 
 
     if (router.asPath.startsWith("/app") && currUser == null) {
-      console.log("should reroute")
       if (res) {
         res.writeHead(301, { Location: urls.pages.login });
         res.end();
