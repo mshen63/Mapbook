@@ -18,10 +18,24 @@ import { createMarker } from "../../actions/Marker";
 const mapboxgl = require("mapbox-gl/dist/mapbox-gl.js")
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY
 import toast, { Toaster } from 'react-hot-toast'
-const AddMarkerForm = ({ currUser, map, setCurrMarker }) => {
+
+
+
+// current marker is a map marker
+// we're just using it for the latitude longitude picked by user
+const AddMarkerForm = ({ currUser, map, currMarker, setCurrMarker}) => {
     const [priv, setPriv] = useState(true)
     const [name, setName] = useState("")
     const [desc, setDesc] = useState("")
+
+    useEffect(() => {
+        setName("")
+        setDesc("")
+        setPriv(true)
+    }, [currMarker])
+
+    // console.log(currMarker.marker.getLngLat())
+    // console.log("currMarker")
 
     const addMarkerToMap = async (e) => {
         e.preventDefault();
@@ -30,13 +44,15 @@ const AddMarkerForm = ({ currUser, map, setCurrMarker }) => {
         } else if (desc === "") {
             return toast.error("Please add a description!")
         } else {
+            var randomColor = "#" + (Math.floor(Math.random() * 16777215).toString(16));
+            let marker = new mapboxgl.Marker({ color: randomColor }).setLngLat([currMarker.marker.getLngLat().lng, currMarker.marker.getLngLat().lat]).addTo(map)
+            
+            let datamarker = await createMarker(currUser, currMarker.marker.getLngLat().lat, currMarker.marker.getLngLat().lng, name, desc, priv)
             marker.getElement().addEventListener('click', async (e) => {
-                setCurrMarker({isNew: false, marker: marker})
+                setCurrMarker({ isNew: false, marker: datamarker })
                 e.stopPropagation();
-    
+
             })
-            marker = await createMarker(currUser, e.lngLat.lat, e.lngLat.lng, "Name here", "description here", true)
-    
             toast.success("Marker created!")
         }
 
@@ -96,7 +112,7 @@ const AddMarkerForm = ({ currUser, map, setCurrMarker }) => {
 
                             </FormControl>
                             <FormControl>
-                                <Checkbox defaultIsChecked>
+                                <Checkbox isChecked={priv} onChange={(e) => setPriv(!priv)}>
                                     Private?
                                 </Checkbox>
                             </FormControl>

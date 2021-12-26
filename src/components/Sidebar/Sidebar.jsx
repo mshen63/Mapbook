@@ -15,12 +15,6 @@ import CurrentMarker from "./CurrentMarker";
 
 const Sidebar = ({ currUser, currMarker, map, setCurrMarker }) => {
 
-  console.log(map)
-
-
-
-
-
   return (
     <>
 
@@ -31,11 +25,16 @@ const Sidebar = ({ currUser, currMarker, map, setCurrMarker }) => {
           }
         }}
       />
-      <CurrentMarker currMarker = {currMarker}/>
-      {/* {currMarker.isNew
-        ? (<AddMarkerForm currUser={currUser} map={map} setCurrMarker={setCurrMarker} />)
-        : (<CurrentMarker />)
-      } */}
+
+      {currMarker.isNew
+        ? (<AddMarkerForm
+          currUser={currUser}
+          map={map}
+          currMarker={currMarker}
+          setCurrMarker={setCurrMarker}
+          />)
+      : (<CurrentMarker currMarker={currMarker} />)
+      }
     </>
 
   )
