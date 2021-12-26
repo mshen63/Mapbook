@@ -16,7 +16,7 @@ mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY
 
 const MapScreen = ({ currUser, markers }) => {
 
-    // const [marks, setMarks] = useState([])
+    
     const [pageIsMounted, setPageIsMounted] = useState(false);
     const [theMap, setTheMap] = useState(null);
     const [currMarker, setCurrMarker] = useState({ isNew: false, marker: null })
@@ -55,11 +55,12 @@ const MapScreen = ({ currUser, markers }) => {
         <div >
             <HStack spacing={8}>
 
-                {theMap && currMarker.marker && <Sidebar
+                {theMap  && <Sidebar
                     currUser={currUser}
                     currMarker={currMarker}
                     map={theMap}
                     setCurrMarker={setCurrMarker}
+                    markers = {markers}
                 />}
 
                 <main >
