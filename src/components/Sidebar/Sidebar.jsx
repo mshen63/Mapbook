@@ -9,11 +9,12 @@ import Router from "next/router";
 import urls from "../../../utils/urls";
 import toast, { Toaster } from 'react-hot-toast'
 import AddMarkerForm from "./AddMarkerForm";
-import CurrentMarker from "./CurrentMarker";
+import MarkerInfo from "./MarkerInfo"
 // const mapboxgl = require("mapbox-gl/dist/mapbox-gl.js")
 // mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY
 
-const Sidebar = ({ currUser, currMarker, map, setCurrMarker }) => {
+const Sidebar = ({ currUser, currMarker, map, setCurrMarker, markers }) => {
+  const [marks, setMarks] = useState(markers)
 
   return (
     <>
@@ -32,8 +33,10 @@ const Sidebar = ({ currUser, currMarker, map, setCurrMarker }) => {
           map={map}
           currMarker={currMarker}
           setCurrMarker={setCurrMarker}
+          setMarks = {setMarks}
+          marks = {marks}
           />)
-      : (<CurrentMarker currMarker={currMarker} />)
+      : (<MarkerInfo markers = {marks} />)
       }
     </>
 

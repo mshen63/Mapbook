@@ -23,7 +23,7 @@ import toast, { Toaster } from 'react-hot-toast'
 
 // current marker is a map marker
 // we're just using it for the latitude longitude picked by user
-const AddMarkerForm = ({ currUser, map, currMarker, setCurrMarker}) => {
+const AddMarkerForm = ({ currUser, map, currMarker, setCurrMarker, setMarks, marks }) => {
     const [priv, setPriv] = useState(true)
     const [name, setName] = useState("")
     const [desc, setDesc] = useState("")
@@ -44,16 +44,22 @@ const AddMarkerForm = ({ currUser, map, currMarker, setCurrMarker}) => {
         } else if (desc === "") {
             return toast.error("Please add a description!")
         } else {
-            var randomColor = "#" + (Math.floor(Math.random() * 16777215).toString(16));
-            let marker = new mapboxgl.Marker({ color: randomColor }).setLngLat([currMarker.marker.getLngLat().lng, currMarker.marker.getLngLat().lat]).addTo(map)
-            
-            let datamarker = await createMarker(currUser, currMarker.marker.getLngLat().lat, currMarker.marker.getLngLat().lng, name, desc, priv)
-            marker.getElement().addEventListener('click', async (e) => {
-                setCurrMarker({ isNew: false, marker: datamarker })
-                e.stopPropagation();
+            await createMarker(currUser, currMarker.marker.getLngLat().lat, currMarker.marker.getLngLat().lng, name, desc, priv)
+                .then(datamarker => {
+                    var randomColor = "#" + (Math.floor(Math.random() * 16777215).toString(16));
+                    let marker = new mapboxgl.Marker({ color: randomColor }).setLngLat([currMarker.marker.getLngLat().lng, currMarker.marker.getLngLat().lat]).addTo(map)
+                    marker.getElement().addEventListener('click', async (e) => {
+                        setCurrMarker({ isNew: false, marker: datamarker })
+                        e.stopPropagation();
 
-            })
-            toast.success("Marker created!")
+                    })
+                    setMarks(marks=>[...marks, datamarker])
+
+
+                    toast.success("Marker created!")
+                })
+                .catch(e => toast.error(e.message))
+
         }
 
     }

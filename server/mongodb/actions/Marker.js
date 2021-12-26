@@ -26,7 +26,7 @@ export const getMarker = async (currUser, { markerId }) => {
     })
     .exec()
 
-  
+
   if (marker == null) {
     throw new Error("getMarker find error!")
   } else {
@@ -43,6 +43,10 @@ export async function createMarker(currUser, { lat, lng, name, description, priv
     throw new Error("Please provide all fields!")
   }
 
+  let repMarker = await Marker.findOne({ user: currUser.id, name: name })
+  if (repMarker != null) {
+    throw new Error("Marker with that name already exists!")
+  }
   return Marker.create({
     user: currUser.id,
     lat,
