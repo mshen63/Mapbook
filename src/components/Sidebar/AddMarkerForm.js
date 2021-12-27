@@ -50,10 +50,13 @@ const AddMarkerForm = ({ currUser, map, currMarker, setCurrMarker, setMarks, mar
                     let marker = new mapboxgl.Marker({ color: randomColor }).setLngLat([currMarker.marker.getLngLat().lng, currMarker.marker.getLngLat().lat]).addTo(map)
                     marker.getElement().addEventListener('click', async (e) => {
                         setCurrMarker({ isNew: false, marker: datamarker })
+                        console.log("Fly!")
+                        map.flyTo({ center: [currMarker.marker.getLngLat().lng, currMarker.marker.getLngLat().lat], zoom: 8 })
                         e.stopPropagation();
 
+
                     })
-                    setMarks(marks=>[...marks, datamarker])
+                    setMarks(marks => [...marks, datamarker])
 
 
                     toast.success("Marker created!")

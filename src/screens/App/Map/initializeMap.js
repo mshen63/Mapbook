@@ -30,6 +30,8 @@ export const initializeMap = async (mapboxgl, map, currUser, markers, setCurrMar
             mark.getElement().addEventListener('click', async (e) => {
 
                 setCurrMarker({ isNew: false, marker: marker })
+                console.log("Fly!")
+                map.flyTo({center:[marker.lng, marker.lat], zoom: 8})
                 e.stopPropagation();
 
             })
