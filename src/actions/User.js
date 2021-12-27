@@ -92,6 +92,21 @@ export const getCurrentUser = (cookies) => {
     });
 };
 
+export const getAllUsers = (cookies) =>
+  authedGetRequest(
+    urls.baseUrl + urls.api.user.getAllUsers,
+    cookies
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      if (data == null) {
+        throw new Error("getAllUsers src/action/user");
+      } else if (!data.success) {
+        throw new Error(data.message);
+      }
+      return data.payload;
+    });
+
 export const addFriend = (cookies, friendId) =>
   authedPostRequest(
     urls.baseUrl + urls.api.user.addFriend,

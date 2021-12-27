@@ -1,11 +1,11 @@
-import { getUserFromToken } from "../../../../server/mongodb/actions/User";
+import { getBasicUser } from "../../../../server/mongodb/actions/User";
 import { removeCookie } from "../../../../utils/tokens";
 
 // @route   GET api/user/get-current
 // @desc    Get current user from cookie
 // @access  Public
 const handler = (req, res) =>
-  getUserFromToken(req.cookies?.token)
+  getBasicUser(req.cookies?.token)
     .then((user) =>
       res.status(200).json({
         success: true,
