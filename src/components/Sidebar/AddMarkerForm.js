@@ -1,23 +1,16 @@
 import {
-    HStack, Stack, Input, Checkbox, FormControl, Flex,
+    Stack, Input, Checkbox, FormControl,
     Heading,
     Button,
     InputGroup,
-    InputLeftElement,
-    chakra,
     Box,
-    Link,
-    Avatar,
-    FormHelperText,
-    InputRightElement,
-    FormErrorMessage,
     Textarea
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { createMarker } from "../../actions/Marker";
 const mapboxgl = require("mapbox-gl/dist/mapbox-gl.js")
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 
 
 
@@ -34,9 +27,6 @@ const AddMarkerForm = ({ currUser, map, currMarker, setCurrMarker, setMarks, mar
         setPriv(true)
     }, [currMarker])
 
-    // console.log(currMarker.marker.getLngLat())
-    // console.log("currMarker")
-
     const addMarkerToMap = async (e) => {
         e.preventDefault();
         if (name === "") {
@@ -50,27 +40,18 @@ const AddMarkerForm = ({ currUser, map, currMarker, setCurrMarker, setMarks, mar
                     let marker = new mapboxgl.Marker({ color: randomColor }).setLngLat([currMarker.marker.getLngLat().lng, currMarker.marker.getLngLat().lat]).addTo(map)
                     marker.getElement().addEventListener('click', async (e) => {
                         setCurrMarker({ isNew: false, marker: datamarker })
-                        console.log("Fly!")
                         map.flyTo({ center: [currMarker.marker.getLngLat().lng, currMarker.marker.getLngLat().lat], zoom: 8 })
                         e.stopPropagation();
-
-
                     })
                     setMarks(marks => [...marks, datamarker])
-
-
                     toast.success("Marker created!")
                 })
                 .catch(e => toast.error(e.message))
-
         }
-
     }
-
 
     return (
         <>
-
             <Stack
                 flexDir="column"
                 mb="2"
@@ -86,14 +67,11 @@ const AddMarkerForm = ({ currUser, map, currMarker, setCurrMarker, setMarks, mar
                         <Stack
                             spacing={4}
                             p="1rem"
-
                             boxShadow="md"
                         >
                             <FormControl>
                                 <InputGroup>
-
                                     <Input
-
                                         placeholder="Name"
                                         variant="outline"
                                         focusBorderColor="#4c8181"
@@ -104,7 +82,6 @@ const AddMarkerForm = ({ currUser, map, currMarker, setCurrMarker, setMarks, mar
                             </FormControl>
                             <FormControl>
                                 <InputGroup>
-
                                     <Textarea
                                         placeholder="Description"
                                         variant="outline"
@@ -115,10 +92,7 @@ const AddMarkerForm = ({ currUser, map, currMarker, setCurrMarker, setMarks, mar
                                         height="50px"
                                         onChange={(event) => setDesc(event.target.value)}
                                     />
-
-
                                 </InputGroup>
-
                             </FormControl>
                             <FormControl>
                                 <Checkbox isChecked={priv} onChange={(e) => setPriv(!priv)}>
@@ -138,8 +112,6 @@ const AddMarkerForm = ({ currUser, map, currMarker, setCurrMarker, setMarks, mar
                     </form>
                 </Box>
             </Stack>
-
-
         </>
     )
 }
