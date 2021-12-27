@@ -25,6 +25,7 @@ export default {
       getCurrent: "/api/user/get-current",
       addFriend: "/api/user/addFriend",
       addMarker: "/api/user/addMarker",
+      getAllUsers: "/api/user/getAllUsers",
       getUserFriendRequests: "/api/user/getUserFriendRequests",
       getUserFriends: "/api/user/getUserFriends",
       getUserMarkers: "/api/user/getUserMarkers",

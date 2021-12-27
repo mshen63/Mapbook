@@ -5,10 +5,11 @@ import { string } from "prop-types";
 import mongoDB from "../index";
 import User from "../models/User";
 import Marker from "../models/Marker";
+import { useRouter } from "next/router";
 
-export const verifyToken = async(req, res) => {
+export const verifyToken = async (req, res) => {
   const token = req.cookies?.token
-  if (token==null) {
+  if (token == null) {
     throw new Error("Mongodb/actions/verifyToken, user not logged in")
   }
   return jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
@@ -20,9 +21,10 @@ export const verifyToken = async(req, res) => {
     throw new Error("Mongodb/actions/verifyToken, decode error")
   })
 }
-export const getUserFromToken = async (token) => {
+
+export const getBasicUser = async (token) => {
   if (token == null) {
-    throw new Error("getUserFromToken error!");
+    throw new Error("getBasicUser error!");
   }
 
   await mongoDB();
@@ -45,6 +47,20 @@ export const getUserFromToken = async (token) => {
     throw new Error("Invalid token!");
   }
 };
+
+export async function getAllUsers(cookies) {
+  await mongoDB();
+  try {
+    const users = await User.find({}, {email:0, password:0, pendingFRequests:0})
+    if (users==null) {
+      throw new Error("Couldn't find any users in getAllUsers mongodb/actions!")
+    }
+    return users
+  } catch (e) {
+    throw new Error("Error getting users")
+  }
+  
+}
 
 // SECTION: authentication //
 export async function login({ username, password }) {
