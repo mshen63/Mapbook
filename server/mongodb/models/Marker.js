@@ -34,15 +34,13 @@ const MarkerSchema = new Schema({
         type: Boolean, 
         default: false, 
         index: true
+    }, 
+    comments: {
+        type: [Schema.Types.ObjectId], 
+        ref: 'Comment'
     }
 }
-// ,  { toJSON: { virtuals: true } }
 )
 
-// MarkerSchema
-//     .virtual('post_date_formatted')
-//     .get(function () {
-//         return DateTime.fromJSDate(this.post_date).toLocaleString(DateTime.DATE_MED)
-//     })
 
 export default mongoose.models.Marker || mongoose.model('Marker', MarkerSchema)

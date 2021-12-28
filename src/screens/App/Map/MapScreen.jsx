@@ -18,11 +18,22 @@ const MapScreen = ({ currUser, markers }) => {
     const [theMap, setTheMap] = useState(null);
     const [currMarker, setCurrMarker] = useState({ isNew: false, marker: null })
     const [prevMarker, setPrevMarker] = useState(null)
+    const [mapMarkers, setMapMarkers] = useState([])
 
     useEffect(() => {
         setPageIsMounted(true);
     }, [])
 
+    // useEffect(()=> {
+    //     mapMarkers.forEach((marker, index) => {
+    //         marker.getElement().replaceWith(marker.getElement().cloneNode(true))
+    //         marker.getElement().addEventListener('click', async (e) => {
+    //             setCurrMarker({ isNew: false, marker: markers[index] })
+    //             map.flyTo({center:[marker.lng, marker.lat], zoom: 8})
+    //             e.stopPropagation();
+    //         })
+    //     })
+    // }, [markers])
     useEffect(() => {
         if (prevMarker && prevMarker.isNew) {
             prevMarker.marker.remove()
@@ -40,7 +51,7 @@ const MapScreen = ({ currUser, markers }) => {
             });
             setTheMap(map)
 
-            initializeMap(mapboxgl, map, currUser, markers, setCurrMarker)
+            initializeMap(mapboxgl, map, currUser, markers, setCurrMarker, setMapMarkers)
         }
     }, [pageIsMounted]);
 
@@ -54,6 +65,7 @@ const MapScreen = ({ currUser, markers }) => {
                     map={theMap}
                     setCurrMarker={setCurrMarker}
                     markers={markers}
+                    setMapMarkers = {setMapMarkers}
                 />}
 
                 <main >

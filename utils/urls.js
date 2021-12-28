@@ -42,6 +42,9 @@ export default {
       getMarker: "/api/marker/getMarker",
       likeMarker: "/api/marker/likeMarker", 
       unlikeMarker: "/api/marker/unlikeMarker", 
+    }, 
+    comment: {
+      createComment: "/api/comment/createComment"
     }
 
   },
