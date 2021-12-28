@@ -27,8 +27,6 @@ ProfilePage.getInitialProps = async ({ req }) => {
         const friendReqs = await getUserFriendRequests(cookies)
         const currUser = await getCurrentUser(cookies)
         const allUsers = await getAllUsers(cookies)
-        console.log(allUsers)
-        console.log("allUsers")
 
 
         return {

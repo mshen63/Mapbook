@@ -27,7 +27,7 @@ const Sidebar = ({ currUser, currMarker, map, setCurrMarker, markers }) => {
           marks={marks}
         />)
         : (<MarkerInfo
-          currMarker = {currMarker}
+          initMarker = {currMarker}
           markers={marks}
           map={map}
         />)
