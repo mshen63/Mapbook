@@ -1,55 +1,33 @@
 import { Box, Accordion, AccordionButton, AccordionPanel, AccordionItem, AccordionIcon } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
+import MarkersMenu from "../MarkersMenu";
+import MarkerCard from "../MarkerCard";
 
-const MarkerInfo = ({ currMarker, markers, map }) => {
-    const [shows, setShows] = useState([])
+const MarkerInfo = (props) => {
 
-    useEffect(() => {
-        setShows([markers.indexOf(currMarker.marker)])
-    }, [currMarker])
+    const { initMarker, markers, map } = props
+    const [currMarker, setCurrMarker] = useState(initMarker.marker)
+    const [showMenu, setShowMenu] = useState(false)
 
+    useEffect(()=> {
+        setShowMenu(false)
+        setCurrMarker(initMarker.marker)
+    }, [initMarker])
 
     return (
         <div>
-            <Accordion
-                index={shows}
-                height="80vh"
-                width="15vw"
-                id="hellO"
-                overflowY="scroll"
-                allowMultiple="true"
-                allowToggle="true"
-            >
-
-                {markers.map((mark, index) => {
-                    return (
-                        <AccordionItem key={index}>
-                            <h2 >
-                                <AccordionButton onClick={(e) => {
-                                    map.flyTo({ center: [mark.lng, mark.lat], zoom: 8 })
-                                    if (shows.includes(index)) {
-                                        setShows(shows.filter(elem => elem != index))
-                                    } else {
-                                        setShows([...shows, index])
-                                    }
-                                }
-
-                                }>
-                                    <Box flex='1' textAlign='left'>
-                                        {mark.name}
-                                    </Box>
-                                    <AccordionIcon />
-                                </AccordionButton>
-                            </h2>
-                            <AccordionPanel pb={4}>
-                                <p>{mark.description}</p>
-                                <button>Cool</button>
-                            </AccordionPanel>
-                        </AccordionItem>
-
-                    )
-                })}
-            </Accordion>
+            {showMenu || currMarker==null
+                ? (<MarkersMenu
+                    markers={markers}
+                    map={map}
+                    setCurrMarker={setCurrMarker}
+                    setShowMenu={setShowMenu}
+                />)
+                : (<MarkerCard
+                    currMarker={currMarker}
+                    setShowMenu={setShowMenu}
+                />)
+            }
         </div>
 
     )

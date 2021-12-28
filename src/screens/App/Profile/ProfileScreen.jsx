@@ -16,7 +16,6 @@ const SentIcon = chakra(FaUserClock)
 const FriendIcon = chakra(FaUserCheck)
 // { currUser, initialFriends, initialFriendReqs, initialSentReqs, allUsers }
 const ProfileScreen = (props) => {
-  console.log(props)
   const { currUser, initialFriends, friendReqs, allUsers } = props
   const [friends, setFriends] = useState(initialFriends)
   const [friendRequests, setFriendRequests] = useState(friendReqs)
@@ -24,20 +23,16 @@ const ProfileScreen = (props) => {
   const [search, setSearch] = useState("")
 
   const sendFriendReq = async (friend) => {
-    console.log("send it")
     await sendFriendRequest(currUser, friend._id)
       .then((e) => setSentReqs([...sentReqs, friend._id]))
       .catch(e => toast.error(e.message))
   }
 
   const acceptFriendReq = async (friend) => {
-    console.log("accept it!")
     await acceptFriendRequest(currUser, friend._id)
       .then((e) => {
         setFriends([...friends, friend])
         setFriendRequests(friendRequests.filter(elem => elem._id != friend._id))
-        console.log("Sent Requs after: ")
-        console.log(sentReqs)
 
       })
       .catch(e => toast.error(e.message))
