@@ -16,7 +16,7 @@ const MarkerCard = (props) => {
     const [isRefreshing, setIsRefreshing] = useState(false)
 
     const handleLikeButton = async (isLike) => {
-        
+
         setIsLiked(isLike)
         if (isLike) {
             setLikes(likes + 1)
@@ -29,25 +29,35 @@ const MarkerCard = (props) => {
         refreshData();
     }
 
-    const refreshData=()=> {
-        
+    const refreshData = () => {
+
         router.replace("/app")
         setIsRefreshing(true)
         console.log("refresh!")
     }
 
-    useEffect(()=> {
+    useEffect(() => {
         setIsRefreshing(false);
     }, [props])
 
 
-    const goBack = (e) => {      
+    const goBack = (e) => {
         setShowMenu(true)
     }
     return (
         <Box width="20vw" height="80vh" borderWidth='1px' borderRadius='lg' overflow='hidden'>
 
-            <Button onClick={goBack} bg="white"><BackIcon size={20} /></Button>
+            <div
+                onClick={goBack}
+                bg="white"
+            >
+                <BackIcon
+                    size={40}
+                    position="absolute"
+                    left="33px"
+                    top="90px"
+                />
+            </div>
             <Image src={currMarker.imgUrl} />
 
             <Box p='6'>
