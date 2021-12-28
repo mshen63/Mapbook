@@ -7,19 +7,24 @@ const mapboxgl = require("mapbox-gl/dist/mapbox-gl.js")
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY
 import MapScreen from "../../screens/App/Map/MapScreen";
 
-const MapPage = ({ currUser, markers }) => (
+const MapPage = (props) => {
+    const { currUser, markers } = props
+    console.log("map page props!")
+    console.log(props)
+    return(
+
     <MapScreen currUser = {currUser} markers={markers} />
 
-);
+)};
 
 
-MapPage.getInitialProps = async ({ req }) => {
+MapPage.getServerSideProps = async ({ req }) => {
     const cookies = req ? req.headers.cookie : null;
 
     try {
         const markers = await getUserMarkers(cookies)
         const currUser = await getCurrentUser(cookies).catch(() => null)
-
+        
         return {
             currUser,
             markers

@@ -5,7 +5,7 @@ import MarkerCard from "../MarkerCard";
 
 const MarkerInfo = (props) => {
 
-    const { initMarker, markers, map } = props
+    const { initMarker, markers, map, currUser } = props
     const [currMarker, setCurrMarker] = useState(initMarker.marker)
     const [showMenu, setShowMenu] = useState(false)
 
@@ -26,6 +26,7 @@ const MarkerInfo = (props) => {
                 : (<MarkerCard
                     currMarker={currMarker}
                     setShowMenu={setShowMenu}
+                    currUser = {currUser}
                 />)
             }
         </div>

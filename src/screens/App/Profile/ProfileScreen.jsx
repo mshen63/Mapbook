@@ -61,7 +61,7 @@ const ProfileScreen = (props) => {
             >
               <Flex align="center" justifyContent="space-between">
                 <p>{user.username}</p>
-                <Button rounded="xs" size="xs" isDisabled="true">
+                <Button rounded="xs" size="xs" isDisabled>
                   Friends<FriendIcon marginLeft={1}></FriendIcon>
                 </Button>
               </Flex>
@@ -143,7 +143,7 @@ const ProfileScreen = (props) => {
                   <p>{user.username}</p>
                   {
                     user.pendingFRequests.find(elem => elem._id === currUser._id) || sentReqs.includes(user._id)
-                      ? (<Button rounded="xs" size="xs" isDisabled="true">
+                      ? (<Button rounded="xs" size="xs" isDisabled>
                         Sent<SentIcon marginLeft={1}></SentIcon>
                       </Button>)
                       : (<Button rounded="xs" size="xs" onClick={(e) => sendFriendReq(user)}>

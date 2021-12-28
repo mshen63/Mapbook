@@ -140,6 +140,9 @@ export const addMarker = (cookies, markerId) =>
       return data.payload;
     });
 
+
+
+
 export const sendFriendRequest = (cookies, friendRequestId) =>
   authedPostRequest(
     urls.baseUrl + urls.api.user.sendFriendRequest,
