@@ -84,3 +84,30 @@ export const deleteMarker = async (currUser, { markerId }) => {
     return deleted;
   });
 };
+
+export const likeMarker = async (currUser, { markerId }) => {
+  console.log("here in mongodb/actions")
+  if (currUser == null || markerId == null) {
+    throw new Error("likeMarker error!")
+  }
+  await mongoDB();
+  await Marker.findByIdAndUpdate(markerId, {
+    $push: { likes: currUser.id }
+  })
+  await User.findByIdAndUpdate(currUser.id, {
+    $push: { likedMarkers: markerId }
+  })
+}
+
+export const unlikeMarker = async (currUser, { markerId }) => {
+  if (currUser == null || markerId == null) {
+    throw new Error("unlikeMarker error!")
+  }
+  await mongoDB();
+  await Marker.findByIdAndUpdate(markerId, {
+    $pull: { likes: currUser.id }
+  })
+  await User.findByIdAndUpdate(currUser.id, {
+    $pull: { likedMarkers: markerId }
+  })
+}

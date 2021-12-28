@@ -283,6 +283,8 @@ export const addMarker = async (currUser, { markerId }) => {
   })
 };
 
+
+
 export const removeMarker = async (currUser, { markerId }) => {
   if (currUser == null || markerId == null) {
     throw new Error("removeMarker error!")

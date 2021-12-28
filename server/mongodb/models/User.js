@@ -62,6 +62,10 @@ const UserSchema = new Schema({
     type: [Schema.Types.ObjectId], 
     ref: 'Marker'
   }, 
+  likedMarkers: {
+    type: [Schema.Types.ObjectId], 
+    ref: 'Marker'
+  }
 
   
 

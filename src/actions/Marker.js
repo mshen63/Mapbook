@@ -37,7 +37,7 @@ export const deleteMarker = (cookies, markerId) =>
 
 
 
-export const getMarker = (cookies, markerId) =>{
+export const getMarker = (cookies, markerId) => {
     authedPostRequest(
         urls.baseUrl + urls.api.marker.getMarker,
         { markerId },
@@ -47,11 +47,47 @@ export const getMarker = (cookies, markerId) =>{
             return response.json()
         })
         .then((data) => {
-            
+
             if (data == null) {
                 throw new Error("getMarker src/action/marker");
             } else if (!data.success) {
                 throw new Error(data.message);
             }
             return data.payload;
-        })};
+        })
+};
+
+
+export const likeMarker = (cookies, markerId) => {
+    console.log(cookies)
+    console.log(markerId)
+    authedPostRequest(
+        urls.baseUrl + urls.api.marker.likeMarker,
+        { markerId },
+        cookies
+    )
+        .then((response) => response.json())
+        .then((data) => {
+            if (data == null) {
+                throw new Error("likeMarker src/action/user");
+            } else if (!data.success) {
+                throw new Error(data.message);
+            }
+            return data.payload;
+        });
+}
+export const unlikeMarker = (cookies, markerId) =>
+    authedPostRequest(
+        urls.baseUrl + urls.api.marker.unlikeMarker,
+        { markerId },
+        cookies
+    )
+        .then((response) => response.json())
+        .then((data) => {
+            if (data == null) {
+                throw new Error("unlikeMarker src/action/user");
+            } else if (!data.success) {
+                throw new Error(data.message);
+            }
+            return data.payload;
+        });

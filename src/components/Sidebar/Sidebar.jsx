@@ -4,8 +4,11 @@ import AddMarkerForm from "./AddMarkerForm";
 import MarkerInfo from "./MarkerInfo"
 
 const Sidebar = ({ currUser, currMarker, map, setCurrMarker, markers }) => {
-  const [marks, setMarks] = useState(markers)
+  const [marks, setMarks] = useState(markers.map(mark=>({...mark, creator:currUser.username})))
 
+  useEffect(()=> {
+    setMarks(markers.map(mark=>({...mark, creator:currUser.username})))
+  }, [markers])
   return (
     <>
 
@@ -30,6 +33,7 @@ const Sidebar = ({ currUser, currMarker, map, setCurrMarker, markers }) => {
           initMarker = {currMarker}
           markers={marks}
           map={map}
+          currUser = {currUser}
         />)
       }
     </>

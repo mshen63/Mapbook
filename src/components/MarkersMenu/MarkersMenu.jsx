@@ -15,7 +15,7 @@ const MarkersMenu = (props) => {
 
             {markers.map((mark) => {
                 return (
-                    <Stack margin={3}>
+                    <Stack margin={3} id = {mark}>
                         <Button onClick={(e) => {
                             map.flyTo({ center: [mark.lng, mark.lat], zoom: 8 })
                             setCurrMarker(mark)
