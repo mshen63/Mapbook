@@ -70,7 +70,7 @@ MyApp.getInitialProps = async (appContext) => {
       ...ctx,
       currUser,
     })
-  }
+  } 
 
   return {
     pageProps,

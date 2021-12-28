@@ -1,7 +1,9 @@
+import { FaMarker } from "react-icons/fa";
 import mongoDB from "../index"
 import Marker from "../models/Marker"
 import User from "../models/User"
 import { addMarker, removeMarker } from "./User"
+
 
 export const getMarker = async (currUser, { markerId }) => {
 
@@ -86,7 +88,6 @@ export const deleteMarker = async (currUser, { markerId }) => {
 };
 
 export const likeMarker = async (currUser, { markerId }) => {
-  console.log("here in mongodb/actions")
   if (currUser == null || markerId == null) {
     throw new Error("likeMarker error!")
   }
@@ -110,4 +111,40 @@ export const unlikeMarker = async (currUser, { markerId }) => {
   await User.findByIdAndUpdate(currUser.id, {
     $pull: { likedMarkers: markerId }
   })
+}
+
+export const addComment = async(currUser, {markerId, commentId}) => {
+  if (currUser == null || markerId == null) {
+    throw new Error("addComment error!")
+  }
+  await mongoDB();
+  await Marker.findByIdAndUpdate(markerId, {
+    $push: { comments: commentId }
+  })
+}
+
+export const getComments = async (currUser, {markerId}) => {
+  if (currUser == null || markerId==null) {
+    throw new Error("getComments error!")
+  }
+  await mongoDB();
+
+  const marker = await Marker.findById(markerId)
+    .populate({
+      path: "comments",
+      model: "Comment",
+      populate: {
+        path: "user",
+        model: "User",
+        select: "_id username"
+      },
+      select: "_id content postDate"
+    })
+    .exec()
+
+  if (marker == null) {
+    throw new Error("getComments find error!")
+  } else {
+    return marker.comments
+  }
 }

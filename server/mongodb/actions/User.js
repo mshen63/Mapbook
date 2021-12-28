@@ -5,6 +5,7 @@ import { string } from "prop-types";
 import mongoDB from "../index";
 import User from "../models/User";
 import Marker from "../models/Marker";
+import Comment from "../models/Comment";
 import { useRouter } from "next/router";
 
 export const verifyToken = async (req, res) => {
@@ -51,15 +52,15 @@ export const getBasicUser = async (token) => {
 export async function getAllUsers(cookies) {
   await mongoDB();
   try {
-    const users = await User.find({}, {email:0, password:0})
-    if (users==null) {
+    const users = await User.find({}, { email: 0, password: 0 })
+    if (users == null) {
       throw new Error("Couldn't find any users in getAllUsers mongodb/actions!")
     }
     return users
   } catch (e) {
     throw new Error("Error getting users")
   }
-  
+
 }
 
 // SECTION: authentication //
@@ -255,45 +256,82 @@ export const getUserMarkers = async (currUser) => {
   }
   await mongoDB();
 
-  const user = await User.findById(currUser.id)
+  const markers = await Marker.find({ user: currUser.id })
     .populate({
-      path: "markers",
-      model: "Marker",
-      select: "_id lat lng name imgUrl description likes post_date priv"
+      path: "user",
+      model: "User",
+      select: "_id username"
     })
+    .populate({
+      path: "comments",
+      model: "Comment",
+      populate: {
+        path: "user",
+        model: "User",
+        select: "_id username"
+      },
+      select: "_id content postDate"
+    })
+    
     .exec()
 
-  if (user == null) {
-    throw new Error("getUserMarkers find error!")
-  } else {
-    return user.markers
+  if (markers == null) {
+      throw new Error("getUserMarkers find error!")
+    } else {
+      return markers
+    }
+
+
+    // const user = await User.findById(currUser.id)
+    //   .populate({
+    //     path: "markers",
+    //     model: "Marker",
+    //     populate: {
+    //       path: "comments",
+    //       model: "Comment",
+    //       populate: {
+    //         path: "user",
+    //         model: "User",
+    //         select: "_id username"
+    //       },
+    //       select: "_id content postDate"
+    //     },
+    //     select: "_id lat lng name imgUrl description likes post_date priv"
+    //   })
+
+    //   .exec()
+
+    // if (user == null) {
+    //   throw new Error("getUserMarkers find error!")
+    // } else {
+    //   return user.markers
+    // }
   }
-}
 
 
-export const addMarker = async (currUser, { markerId }) => {
-  if (currUser == null || markerId == null) {
-    throw new Error("addMarker error!")
-  }
+  export const addMarker = async (currUser, { markerId }) => {
+    if (currUser == null || markerId == null) {
+      throw new Error("addMarker error!")
+    }
 
-  await mongoDB();
+    await mongoDB();
 
-  return User.findByIdAndUpdate(currUser.id, {
-    $push: { markers: markerId },
-  })
-};
+    return User.findByIdAndUpdate(currUser.id, {
+      $push: { markers: markerId },
+    })
+  };
 
 
 
-export const removeMarker = async (currUser, { markerId }) => {
-  if (currUser == null || markerId == null) {
-    throw new Error("removeMarker error!")
-  }
+  export const removeMarker = async (currUser, { markerId }) => {
+    if (currUser == null || markerId == null) {
+      throw new Error("removeMarker error!")
+    }
 
-  await mongoDB();
+    await mongoDB();
 
-  return User.findByIdAndUpdate(currUser.id, {
-    $pull: { markers: markerId },
-  })
-};
+    return User.findByIdAndUpdate(currUser.id, {
+      $pull: { markers: markerId },
+    })
+  };
 

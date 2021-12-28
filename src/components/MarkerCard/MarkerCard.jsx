@@ -9,8 +9,6 @@ const BackIcon = chakra(IoArrowBackCircleSharp)
 const LikeIcon = chakra(HiThumbUp)
 const LikeOutlineIcon = chakra(HiOutlineThumbUp)
 const MarkerCard = (props) => {
-    console.log("markercard props!")
-    console.log(props)
     const router = useRouter();
     const { currUser, currMarker, setShowMenu } = props
     const [likes, setLikes] = useState(currMarker.likes.length)
@@ -32,9 +30,10 @@ const MarkerCard = (props) => {
     }
 
     const refreshData=()=> {
-        console.log("refresh!")
+        
         router.replace("/app")
         setIsRefreshing(true)
+        console.log("refresh!")
     }
 
     useEffect(()=> {
@@ -42,11 +41,8 @@ const MarkerCard = (props) => {
     }, [props])
 
 
-    const goBack = (e) => {
-        
-        
+    const goBack = (e) => {      
         setShowMenu(true)
-        console.log("did something")
     }
     return (
         <Box width="20vw" height="80vh" borderWidth='1px' borderRadius='lg' overflow='hidden'>
@@ -57,7 +53,7 @@ const MarkerCard = (props) => {
             <Box p='6'>
                 <Box display='flex' alignItems='baseline'>
                     <Badge borderRadius='full' px='2' colorScheme='teal'>
-                        Creator: {currMarker.creator}
+                        Creator: {currMarker.user.username}
                     </Badge>
                     <Box
                         color='gray.500'

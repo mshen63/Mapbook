@@ -59,8 +59,6 @@ export const getMarker = (cookies, markerId) => {
 
 
 export const likeMarker = (cookies, markerId) => {
-    console.log(cookies)
-    console.log(markerId)
     authedPostRequest(
         urls.baseUrl + urls.api.marker.likeMarker,
         { markerId },

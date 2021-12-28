@@ -1,11 +1,10 @@
-import { likeMarker } from "../../../../server/mongodb/actions/Marker";
-
+import { createComment } from "../../../../server/mongodb/actions/Comment";
 import { verifyToken } from "../../../../server/mongodb/actions/User";
 
 
 const handler = (req, res) => {
     verifyToken(req, res)
-        .then((currUser) => likeMarker(currUser, req.body))
+        .then((currUser) => createComment(currUser, req.body))
         .then((data) =>
             res.status(200).json({
                 success: true,

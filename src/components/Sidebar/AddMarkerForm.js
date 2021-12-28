@@ -16,7 +16,7 @@ import toast from 'react-hot-toast'
 
 // current marker is a map marker
 // we're just using it for the latitude longitude picked by user
-const AddMarkerForm = ({ currUser, map, currMarker, setCurrMarker, setMarks, marks }) => {
+const AddMarkerForm = ({ currUser, map, currMarker, setCurrMarker, setMarks, marks, setMapMarkers }) => {
     const [priv, setPriv] = useState(true)
     const [name, setName] = useState("")
     const [desc, setDesc] = useState("")
@@ -43,6 +43,7 @@ const AddMarkerForm = ({ currUser, map, currMarker, setCurrMarker, setMarks, mar
                         map.flyTo({ center: [currMarker.marker.getLngLat().lng, currMarker.marker.getLngLat().lat], zoom: 8 })
                         e.stopPropagation();
                     })
+                    setMapMarkers(mapMarkers => [...mapMarkers, marker])
                     setMarks(marks => [...marks, datamarker])
                     toast.success("Marker created!")
                 })

@@ -3,11 +3,12 @@ import { Toaster } from 'react-hot-toast'
 import AddMarkerForm from "./AddMarkerForm";
 import MarkerInfo from "./MarkerInfo"
 
-const Sidebar = ({ currUser, currMarker, map, setCurrMarker, markers }) => {
-  const [marks, setMarks] = useState(markers.map(mark=>({...mark, creator:currUser.username})))
+const Sidebar = (props) => {
+  const { currUser, currMarker, map, setCurrMarker, markers, setMapMarkers } = props
+  const [marks, setMarks] = useState(markers)
 
-  useEffect(()=> {
-    setMarks(markers.map(mark=>({...mark, creator:currUser.username})))
+  useEffect(() => {
+    setMarks(markers)
   }, [markers])
   return (
     <>
@@ -28,12 +29,13 @@ const Sidebar = ({ currUser, currMarker, map, setCurrMarker, markers }) => {
           setCurrMarker={setCurrMarker}
           setMarks={setMarks}
           marks={marks}
+          setMapMarkers = {setMapMarkers}
         />)
         : (<MarkerInfo
-          initMarker = {currMarker}
+          initMarker={currMarker}
           markers={marks}
           map={map}
-          currUser = {currUser}
+          currUser={currUser}
         />)
       }
     </>
