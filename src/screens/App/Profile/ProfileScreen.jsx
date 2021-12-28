@@ -44,7 +44,33 @@ const ProfileScreen = (props) => {
       align="center"
 
     >
-<p>Friends</p>
+       {friendRequests && friendRequests.length ? (<><Text textAlign="left">Friend Requests</Text>
+        <Grid
+          w="80vw"
+          templateColumns='repeat(5, 2fr)'
+          gap={5}
+          margin={3}
+        >
+          {friendRequests.map(user => {
+            return (
+              <GridItem
+                bg='green.300'
+                p={5}
+                rounded="md"
+                key={user._id}
+              >
+                <Flex align="center" justifyContent="space-between">
+                  <p>{user.username}</p>
+                  <Button rounded="xs" size="xs" onClick={(e) => acceptFriendReq(user)}>
+                    Accept<FriendIcon marginLeft={1}></FriendIcon>
+                  </Button>
+                </Flex>
+              </GridItem>
+            )
+          })}
+        </Grid></>):<></>}
+
+      <p>Friends</p>
       <Grid
         w="80vw"
         templateColumns='repeat(5, 2fr)'
@@ -54,7 +80,7 @@ const ProfileScreen = (props) => {
         {friends && friends.map(user => {
           return (
             <GridItem
-              bg='yellow.100'
+              bg='green.200'
               p={5}
               rounded="md"
               key={user._id}
@@ -70,42 +96,17 @@ const ProfileScreen = (props) => {
         })}
       </Grid>
 
+     
 
-      <Text textAlign="left">Friend Requests</Text>
-      <Grid
-        w="80vw"
-        templateColumns='repeat(5, 2fr)'
-        gap={5}
-        margin={3}
-      >
-        {friendRequests && friendRequests.map(user => {
-          return (
-            <GridItem
-              bg='blue.100'
-              p={5}
-              rounded="md"
-              key={user._id}
-            >
-              <Flex align="center" justifyContent="space-between">
-                <p>{user.username}</p>
-                <Button rounded="xs" size="xs" onClick={(e) => acceptFriendReq(user)}>
-                  Accept<FriendIcon marginLeft={1}></FriendIcon>
-                </Button>
-              </Flex>
-            </GridItem>
-          )
-        })}
-      </Grid>
-
-      <Box 
-        border = "10px"
-        borderTop = "3px"
-        borderBottom = "10px"
-        borderColor = "red.800"
+      <Box
+        border="10px"
+        borderTop="3px"
+        borderBottom="10px"
+        borderColor="red.800"
       >Suggested Friends</Box>
       <InputGroup
         margin={3}
-        width = "80vw"
+        width="80vw"
       >
         <InputLeftElement
           pointerEvents="none"
@@ -117,12 +118,12 @@ const ProfileScreen = (props) => {
           placeholder={`Search Users`}
         />
       </InputGroup>
-      
+
       <Grid
         w="80vw"
         templateColumns='repeat(5, 2fr)'
         gap={5}
-        margin = {3}
+        margin={3}
       >
         {/* all users that are not current user, friend, sent user friend request, or have search term */}
         {allUsers && allUsers
