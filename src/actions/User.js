@@ -172,6 +172,22 @@ export const rejectFriendRequest = (cookies, friendRequestId) =>
       return data.payload;
     });
 
+export const acceptFriendRequest = (cookies, friendRequestId) =>
+  authedPostRequest(
+    urls.baseUrl + urls.api.user.acceptFriendRequest,
+    { friendRequestId },
+    cookies
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      if (data == null) {
+        throw new Error("acceptFriendRequest src/action/user");
+      } else if (!data.success) {
+        throw new Error(data.message);
+      }
+      return data.payload;
+    });
+
 
 export const removeFriend = (cookies, friendId) =>
   authedPostRequest(
@@ -221,6 +237,7 @@ export const getUserFriendRequests = (cookies) =>
       }
       return data.payload;
     });
+
 
 
 

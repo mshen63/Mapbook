@@ -51,7 +51,7 @@ export const getBasicUser = async (token) => {
 export async function getAllUsers(cookies) {
   await mongoDB();
   try {
-    const users = await User.find({}, {email:0, password:0, pendingFRequests:0})
+    const users = await User.find({}, {email:0, password:0})
     if (users==null) {
       throw new Error("Couldn't find any users in getAllUsers mongodb/actions!")
     }
@@ -142,7 +142,7 @@ export const getUserFriends = async (currUser) => {
     .populate({
       path: "friends",
       model: "User",
-      select: "_id username color"
+      select: "_id username color bio location registerDate friends markers"
     })
     .exec()
 
@@ -185,6 +185,7 @@ export const removeFriend = async (currUser, { friendId }) => {
 
 // SECTION: friend requests //
 
+
 export const getUserFriendRequests = async (currUser) => {
   if (currUser == null) {
     throw new Error("getUserFriendRequests error!")
@@ -195,7 +196,7 @@ export const getUserFriendRequests = async (currUser) => {
     .populate({
       path: "pendingFRequests",
       model: "User",
-      select: "_id username color"
+      select: "_id username color bio location registerDate friends markers"
     })
     .exec()
 
@@ -227,6 +228,24 @@ export const rejectFriendRequest = async (currUser, { friendRequestId }) => {
     $pull: { pendingFRequests: friendRequestId },
   })
 }
+
+export const acceptFriendRequest = async (currUser, { friendRequestId }) => {
+  if (currUser == null || friendRequestId == null) {
+    throw new Error("acceptFriendRequest error!")
+  }
+
+  await mongoDB();
+  return User.findByIdAndUpdate(currUser.id, {
+    $pull: { pendingFRequests: friendRequestId },
+  }).then(async (data) => {
+    await addFriend(currUser, {
+      friendId: friendRequestId,
+    });
+    return data;
+  })
+}
+
+
 
 // SECTION: markers //
 
