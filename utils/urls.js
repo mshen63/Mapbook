@@ -30,6 +30,7 @@ export default {
       getUserFriends: "/api/user/getUserFriends",
       getUserMarkers: "/api/user/getUserMarkers",
       rejectFriendRequest: "/api/user/rejectFriendRequest",
+      acceptFriendRequest: "/api/user/acceptFriendRequest",
       removeFriend: "/api/user/removeFriend",
       removeMarker: "/api/user/removeMarker",
       sendFriendRequest: "/api/user/sendFriendRequest",

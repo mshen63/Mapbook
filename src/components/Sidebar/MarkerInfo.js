@@ -42,7 +42,8 @@ const MarkerInfo = ({ currMarker, markers, map }) => {
                                 </AccordionButton>
                             </h2>
                             <AccordionPanel pb={4}>
-                                {mark.description}
+                                <p>{mark.description}</p>
+                                <button>Cool</button>
                             </AccordionPanel>
                         </AccordionItem>
 

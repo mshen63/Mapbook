@@ -7,11 +7,11 @@ import { getCurrentUser, getUserFriends, getUserFriendRequests, getAllUsers } fr
 
 
 
-const ProfilePage = ({ currUser, friends, friendReqs, allUsers }) =>
+const ProfilePage = ({ currUser, initialFriends, friendReqs, allUsers }) =>
 (
     <ProfileScreen
         currUser={currUser}
-        friends={friends}
+        initialFriends={initialFriends}
         friendReqs={friendReqs}
         allUsers={allUsers}
 
@@ -23,17 +23,17 @@ ProfilePage.getInitialProps = async ({ req }) => {
     const cookies = req ? req.headers.cookie : null;
 
     try {
-        const friends = await getUserFriends(cookies)
+        const initialFriends = await getUserFriends(cookies)
         const friendReqs = await getUserFriendRequests(cookies)
-        const currUser = await getCurrentUser(cookies).catch(() => null)
-        const allUsers = await getAllUsers(cookies).catch(() => null)
+        const currUser = await getCurrentUser(cookies)
+        const allUsers = await getAllUsers(cookies)
         console.log(allUsers)
         console.log("allUsers")
 
 
         return {
             currUser,
-            friends,
+            initialFriends,
             friendReqs,
             allUsers
         }
