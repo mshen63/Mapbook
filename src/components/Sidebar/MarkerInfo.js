@@ -9,14 +9,28 @@ const MarkerInfo = (props) => {
     const [currMarker, setCurrMarker] = useState(initMarker.marker)
     const [showMenu, setShowMenu] = useState(false)
 
+
     useEffect(()=> {
         setShowMenu(false)
         setCurrMarker(initMarker.marker)
     }, [initMarker])
 
+    useEffect(() => {
+        
+        if (currMarker) {
+            const match = markers.find(elem => elem._id === currMarker._id)
+            if (match) {
+                setCurrMarker(match)
+            }
+        } 
+
+    }, [markers])
+
+
+
     return (
         <div>
-            {showMenu || currMarker==null
+            {showMenu || currMarker == null
                 ? (<MarkersMenu
                     markers={markers}
                     map={map}
@@ -26,7 +40,7 @@ const MarkerInfo = (props) => {
                 : (<MarkerCard
                     currMarker={currMarker}
                     setShowMenu={setShowMenu}
-                    currUser = {currUser}
+                    currUser={currUser}
                 />)
             }
         </div>
