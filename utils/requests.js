@@ -1,3 +1,4 @@
+import { ModalBody } from "@chakra-ui/react";
 
 export const authedFetch = (url, options, cookies) => {
 
@@ -45,6 +46,22 @@ export const authedPostRequest = (url, body, cookies) =>
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
+    },
+    cookies
+  );
+
+
+export const authedPostRequestWithFile = (url, body, cookies) => 
+  authedFetch(
+    url,
+    {
+      method: "POST",
+      mode: "same-origin",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: body,
     },
     cookies
   );

@@ -1,10 +1,10 @@
 import urls from "../../utils/urls";
 import { authedPostRequest, authedGetRequest } from "../../utils/requests";
 
-export const createMarker = (cookies, lat, lng, name, description, priv) =>
+export const createMarker = (cookies, lat, lng, name, description, priv, imgUrl) =>
     authedPostRequest(
         urls.baseUrl + urls.api.marker.createMarker,
-        { lat, lng, name, description, priv },
+        { lat, lng, name, description, priv, imgUrl},
         cookies
     )
         .then((response) => response.json())

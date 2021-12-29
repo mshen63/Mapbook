@@ -10,67 +10,61 @@ import {
     Center,
     useColorModeValue, Icon
 } from "@chakra-ui/react";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { createMarker } from "../../actions/Marker";
 const mapboxgl = require("mapbox-gl/dist/mapbox-gl.js")
+import { useRouter } from "next/router";
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY
 import toast from 'react-hot-toast'
 import { useDropzone } from "react-dropzone"
 import { AiFillFileAdd } from 'react-icons/ai';
+const url = process.env.NEXT_PUBLIC_CLOUDINARY_URL
+const preset = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET
 
-
-
-
-// current marker is a map marker
-// we're just using it for the latitude longitude picked by user
 const AddMarkerForm = ({ currUser, map, currMarker, setCurrMarker, setMarks, marks, setMapMarkers }) => {
+
     const [priv, setPriv] = useState(true)
     const [name, setName] = useState("")
     const [desc, setDesc] = useState("")
-    const [markerPic, setMarkerPic] = useState(null)
+    const [imgUrl, setImgUrl] = useState("")
+    const router = useRouter();
+    // the preview
     const [file, setFile] = useState(null)
-    const onDrop = useCallback((acceptedFiles) => {
+    const refreshData = () => {
+        router.replace("/app")
+    }
 
-        setFile(Object.assign(acceptedFiles[0], {
-            preview: URL.createObjectURL(acceptedFiles[0])
-        }))
-
-        acceptedFiles.forEach(file => {
-            console.log(file)
-            const reader = new FileReader()
-            reader.onload = (load) => {
-                console.log(reader.result)
-                setMarkerPic(load.currentTarget.result)
-            }
-            reader.readAsArrayBuffer(file)
-        })
-    }, [])
     useEffect(() => {
-        if (file) {
-            console.log(file.preview)
-        }
+        console.log(imgUrl)
+    }, [imgUrl])
 
-    }, [file])
+    const onDrop = useCallback((acceptedFiles) => {
+        const file = acceptedFiles[0]
+        const formData = new FormData();
+        formData.append("file", file)
+        formData.append("upload_preset", preset)
+        fetch(url, {
+            method: "POST",
+            body: formData
+        }).then(resp => {
+            return resp.text()
+        }).then((data) => {
+            setImgUrl(JSON.parse(data).secure_url)
+        }).then((e) => {
+            setFile(Object.assign(file, {
+                preview: URL.createObjectURL(file)
+            }))
+        }).catch(e => toast.error("Photo invalid or too large!"))
+    }, [])
 
-
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({ accept: "image/*", onDrop, maxFiles: 1, multiple: false })
-
-    const dropText = isDragActive ? "Drop files here..." : "Drag and drop files here, or click to select files"
-    const activeBg = useColorModeValue("gray.100", "gray.600")
-    const borderColor = useColorModeValue(
-        isDragActive ? 'teal.300' : 'gray.300',
-        isDragActive ? 'teal.500' : 'gray.500'
-    )
-    const inputProps = getInputProps()
-    const rootProps = getRootProps()
-    // console.log(inputProps)
-    // console.log(rootProps.onDragOver)
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, maxFiles: 1, multiple: false })
 
     useEffect(() => {
         setName("")
         setDesc("")
         setPriv(true)
         setFile(null)
+        setImgUrl("")
     }, [currMarker])
 
     const addMarkerToMap = async (e) => {
@@ -80,8 +74,9 @@ const AddMarkerForm = ({ currUser, map, currMarker, setCurrMarker, setMarks, mar
         } else if (desc === "") {
             return toast.error("Please add a description!")
         } else {
-            await createMarker(currUser, currMarker.marker.getLngLat().lat, currMarker.marker.getLngLat().lng, name, desc, priv)
+            await createMarker(currUser, currMarker.marker.getLngLat().lat, currMarker.marker.getLngLat().lng, name, desc, priv, imgUrl)
                 .then(datamarker => {
+                    console.log(datamarker)
                     var randomColor = "#" + (Math.floor(Math.random() * 16777215).toString(16));
                     let marker = new mapboxgl.Marker({ color: randomColor }).setLngLat([currMarker.marker.getLngLat().lng, currMarker.marker.getLngLat().lat]).addTo(map)
                     marker.getElement().addEventListener('click', async (e) => {
@@ -94,6 +89,8 @@ const AddMarkerForm = ({ currUser, map, currMarker, setCurrMarker, setMarks, mar
                     toast.success("Marker created!")
                 })
                 .catch(e => toast.error(e.message))
+            refreshData();
+
         }
     }
 
@@ -106,16 +103,13 @@ const AddMarkerForm = ({ currUser, map, currMarker, setCurrMarker, setMarks, mar
                 width="20vw"
                 height="80vh"
             >
-
                 <Text>Add Marker </Text>
                 <Divider borderColor="gray.600" marginTop={3} marginBottom={3} />
-                <Box minW={{ base: "50%", md: "300px" }} overflowY="scroll">
-
-                    <form onSubmit={addMarkerToMap}>
+                <Box minW={{ base: "50%", md: "300px" }} overflowY="scroll" display="flex" justifyContent="center">
+                    <form onSubmit={addMarkerToMap} >
                         <Stack
-                            spacing={4}
+                            spacing={6}
                             p="1rem"
-                            
                         >
                             <FormControl>
                                 <InputGroup>
@@ -128,39 +122,32 @@ const AddMarkerForm = ({ currUser, map, currMarker, setCurrMarker, setMarks, mar
                                     />
                                 </InputGroup>
                             </FormControl>
-                            <Flex align = "center" justify="center" width = "100%" height = "50%">
-                            {file ? (<img
-                                src={file.preview}
-
-                            />)
-                                : (<Center
-                                    p={10}
-                                    cursor="pointer"
-                                    bg={isDragActive ? activeBg : 'transparent'}
-                                    transition="background-color 0.2s ease"
-                                    borderRadius={4}
-                                    border="3px dashed"
-                                    borderColor={borderColor}
-                                    display="flex"
-                                    alignItems="center"
-                                    justifyContent="center"
-                                    flexDirection="column"
-                                    width="100%"
-                                    padding={20}
-                                    _hover = {{bg:"green.50"}}
-
-                                    {...getRootProps()}
-
-                                >
-
-                                    <input {...getInputProps()} padding={20} />
-                                    <Icon as={AiFillFileAdd} mr={2} />
-                                    <Text fontSize = "12px" color="gray.500">Add Image Here</Text>
-
-                                </Center>
-
-                                )
-                            }
+                            <Flex align="center" justify="center" width="100%" height="50%">
+                                {file
+                                    ? (<img src={file.preview} />)
+                                    : (<Center
+                                        p={10}
+                                        cursor="pointer"
+                                        bg={isDragActive ? "gray.100" : 'transparent'}
+                                        transition="background-color 0.2s ease"
+                                        borderRadius={4}
+                                        border="3px dashed"
+                                        borderColor="gray.300"
+                                        display="flex"
+                                        alignItems="center"
+                                        justifyContent="center"
+                                        flexDirection="column"
+                                        width="100%"
+                                        padding={20}
+                                        _hover={{ bg: "green.50", borderColor: "gray.400" }}
+                                        {...getRootProps()}
+                                    >
+                                        <input {...getInputProps()} padding={20} />
+                                        <Icon as={AiFillFileAdd} mr={2} />
+                                        <Text fontSize="12px" color="gray.500">Add Image Here</Text>
+                                    </Center>
+                                    )
+                                }
                             </Flex>
 
                             <FormControl>
@@ -177,9 +164,9 @@ const AddMarkerForm = ({ currUser, map, currMarker, setCurrMarker, setMarks, mar
                                     />
                                 </InputGroup>
                             </FormControl>
-                            <FormControl display='flex' alignItems='center' m={0}>
+                            <FormControl display='flex' alignItems='center' justifyContent="center">
 
-                                <FormLabel htmlFor="private" >
+                                <FormLabel htmlFor="private"  >
                                     Private
                                 </FormLabel>
                                 <Switch id="private" isChecked={priv} onChange={(e) => setPriv(!priv)}></Switch>
