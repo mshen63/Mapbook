@@ -18,6 +18,7 @@ const LikeIcon = chakra(HiThumbUp)
 const LikeOutlineIcon = chakra(HiOutlineThumbUp)
 const SendIcon = chakra(AiOutlineArrowRight)
 const MarkerCard = (props) => {
+    // console.log(props)
     const router = useRouter();
     const { currUser, currMarker, setShowMenu } = props
     const [likes, setLikes] = useState(currMarker.likes.length)

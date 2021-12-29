@@ -2,7 +2,6 @@ import { Text, Flex, Box, Stack, Button, Accordion, AccordionButton, AccordionPa
 
 const MarkersMenu = (props) => {
     const { markers, map, setCurrMarker, setShowMenu } = props
-    console.log(props)
 
     return (
         <Flex

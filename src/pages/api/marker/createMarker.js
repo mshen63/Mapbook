@@ -4,6 +4,7 @@ import { verifyToken } from "../../../../server/mongodb/actions/User";
 
 
 const handler = (req, res) => {
+    // console.log(req)
 
     verifyToken(req, res)
         .then((currUser) => createMarker(currUser, req.body))

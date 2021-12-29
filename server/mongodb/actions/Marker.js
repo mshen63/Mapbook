@@ -3,6 +3,23 @@ import mongoDB from "../index"
 import Marker from "../models/Marker"
 import User from "../models/User"
 import { addMarker, removeMarker } from "./User"
+import multer from "multer"
+const uploader = multer({ dest: "/tmp" })
+import { v2 as cloudinary } from "cloudinary"
+
+if (process.env.CLOUDINARY_URL) {
+  const {
+    hostname: cloud_name,
+    username: api_key,
+    password: api_secret,
+  } = new URL(process.env.CLOUDINARY_URL);
+
+  cloudinary.config({
+    cloud_name,
+    api_key,
+    api_secret,
+  });
+}
 
 
 export const getMarker = async (currUser, { markerId }) => {
@@ -36,7 +53,9 @@ export const getMarker = async (currUser, { markerId }) => {
   }
 };
 
-export async function createMarker(currUser, { lat, lng, name, description, priv }) {
+export async function createMarker(currUser, props) {
+  // console.log(props)
+  const { lat, lng, name, description, priv, imgUrl } = props
   if (currUser == null) {
     throw new Error("You must be logged in to add a marker!");
   }
@@ -44,7 +63,7 @@ export async function createMarker(currUser, { lat, lng, name, description, priv
 
     throw new Error("Please provide all fields!")
   }
-
+  
   let repMarker = await Marker.findOne({ user: currUser.id, name: name })
   if (repMarker != null) {
     throw new Error("Marker with that name already exists!")
@@ -54,6 +73,7 @@ export async function createMarker(currUser, { lat, lng, name, description, priv
     lat,
     lng,
     name,
+    imgUrl,
     description,
     priv
   }).then(async (marker) => {
@@ -113,7 +133,7 @@ export const unlikeMarker = async (currUser, { markerId }) => {
   })
 }
 
-export const addComment = async(currUser, {markerId, commentId}) => {
+export const addComment = async (currUser, { markerId, commentId }) => {
   if (currUser == null || markerId == null) {
     throw new Error("addComment error!")
   }
@@ -123,8 +143,8 @@ export const addComment = async(currUser, {markerId, commentId}) => {
   })
 }
 
-export const getComments = async (currUser, {markerId}) => {
-  if (currUser == null || markerId==null) {
+export const getComments = async (currUser, { markerId }) => {
+  if (currUser == null || markerId == null) {
     throw new Error("getComments error!")
   }
   await mongoDB();
