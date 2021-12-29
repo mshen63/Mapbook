@@ -1,16 +1,23 @@
 import {
-    Stack, Input, Checkbox, FormControl,
+    Stack, Input, Checkbox, FormControl, Text, Divider, Flex,
     Heading,
     Button,
     InputGroup,
     Box,
-    Textarea
+    Textarea,
+    FormLabel,
+    Switch,
+    Center,
+    useColorModeValue, Icon
 } from "@chakra-ui/react";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { createMarker } from "../../actions/Marker";
 const mapboxgl = require("mapbox-gl/dist/mapbox-gl.js")
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY
 import toast from 'react-hot-toast'
+import { useDropzone } from "react-dropzone"
+import { AiFillFileAdd } from 'react-icons/ai';
+
 
 
 
@@ -20,11 +27,50 @@ const AddMarkerForm = ({ currUser, map, currMarker, setCurrMarker, setMarks, mar
     const [priv, setPriv] = useState(true)
     const [name, setName] = useState("")
     const [desc, setDesc] = useState("")
+    const [markerPic, setMarkerPic] = useState(null)
+    const [file, setFile] = useState(null)
+    const onDrop = useCallback((acceptedFiles) => {
+
+        setFile(Object.assign(acceptedFiles[0], {
+            preview: URL.createObjectURL(acceptedFiles[0])
+        }))
+
+        acceptedFiles.forEach(file => {
+            console.log(file)
+            const reader = new FileReader()
+            reader.onload = (load) => {
+                console.log(reader.result)
+                setMarkerPic(load.currentTarget.result)
+            }
+            reader.readAsArrayBuffer(file)
+        })
+    }, [])
+    useEffect(() => {
+        if (file) {
+            console.log(file.preview)
+        }
+
+    }, [file])
+
+
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({ accept: "image/*", onDrop, maxFiles: 1, multiple: false })
+
+    const dropText = isDragActive ? "Drop files here..." : "Drag and drop files here, or click to select files"
+    const activeBg = useColorModeValue("gray.100", "gray.600")
+    const borderColor = useColorModeValue(
+        isDragActive ? 'teal.300' : 'gray.300',
+        isDragActive ? 'teal.500' : 'gray.500'
+    )
+    const inputProps = getInputProps()
+    const rootProps = getRootProps()
+    // console.log(inputProps)
+    // console.log(rootProps.onDragOver)
 
     useEffect(() => {
         setName("")
         setDesc("")
         setPriv(true)
+        setFile(null)
     }, [currMarker])
 
     const addMarkerToMap = async (e) => {
@@ -53,22 +99,23 @@ const AddMarkerForm = ({ currUser, map, currMarker, setCurrMarker, setMarks, mar
 
     return (
         <>
-            <Stack
+            <Flex
                 flexDir="column"
-                mb="2"
-                justifyContent="center"
                 alignItems="center"
                 backgroundColor="whiteAlpha.900"
-                p="1rem"
+                width="20vw"
+                height="80vh"
             >
-                <Heading color="teal.400">Add Marker</Heading>
-                <Box minW={{ base: "80%", md: "400px" }}>
+
+                <Text>Add Marker </Text>
+                <Divider borderColor="gray.600" marginTop={3} marginBottom={3} />
+                <Box minW={{ base: "50%", md: "300px" }} overflowY="scroll">
 
                     <form onSubmit={addMarkerToMap}>
                         <Stack
                             spacing={4}
                             p="1rem"
-                            boxShadow="md"
+                            
                         >
                             <FormControl>
                                 <InputGroup>
@@ -81,6 +128,41 @@ const AddMarkerForm = ({ currUser, map, currMarker, setCurrMarker, setMarks, mar
                                     />
                                 </InputGroup>
                             </FormControl>
+                            <Flex align = "center" justify="center" width = "100%" height = "50%">
+                            {file ? (<img
+                                src={file.preview}
+
+                            />)
+                                : (<Center
+                                    p={10}
+                                    cursor="pointer"
+                                    bg={isDragActive ? activeBg : 'transparent'}
+                                    transition="background-color 0.2s ease"
+                                    borderRadius={4}
+                                    border="3px dashed"
+                                    borderColor={borderColor}
+                                    display="flex"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    flexDirection="column"
+                                    width="100%"
+                                    padding={20}
+                                    _hover = {{bg:"green.50"}}
+
+                                    {...getRootProps()}
+
+                                >
+
+                                    <input {...getInputProps()} padding={20} />
+                                    <Icon as={AiFillFileAdd} mr={2} />
+                                    <Text fontSize = "12px" color="gray.500">Add Image Here</Text>
+
+                                </Center>
+
+                                )
+                            }
+                            </Flex>
+
                             <FormControl>
                                 <InputGroup>
                                     <Textarea
@@ -90,29 +172,32 @@ const AddMarkerForm = ({ currUser, map, currMarker, setCurrMarker, setMarks, mar
                                         id="description"
                                         resize="vertical"
                                         value={desc}
-                                        height="50px"
+                                        height="200px"
                                         onChange={(event) => setDesc(event.target.value)}
                                     />
                                 </InputGroup>
                             </FormControl>
-                            <FormControl>
-                                <Checkbox isChecked={priv} onChange={(e) => setPriv(!priv)}>
-                                    Private?
-                                </Checkbox>
+                            <FormControl display='flex' alignItems='center' m={0}>
+
+                                <FormLabel htmlFor="private" >
+                                    Private
+                                </FormLabel>
+                                <Switch id="private" isChecked={priv} onChange={(e) => setPriv(!priv)}></Switch>
                             </FormControl>
                             <Button
                                 borderRadius={0}
                                 type="submit"
                                 variant="solid"
-                                colorScheme="teal"
+                                bg="green.100"
                                 width="full"
+                                marginTop="0px"
                             >
                                 Add Marker
                             </Button>
                         </Stack>
                     </form>
                 </Box>
-            </Stack>
+            </Flex>
         </>
     )
 }

@@ -7,13 +7,13 @@ const MarkersMenu = (props) => {
     return (
         <Flex
             height="80vh"
-            width="15vw"
+            width="20vw"
             id="hellO"
             overflowY="scroll"
             align="center"
             direction="column"
         >
-            <Text>Markers: </Text>
+            <Text>Markers </Text>
             <Divider borderColor="gray.600" marginTop={3} marginBottom={3} />
             {markers.map((mark) => {
                 return (
