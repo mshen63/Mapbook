@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Router from "next/router";
 import { logout } from "../../../actions/User";
 import urls from "../../../../utils/urls";
-import classes from "./ProfileScreen.module.css";
+import classes from "./FriendsScreen.module.css";
 import { sendFriendRequest, acceptFriendRequest } from "../../../actions/User";
 import { InputGroup, InputLeftElement, Input, chakra, Grid, GridItem, Stack, Flex, Button, Text, Divider, Box } from "@chakra-ui/react";
 import { FaSearch, FaLock, FaUserClock, FaUserCheck } from "react-icons/fa";
@@ -44,31 +44,36 @@ const ProfileScreen = (props) => {
       align="center"
 
     >
-       {friendRequests && friendRequests.length ? (<><Text textAlign="left">Friend Requests</Text>
-        <Grid
-          w="80vw"
-          templateColumns='repeat(5, 2fr)'
-          gap={5}
-          margin={3}
-        >
-          {friendRequests.map(user => {
-            return (
-              <GridItem
-                bg='green.300'
-                p={5}
-                rounded="md"
-                key={user._id}
-              >
-                <Flex align="center" justifyContent="space-between">
-                  <p>{user.username}</p>
-                  <Button rounded="xs" size="xs" onClick={(e) => acceptFriendReq(user)}>
-                    Accept<FriendIcon marginLeft={1}></FriendIcon>
-                  </Button>
-                </Flex>
-              </GridItem>
-            )
-          })}
-        </Grid></>):<></>}
+      {friendRequests && friendRequests.length
+        ? (
+          <><Text textAlign="left">Friend Requests</Text>
+            <Grid
+              w="80vw"
+              templateColumns='repeat(5, 2fr)'
+              gap={5}
+              margin={3}
+            >
+              {friendRequests.map(user => {
+                return (
+                  <GridItem
+                    bg='green.300'
+                    p={5}
+                    rounded="md"
+                    key={user._id}
+                  >
+                    <Flex align="center" justifyContent="space-between">
+                      <p>{user.username}</p>
+                      <Button rounded="xs" size="xs" onClick={(e) => acceptFriendReq(user)}>
+                        Accept<FriendIcon marginLeft={1}></FriendIcon>
+                      </Button>
+                    </Flex>
+                  </GridItem>
+                )
+              })}
+            </Grid></>
+        )
+        : <></>
+      }
 
       <p>Friends</p>
       <Grid
@@ -96,7 +101,7 @@ const ProfileScreen = (props) => {
         })}
       </Grid>
 
-     
+
 
       <Box
         border="10px"

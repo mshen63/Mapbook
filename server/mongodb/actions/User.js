@@ -133,17 +133,17 @@ export async function signUp({ email, username, password }) {
 
 // SECTION: friends //
 
-export const getUserFriends = async (currUser) => {
-  if (currUser == null) {
+export const getUserFriends = async (currUser, { userId }) => {
+  if (currUser == null || userId == null) {
     throw new Error("getUserFriends error!")
   }
   await mongoDB();
 
-  const user = await User.findById(currUser.id)
+  const user = await User.findById(userId)
     .populate({
       path: "friends",
       model: "User",
-      select: "_id username color bio location registerDate friends markers"
+      select: "_id username color"
     })
     .exec()
 
@@ -249,14 +249,28 @@ export const acceptFriendRequest = async (currUser, { friendRequestId }) => {
 
 
 // SECTION: markers //
+export const getSpecificUser = async (currUser, { userId }) => {
+  if (currUser == null || userId == null) {
+    throw new Error("getSpecificUser error!")
+  }
+  await mongoDB();
+  const user = await User.find({ _id: userId }, { password: 0, email: 0, friends: 0, pendingFRequests: 0, markers: 0, likedMarkers: 0 })
+  if (user == null) {
+    throw new Error("getSpecificUser find error!")
+  } else {
+    return user
+  }
+}
 
-export const getUserMarkers = async (currUser, {userId}) => {
+
+
+export const getUserMarkers = async (currUser, { userId }) => {
 
   if (currUser == null) {
     throw new Error("getUserMarkers error!")
   }
   await mongoDB();
-  const extraParams = {user: userId}
+  const extraParams = { user: userId }
   if (currUser.id != userId) {
     extraParams.priv = false
   }
@@ -277,66 +291,41 @@ export const getUserMarkers = async (currUser, {userId}) => {
       },
       select: "_id content postDate"
     })
-    
+
     .exec()
 
   if (markers == null) {
-      throw new Error("getUserMarkers find error!")
-    } else {
-      return markers
-    }
-
-
-    // const user = await User.findById(currUser.id)
-    //   .populate({
-    //     path: "markers",
-    //     model: "Marker",
-    //     populate: {
-    //       path: "comments",
-    //       model: "Comment",
-    //       populate: {
-    //         path: "user",
-    //         model: "User",
-    //         select: "_id username"
-    //       },
-    //       select: "_id content postDate"
-    //     },
-    //     select: "_id lat lng name imgUrl description likes post_date priv"
-    //   })
-
-    //   .exec()
-
-    // if (user == null) {
-    //   throw new Error("getUserMarkers find error!")
-    // } else {
-    //   return user.markers
-    // }
+    throw new Error("getUserMarkers find error!")
+  } else {
+    return markers
   }
 
-
-  export const addMarker = async (currUser, { markerId }) => {
-    if (currUser == null || markerId == null) {
-      throw new Error("addMarker error!")
-    }
-
-    await mongoDB();
-
-    return User.findByIdAndUpdate(currUser.id, {
-      $push: { markers: markerId },
-    })
-  };
+}
 
 
+export const addMarker = async (currUser, { markerId }) => {
+  if (currUser == null || markerId == null) {
+    throw new Error("addMarker error!")
+  }
 
-  export const removeMarker = async (currUser, { markerId }) => {
-    if (currUser == null || markerId == null) {
-      throw new Error("removeMarker error!")
-    }
+  await mongoDB();
 
-    await mongoDB();
+  return User.findByIdAndUpdate(currUser.id, {
+    $push: { markers: markerId },
+  })
+};
 
-    return User.findByIdAndUpdate(currUser.id, {
-      $pull: { markers: markerId },
-    })
-  };
+
+
+export const removeMarker = async (currUser, { markerId }) => {
+  if (currUser == null || markerId == null) {
+    throw new Error("removeMarker error!")
+  }
+
+  await mongoDB();
+
+  return User.findByIdAndUpdate(currUser.id, {
+    $pull: { markers: markerId },
+  })
+};
 

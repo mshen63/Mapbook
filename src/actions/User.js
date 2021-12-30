@@ -65,6 +65,8 @@ export const logout = () =>
       return json.success;
     });
 
+
+
 export const getCurrentUser = (cookies) => {
   const conditionals = {};
 
@@ -74,7 +76,6 @@ export const getCurrentUser = (cookies) => {
     };
   }
 
-  console.log(""+urls.baseUrl + urls.api.user.getCurrent)
   return fetch(urls.baseUrl + urls.api.user.getCurrent, {
     method: "GET",
     mode: "same-origin",
@@ -245,9 +246,10 @@ export const getUserFriendRequests = (cookies) =>
 
 
 
-export const getUserFriends = (cookies) =>
-  authedGetRequest(
+export const getUserFriends = (cookies, userId) =>
+  authedPostRequest(
     urls.baseUrl + urls.api.user.getUserFriends,
+    {userId},
     cookies
   )
     .then((response) => response.json())
@@ -264,7 +266,7 @@ export const getUserFriends = (cookies) =>
 export const getUserMarkers = (cookies, userId) =>
   authedPostRequest(
     urls.baseUrl + urls.api.user.getUserMarkers,
-    {userId},
+    { userId },
     cookies
   )
     .then((response) => response.json())
@@ -276,6 +278,25 @@ export const getUserMarkers = (cookies, userId) =>
       }
       return data.payload;
     });
+
+
+export const getSpecificUser = (cookies, userId) => 
+
+  authedPostRequest(
+    urls.baseUrl + urls.api.user.getSpecificUser,
+    { userId },
+    cookies
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      if (data == null) {
+        throw new Error("getSpecificUser src/action/user");
+      } else if (!data.success) {
+        throw new Error(data.message);
+      }
+      return data.payload;
+    });
+
 
 
 

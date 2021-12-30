@@ -23,7 +23,7 @@ const MyApp = ({ Component, pageProps, router, currUser }) => (
     <ChakraProvider>
       <div className="App">
         <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
-          <Header loggedIn={currUser != null} currentRoute={router.asPath} />
+          <Header loggedIn={currUser != null} currentRoute={router.asPath} currUser= {currUser}/>
           <div className="Content">
             <Component {...pageProps} currUser={currUser} />
           </div>

@@ -3,7 +3,7 @@ import { getUserFriends, verifyToken } from "../../../../server/mongodb/actions/
 
 const handler = (req, res) =>
     verifyToken(req, res)
-        .then((currUser) => getUserFriends(currUser))
+        .then((currUser) => getUserFriends(currUser, req.body))
         .then((data) =>
             res.status(200).json({
                 success: true,

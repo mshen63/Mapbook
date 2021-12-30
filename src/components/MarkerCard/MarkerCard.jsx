@@ -11,14 +11,13 @@ import { useRouter } from "next/router";
 import { AiOutlineArrowRight } from "react-icons/ai"
 import toast from "react-hot-toast";
 import formatDistance from "date-fns/formatDistance";
-import { format, toDate, parseISO} from "date-fns"
+import { format, toDate, parseISO } from "date-fns"
 
 const BackIcon = chakra(IoArrowBackCircleSharp)
 const LikeIcon = chakra(HiThumbUp)
 const LikeOutlineIcon = chakra(HiOutlineThumbUp)
 const SendIcon = chakra(AiOutlineArrowRight)
 const MarkerCard = (props) => {
-    // console.log(props)
     const router = useRouter();
     const { currUser, currMarker, setShowMenu } = props
     const [likes, setLikes] = useState(currMarker.likes.length)
@@ -52,7 +51,7 @@ const MarkerCard = (props) => {
 
     const refreshData = () => {
 
-        router.replace("/app")
+        router.replace(router.asPath)
         setIsRefreshing(true)
     }
 
@@ -65,18 +64,20 @@ const MarkerCard = (props) => {
         setShowMenu(true)
     }
     return (
-        <Box width="20vw" height="80vh" borderWidth='1px' borderRadius='lg' overflowY="scroll">
+        <Box width="18vw" height="80vh" borderWidth='1px' borderRadius='lg' overflowY="scroll" position="relative">
 
             <div
                 onClick={goBack}
                 bg="white"
             >
-                <BackIcon
-                    size={40}
-                    position="absolute"
-                    left="33px"
-                    top="90px"
-                />
+            <BackIcon
+                size={40}
+                position="absolute"
+                left="0px"
+                top="0px"
+                
+                
+            />
             </div>
             <Image src={currMarker.imgUrl} />
 
@@ -95,25 +96,25 @@ const MarkerCard = (props) => {
                     >
                         {isLiked
                             ? (
-                                <Button size = "xs" onClick={(e) => handleLikeButton(false)} bg="white" >
+                                <Button size="xs" onClick={(e) => handleLikeButton(false)} bg="white" >
                                     {likes}
                                     <LikeIcon
                                         size={18}
-                                        marginBottom ="3px"
-                                        marginLeft = "2px"
-                                        
+                                        marginBottom="3px"
+                                        marginLeft="2px"
+
 
                                     />
                                 </Button>
                             )
                             : (
-                                <Button size = "xs" onClick={(e) => handleLikeButton(true)} bg="white">
+                                <Button size="xs" onClick={(e) => handleLikeButton(true)} bg="white">
                                     {likes}
                                     <LikeOutlineIcon
                                         size={18}
-                                        marginBottom ="3px"
-                                        marginLeft = "2px"
-                                        
+                                        marginBottom="3px"
+                                        marginLeft="2px"
+
                                     />
                                 </Button>
                             )
@@ -139,7 +140,7 @@ const MarkerCard = (props) => {
 
                 <Box>Comments: </Box>
                 <Flex display='flex' mt='2' align='center' justify="center" direction="column">
-                    <InputGroup marginBottom = {3}>
+                    <InputGroup marginBottom={3}>
 
                         <Input
 
@@ -153,17 +154,17 @@ const MarkerCard = (props) => {
                         </InputRightElement>
                     </InputGroup>
 
-                    {currMarker.comments && currMarker.comments.slice(0).reverse().map(comment=> (<><Box rounded="md" width="100%" padding={3} bg="green.100" >
+                    {currMarker.comments && currMarker.comments.slice(0).reverse().map(comment => (<><Box rounded="md" width="100%" padding={3} bg="green.100" >
                         <Text fontSize="xs">{comment.user.username}</Text>
                         <Text fontSize="sm">{comment.content}</Text>
-                       
-           
+
+
                     </Box>
-                    <Text width = "100%" marginBottom={2}  fontSize = "10px">{formatDistance(parseISO(comment.postDate), Date.now(), {addSuffix: true})}</Text>
+                        <Text width="100%" marginBottom={2} fontSize="10px">{formatDistance(parseISO(comment.postDate), Date.now(), { addSuffix: true })}</Text>
 
                     </>))}
 
-                   
+
                 </Flex>
             </Box>
         </Box>

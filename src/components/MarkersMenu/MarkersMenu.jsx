@@ -6,7 +6,7 @@ const MarkersMenu = (props) => {
     return (
         <Flex
             height="80vh"
-            width="20vw"
+            width="18vw"
             id="hellO"
             overflowY="scroll"
             align="center"

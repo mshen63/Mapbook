@@ -54,7 +54,6 @@ export const getMarker = async (currUser, { markerId }) => {
 };
 
 export async function createMarker(currUser, props) {
-  // console.log(props)
   const { lat, lng, name, description, priv, imgUrl } = props
   if (currUser == null) {
     throw new Error("You must be logged in to add a marker!");
