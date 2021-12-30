@@ -250,13 +250,18 @@ export const acceptFriendRequest = async (currUser, { friendRequestId }) => {
 
 // SECTION: markers //
 
-export const getUserMarkers = async (currUser) => {
+export const getUserMarkers = async (currUser, {userId}) => {
+
   if (currUser == null) {
     throw new Error("getUserMarkers error!")
   }
   await mongoDB();
+  const extraParams = {user: userId}
+  if (currUser.id != userId) {
+    extraParams.priv = false
+  }
 
-  const markers = await Marker.find({ user: currUser.id })
+  const markers = await Marker.find(extraParams)
     .populate({
       path: "user",
       model: "User",

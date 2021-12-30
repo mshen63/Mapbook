@@ -1,9 +1,9 @@
-import { getUserMarkers, verifyToken } from "../../../../server/mongodb/actions/User";
+import { getSpecificUser, verifyToken } from "../../../../server/mongodb/actions/User";
 
 
 const handler = (req, res) =>
     verifyToken(req, res)
-        .then((currUser) => getUserMarkers(currUser, req.body))
+        .then((currUser) => getSpecificUser(currUser, req.body))
         .then((data) =>
             res.status(200).json({
                 success: true,

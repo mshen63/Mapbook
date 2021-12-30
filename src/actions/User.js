@@ -74,6 +74,7 @@ export const getCurrentUser = (cookies) => {
     };
   }
 
+  console.log(""+urls.baseUrl + urls.api.user.getCurrent)
   return fetch(urls.baseUrl + urls.api.user.getCurrent, {
     method: "GET",
     mode: "same-origin",
@@ -260,9 +261,10 @@ export const getUserFriends = (cookies) =>
     });
 
 
-export const getUserMarkers = (cookies) =>
-  authedGetRequest(
+export const getUserMarkers = (cookies, userId) =>
+  authedPostRequest(
     urls.baseUrl + urls.api.user.getUserMarkers,
+    {userId},
     cookies
   )
     .then((response) => response.json())
