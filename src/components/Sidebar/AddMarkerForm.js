@@ -31,12 +31,12 @@ const AddMarkerForm = ({ currUser, map, currMarker, setCurrMarker, setMarks, mar
     // the preview
     const [file, setFile] = useState(null)
     const refreshData = () => {
-        router.replace("/app")
+        router.replace(router.asPath)
     }
 
-    useEffect(() => {
-        console.log(imgUrl)
-    }, [imgUrl])
+    // useEffect(() => {
+    //     console.log(imgUrl)
+    // }, [imgUrl])
 
     const onDrop = useCallback((acceptedFiles) => {
         const file = acceptedFiles[0]
@@ -76,7 +76,6 @@ const AddMarkerForm = ({ currUser, map, currMarker, setCurrMarker, setMarks, mar
         } else {
             await createMarker(currUser, currMarker.marker.getLngLat().lat, currMarker.marker.getLngLat().lng, name, desc, priv, imgUrl)
                 .then(datamarker => {
-                    console.log(datamarker)
                     var randomColor = "#" + (Math.floor(Math.random() * 16777215).toString(16));
                     let marker = new mapboxgl.Marker({ color: randomColor }).setLngLat([currMarker.marker.getLngLat().lng, currMarker.marker.getLngLat().lat]).addTo(map)
                     marker.getElement().addEventListener('click', async (e) => {
@@ -100,7 +99,7 @@ const AddMarkerForm = ({ currUser, map, currMarker, setCurrMarker, setMarks, mar
                 flexDir="column"
                 alignItems="center"
                 backgroundColor="whiteAlpha.900"
-                width="20vw"
+                width="18vw"
                 height="80vh"
             >
                 <Text>Add Marker </Text>

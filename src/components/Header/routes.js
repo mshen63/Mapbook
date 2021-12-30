@@ -24,7 +24,8 @@ const routes = [
     link: urls.pages.login,
     auth: false,
     atEnd: true,
-  }
+  }, 
+    
   
 ];
 

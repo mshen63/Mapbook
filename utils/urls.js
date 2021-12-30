@@ -26,6 +26,7 @@ export default {
       login: "/api/user/login",
       logout: "/api/user/logout",
       getCurrent: "/api/user/get-current",
+      getSpecificUser: "/api/user/getSpecificUser", 
       addFriend: "/api/user/addFriend",
       addMarker: "/api/user/addMarker",
       getAllUsers: "/api/user/getAllUsers",

@@ -8,7 +8,7 @@ import { logout } from "../../actions/User";
 import Router from "next/router";
 import urls from "../../../utils/urls";
 
-const Header = ({ loggedIn, currentRoute }) => {
+const Header = ({ loggedIn, currentRoute, currUser }) => {
 
   const handleLogout = () =>
     logout()
@@ -44,7 +44,9 @@ const Header = ({ loggedIn, currentRoute }) => {
         >
           Logout
         </button>)
-      }
+      } 
+      <p>{currUser.username}</p>
+
 
     </div >
   )

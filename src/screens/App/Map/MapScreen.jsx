@@ -12,7 +12,7 @@ import { HStack } from "@chakra-ui/react";
 const mapboxgl = require("mapbox-gl/dist/mapbox-gl.js")
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY
 
-const MapScreen = ({ currUser, markers }) => {
+const MapScreen = ({ currUser, markers, canMakeNewMarkers }) => {
 
     const [pageIsMounted, setPageIsMounted] = useState(false);
     const [theMap, setTheMap] = useState(null);
@@ -51,7 +51,7 @@ const MapScreen = ({ currUser, markers }) => {
             });
             setTheMap(map)
 
-            initializeMap(mapboxgl, map, currUser, markers, setCurrMarker, setMapMarkers)
+            initializeMap(mapboxgl, map, currUser, markers, setCurrMarker, setMapMarkers, canMakeNewMarkers)
         }
     }, [pageIsMounted]);
 
@@ -66,10 +66,11 @@ const MapScreen = ({ currUser, markers }) => {
                     setCurrMarker={setCurrMarker}
                     markers={markers}
                     setMapMarkers = {setMapMarkers}
+                    
                 />}
 
                 <main >
-                    <div id="my-map" style={{ height: "85vh", width: "80vw" }} />
+                    <div id="my-map" style={{ height: "85vh", width: "75vw" }} />
                 </main>
             </HStack>
         </div >

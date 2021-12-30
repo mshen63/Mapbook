@@ -8,9 +8,7 @@ const ExplorePage = ({ currUser, router }) => {
     const MapWithNoSSR = dynamic(() => import("../../screens/App/Explore"), {
         ssr: false
     });
-    // useEffect(() => {
-    //     router.replace(router.asPath)
-    // }, [])
+    
     return (
         <>
         <h1 style = {{textAlign: "center", fontSize: "30px"}}>Welcome back to explore{currUser.username}</h1>

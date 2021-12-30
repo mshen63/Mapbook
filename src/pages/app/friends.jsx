@@ -2,15 +2,15 @@
 import React from "react";
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css"
-import ProfileScreen from "../../screens/App/Profile";
+import FriendsScreen from "../../screens/App/Friends";
 import { getCurrentUser, getUserFriends, getUserFriendRequests, getAllUsers } from "../../actions/User";
 
 
 
 
-const ProfilePage = ({ currUser, initialFriends, friendReqs, allUsers }) =>
+const FriendsPage = ({ currUser, initialFriends, friendReqs, allUsers }) =>
 (
-    <ProfileScreen
+    <FriendsScreen
         currUser={currUser}
         initialFriends={initialFriends}
         friendReqs={friendReqs}
@@ -19,7 +19,7 @@ const ProfilePage = ({ currUser, initialFriends, friendReqs, allUsers }) =>
     />
 );
 
-ProfilePage.getInitialProps = async ({ req }) => {
+FriendsPage.getInitialProps = async ({ req }) => {
 
     const cookies = req ? req.headers.cookie : null;
 
@@ -42,4 +42,4 @@ ProfilePage.getInitialProps = async ({ req }) => {
     }
 }
 
-export default ProfilePage;
+export default FriendsPage;
