@@ -14,8 +14,8 @@ const routes = [
     atEnd: false,
   },
   {
-    name: "Profile",
-    link: urls.pages.app.profile,
+    name: "Friends",
+    link: urls.pages.app.friends,
     auth: true,
     atEnd: false
   },

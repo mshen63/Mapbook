@@ -11,8 +11,11 @@ export default {
     register: "/register", 
     app: {
       map: "/app",
-      profile: "/app/profile", 
-      explore: "/app/explore"
+      profile: {
+        get: (userId)=>{return("/app/profile" + userId)},
+      },
+      explore: "/app/explore", 
+      friends: "/app/friends"
 
     },
   },
