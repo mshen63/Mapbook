@@ -9,7 +9,6 @@ import MapScreen from "../../screens/App/Map/MapScreen";
 
 const ExplorePage = (props) => {
     const { currUser, markers } = props
-    console.log(props)
     return (
         // <div>Hello</div>
         <MapScreen currUser={currUser} markers={markers} canMakeNewMarkers={false} />

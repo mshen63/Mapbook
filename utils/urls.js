@@ -37,6 +37,7 @@ export default {
       removeFriend: "/api/user/removeFriend",
       removeMarker: "/api/user/removeMarker",
       sendFriendRequest: "/api/user/sendFriendRequest",
+      updateUser: "/api/user/updateUser"
       
     },
     marker: {
