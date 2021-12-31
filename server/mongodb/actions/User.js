@@ -42,7 +42,8 @@ export const getBasicUser = async (token) => {
 
     return {
       id,
-      username: user.username
+      username: user.username, 
+      profileImg: user.profileImg
     };
   } catch (e) {
     throw new Error("Invalid token!");
@@ -143,7 +144,7 @@ export const getUserFriends = async (currUser, { userId }) => {
     .populate({
       path: "friends",
       model: "User",
-      select: "_id username color"
+      select: "_id username profileImg"
     })
     .exec()
 
@@ -197,7 +198,7 @@ export const getUserFriendRequests = async (currUser) => {
     .populate({
       path: "pendingFRequests",
       model: "User",
-      select: "_id username color bio location registerDate friends markers"
+      select: "_id username profileImg bio location registerDate friends markers"
     })
     .exec()
 

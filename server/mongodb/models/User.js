@@ -32,14 +32,10 @@ const UserSchema = new Schema({
     default: null
   },
 
-  color: {
-    type: String, 
-    required: true, 
-    default: "Green", 
-    enum: ["Green", "Red", "Blue"], 
-    index: true
-  }, 
-  
+  profileImg: {
+    type: String,
+    default: "https://i.imgur.com/NcPLMqc.jpg"
+  },
   location: {
     type: String,
     default: null

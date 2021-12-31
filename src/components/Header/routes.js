@@ -13,12 +13,7 @@ const routes = [
     auth: true,
     atEnd: false,
   },
-  {
-    name: "Friends",
-    link: urls.pages.app.friends,
-    auth: true,
-    atEnd: false
-  },
+  
   {
     name: "Login",
     link: urls.pages.login,
