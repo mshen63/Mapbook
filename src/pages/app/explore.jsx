@@ -16,7 +16,7 @@ const ExplorePage = (props) => {
     )
 }
 
-ExplorePage.getInitialProps = async ({ req, res, router }) => {
+ExplorePage.getInitialProps = async ({ req }) => {
     const cookies = req ? req.headers.cookie : null;
 
     try {
