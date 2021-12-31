@@ -24,16 +24,6 @@ const MapScreen = ({ currUser, markers, canMakeNewMarkers }) => {
         setPageIsMounted(true);
     }, [])
 
-    // useEffect(()=> {
-    //     mapMarkers.forEach((marker, index) => {
-    //         marker.getElement().replaceWith(marker.getElement().cloneNode(true))
-    //         marker.getElement().addEventListener('click', async (e) => {
-    //             setCurrMarker({ isNew: false, marker: markers[index] })
-    //             map.flyTo({center:[marker.lng, marker.lat], zoom: 8})
-    //             e.stopPropagation();
-    //         })
-    //     })
-    // }, [markers])
     useEffect(() => {
         if (prevMarker && prevMarker.isNew) {
             prevMarker.marker.remove()

@@ -12,6 +12,9 @@ import { AiOutlineArrowRight } from "react-icons/ai"
 import toast from "react-hot-toast";
 import formatDistance from "date-fns/formatDistance";
 import { format, toDate, parseISO } from "date-fns"
+import Router from "next/router";
+import urls from "../../../utils/urls";
+
 
 const BackIcon = chakra(IoArrowBackCircleSharp)
 const LikeIcon = chakra(HiThumbUp)
@@ -24,6 +27,9 @@ const MarkerCard = (props) => {
     const [isLiked, setIsLiked] = useState(currMarker.likes.includes(currUser.id))
     const [isRefreshing, setIsRefreshing] = useState(false)
     const [comment, setComment] = useState("")
+
+    const randomColor = "#" + (Math.floor(Math.random() * 16777215).toString(16));
+    const handleGoToProfile = (userId) => Router.replace(urls.pages.app.profile.get(userId))
 
     const handleLikeButton = async (isLike) => {
 
@@ -83,7 +89,14 @@ const MarkerCard = (props) => {
 
             <Box p='6'>
                 <Box display='flex' alignItems='baseline' justifyContent="space-between">
-                    <Badge borderRadius='full' px='2' colorScheme='green'>
+                    <Badge 
+                    borderRadius='full' 
+                    px='2' 
+                    variant = "outline" 
+                    onClick = {e=>handleGoToProfile(currMarker.user._id)}
+                    // onClick = {e=>console.log(currMarker.user._id)}
+                    _hover = {{textDecoration:"underline" }}
+                    >
                         Creator: {currMarker.user.username}
                     </Badge>
                     <Box
@@ -155,7 +168,7 @@ const MarkerCard = (props) => {
                     </InputGroup>
 
                     {currMarker.comments && currMarker.comments.slice(0).reverse().map(comment => (<><Box rounded="md" width="100%" padding={3} bg="green.100" >
-                        <Text fontSize="xs">{comment.user.username}</Text>
+                        <Text fontSize="xs" _hover = {{textDecoration:"underline" }} onClick = {e=>handleGoToProfile(comment.user._id)}>{comment.user.username}</Text>
                         <Text fontSize="sm">{comment.content}</Text>
 
 
