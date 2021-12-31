@@ -23,6 +23,15 @@ export const verifyToken = async (req, res) => {
   })
 }
 
+export const updateUser = async(currUser, updates) => {
+  console.log(updates)
+  if (currUser==null || updates==null) {
+    throw new Error("updateUser error!")
+  }
+  await mongoDB()
+  const user = await User.findOneAndUpdate({_id: currUser.id}, updates)
+}
+
 export const getBasicUser = async (token) => {
   if (token == null) {
     throw new Error("getBasicUser error!");

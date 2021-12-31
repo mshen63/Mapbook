@@ -227,6 +227,22 @@ export const removeMarker = (cookies, markerId) =>
       return data.payload;
     });
 
+export const updateUser = (cookies, updates) =>
+  authedPostRequest(
+    urls.baseUrl + urls.api.user.updateUser,
+    updates,
+    cookies
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      if (data == null) {
+        throw new Error("getUserFriendRequests src/action/user");
+      } else if (!data.success) {
+        throw new Error(data.message);
+      }
+      return data.payload;
+    });
+
 
 export const getUserFriendRequests = (cookies) =>
   authedGetRequest(
@@ -249,7 +265,7 @@ export const getUserFriendRequests = (cookies) =>
 export const getUserFriends = (cookies, userId) =>
   authedPostRequest(
     urls.baseUrl + urls.api.user.getUserFriends,
-    {userId},
+    { userId },
     cookies
   )
     .then((response) => response.json())
@@ -280,7 +296,7 @@ export const getUserMarkers = (cookies, userId) =>
     });
 
 
-export const getSpecificUser = (cookies, userId) => 
+export const getSpecificUser = (cookies, userId) =>
 
   authedPostRequest(
     urls.baseUrl + urls.api.user.getSpecificUser,
