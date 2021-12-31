@@ -56,7 +56,7 @@ const MapScreen = ({ currUser, markers, canMakeNewMarkers }) => {
                     setCurrMarker={setCurrMarker}
                     markers={markers}
                     setMapMarkers = {setMapMarkers}
-                    
+                    canMakeNewMarkers = {canMakeNewMarkers}
                 />}
 
                 <main >
