@@ -38,7 +38,14 @@ const PersonalProfileScreen = (props) => {
         // console.log({username:username, bio:bio, profileImg:file})
         await updateUser(currUser, {username:username, bio:bio, profileImg:file})
         console.log("added edits!")
+        setFile(null)
         refreshData()
+    }
+
+    const cancelEdits = async(e) => {
+        setIsEditing(false)
+        setFile(null)
+        setBio(specificUser[0].bio)
     }
     const refreshData = () => {
         router.replace(router.asPath)
@@ -85,7 +92,7 @@ const PersonalProfileScreen = (props) => {
                         <IconButton
 
                             children={<CloseIcon />}
-                            onClick={e => setIsEditing(false)}
+                            onClick={cancelEdits}
                             bg="white"
                             p={0}
                             marginBottom="90px"
@@ -143,6 +150,7 @@ const PersonalProfileScreen = (props) => {
                         src={specificUser[0].profileImg}
                         boxSize="200px"
                         marginTop={3}
+                        marginRight ={5}
                     />
                     <Box>
                         <Text>Username: {username}</Text>

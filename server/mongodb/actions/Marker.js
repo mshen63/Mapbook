@@ -90,10 +90,10 @@ export const deleteMarker = async (currUser, { markerId }) => {
   } else if (markerId == null) {
     throw new Error("error with markerId in deleteMarker (mongodb/actions/marker)");
   }
-
+  console.log(markerId)
   await mongoDB();
 
-  return Marker.findOneAndDelete({ _id: id, user: currUser.id }).then(async (deleted) => {
+  return Marker.findOneAndDelete({ _id: markerId, user: currUser.id }).then(async (deleted) => {
     if (deleted == null) {
       throw new Error(
         "No marker found to delete!"
