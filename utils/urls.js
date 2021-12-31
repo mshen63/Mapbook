@@ -12,10 +12,9 @@ export default {
     app: {
       map: "/app",
       profile: {
-        get: (userId)=>{return("/app/profile" + userId)},
+        get: (userId)=>{return("/app/profile/" + userId)},
       },
-      explore: "/app/explore", 
-      friends: "/app/friends"
+      explore: "/app/explore"
 
     },
   },

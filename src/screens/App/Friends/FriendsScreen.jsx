@@ -5,11 +5,11 @@ import { logout } from "../../../actions/User";
 import urls from "../../../../utils/urls";
 import classes from "./FriendsScreen.module.css";
 import { sendFriendRequest, acceptFriendRequest } from "../../../actions/User";
-import { InputGroup, InputLeftElement, Input, chakra, Grid, GridItem, Stack, Flex, Button, Text, Divider, Box } from "@chakra-ui/react";
+import { Link, Image, InputGroup, InputLeftElement, Input, chakra, Grid, GridItem, Stack, Flex, Button, Text, Divider, Box } from "@chakra-ui/react";
 import { FaSearch, FaLock, FaUserClock, FaUserCheck } from "react-icons/fa";
 import { AiOutlineUserAdd } from "react-icons/ai"
 import toast from "react-hot-toast";
-// const CFaUserAlt = chakra(FaUserAlt);
+// const CFaUserAlt = chakra(FaUserAlt)a;
 const SearchIcon = chakra(FaSearch);
 const AddIcon = chakra(AiOutlineUserAdd)
 const SentIcon = chakra(FaUserClock)
@@ -21,6 +21,8 @@ const ProfileScreen = (props) => {
   const [friendRequests, setFriendRequests] = useState(friendReqs)
   const [sentReqs, setSentReqs] = useState([])
   const [search, setSearch] = useState("")
+
+  // const handleGoToProfile = (userId) => Router.replace(urls.pages.app.profile.get(userId))
 
   const sendFriendReq = async (friend) => {
     await sendFriendRequest(currUser, friend._id)
@@ -56,17 +58,24 @@ const ProfileScreen = (props) => {
               {friendRequests.map(user => {
                 return (
                   <GridItem
-                    bg='green.300'
+                    bg='green.400'
                     p={5}
                     rounded="md"
                     key={user._id}
+                    _hover={{ bg: "green.300" }}
                   >
                     <Flex align="center" justifyContent="space-between">
-                      <p>{user.username}</p>
+                      <Flex align="center" direction="row" >
+                        <Image margin={1} src={user.profileImg} boxSize="20px" borderRadius="full"></Image>
+                        <Link href = {urls.pages.app.profile.get(user._id)}>{user.username}</Link>
+                      </Flex>
                       <Button rounded="xs" size="xs" onClick={(e) => acceptFriendReq(user)}>
                         Accept<FriendIcon marginLeft={1}></FriendIcon>
                       </Button>
                     </Flex>
+
+
+
                   </GridItem>
                 )
               })}
@@ -85,17 +94,23 @@ const ProfileScreen = (props) => {
         {friends && friends.map(user => {
           return (
             <GridItem
-              bg='green.200'
+              bg='green.300'
               p={5}
               rounded="md"
               key={user._id}
+              _hover={{ bg: "green.200" }}
             >
+
               <Flex align="center" justifyContent="space-between">
-                <p>{user.username}</p>
+                <Flex align="center" direction="row" >
+                  <Image margin={1} src={user.profileImg} boxSize="20px" borderRadius="full"></Image>
+                  <Link href = {urls.pages.app.profile.get(user._id)}>{user.username}</Link>
+                </Flex>
                 <Button rounded="xs" size="xs" isDisabled>
                   Friends<FriendIcon marginLeft={1}></FriendIcon>
                 </Button>
               </Flex>
+
             </GridItem>
           )
         })}
@@ -139,14 +154,23 @@ const ProfileScreen = (props) => {
           .map(user => {
             return (
               <GridItem
-                bg='green.100'
+                bg='green.200'
                 p={5}
                 rounded="md"
                 key={user._id}
+                _hover={{ bg: "green.100" }}
               >
+
                 {/* friends.includes(user) */}
                 <Flex align="center" justifyContent="space-between">
-                  <p>{user.username}</p>
+
+
+                  <Flex align="center" direction="row" >
+
+                    <Image margin={1} src={user.profileImg} boxSize="20px" borderRadius="full"></Image>
+                    <Link href = {urls.pages.app.profile.get(user._id)}>{user.username}</Link>
+
+                  </Flex>
                   {
                     user.pendingFRequests.find(elem => elem._id === currUser._id) || sentReqs.includes(user._id)
                       ? (<Button rounded="xs" size="xs" isDisabled>
@@ -160,6 +184,7 @@ const ProfileScreen = (props) => {
 
 
                 </Flex>
+
               </GridItem>
             )
           })}
@@ -167,7 +192,7 @@ const ProfileScreen = (props) => {
 
       </Grid>
 
-    </Flex>
+    </Flex >
   )
 };
 

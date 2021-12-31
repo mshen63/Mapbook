@@ -7,6 +7,11 @@ import styles from "./Header.module.css";
 import { logout } from "../../actions/User";
 import Router from "next/router";
 import urls from "../../../utils/urls";
+import { Image, InputGroup, InputLeftElement, Input, chakra, Grid, GridItem, Stack, Flex, Button, Text, Divider, Box } from "@chakra-ui/react";
+import router from "next/router";
+import { useRouter } from "next/router";
+
+
 
 const Header = ({ loggedIn, currentRoute, currUser }) => {
 
@@ -14,6 +19,8 @@ const Header = ({ loggedIn, currentRoute, currUser }) => {
     logout()
       .then(() => Router.replace(urls.pages.login))
       .catch((e) => window.alert(e));
+
+  const handleGoToProfile = () => Router.replace(urls.pages.app.profile.get(currUser.id))
 
 
   return (
@@ -44,8 +51,14 @@ const Header = ({ loggedIn, currentRoute, currUser }) => {
         >
           Logout
         </button>)
-      } 
-      <p>{currUser.username}</p>
+      }
+      {loggedIn && (<Flex align="center" direction="row" marginRight={8}>
+        <Button bg="green.800" _hover={{ background: "green.500" }} onClick={handleGoToProfile}>
+          <Image margin={1} src={currUser.profileImg} boxSize="20px" borderRadius="full" />
+          <Text marginRight={3} color="white" >{currUser.username} </Text>
+        </Button>
+      </Flex>)}
+
 
 
     </div >
