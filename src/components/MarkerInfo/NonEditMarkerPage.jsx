@@ -61,7 +61,7 @@ const NonEditMarkerPage = (props) => {
     return (
         <Box width="18vw" height="80vh" borderWidth='1px' borderRadius='lg' overflowY="scroll" position="relative">
             <div
-                onClick={e=>setShowMenu(true)}
+                onClick={e => setShowMenu(true)}
                 bg="white"
             >
                 <BackIcon
@@ -84,6 +84,14 @@ const NonEditMarkerPage = (props) => {
                     >
                         Creator: {currMarker.user.username}
                     </Badge>
+                    {currMarker.priv && (<Badge
+                        borderRadius='full'
+                        px='2'
+                        variant="solid"
+                    >
+                        Private
+                    </Badge>)}
+
                     <Box
                         color='gray.500'
                         fontWeight='semibold'
@@ -93,10 +101,10 @@ const NonEditMarkerPage = (props) => {
                         ml='2'
                     >
                         {canMakeNewMarkers
-                            && (<DeleteControl setShowMenu = {setShowMenu} currMarker = {currMarker}/>)
+                            && (<DeleteControl setShowMenu={setShowMenu} currMarker={currMarker} />)
                         }
                         {canMakeNewMarkers
-                            && (<Button size="xs" bg="white" marginLeft={0} marginRight={0} onClick = {e=>setEditing(true)}>
+                            && (<Button size="xs" bg="white" marginLeft={0} marginRight={0} onClick={e => setEditing(true)}>
                                 <EditIcon
                                     size={18}
                                     marginBottom="3px"
@@ -141,6 +149,7 @@ const NonEditMarkerPage = (props) => {
                 >
                     {currMarker.name}
                 </Box>
+                <Box fontSize={10}>{(new Date(currMarker.post_date)).toDateString()}</Box>
 
                 <Box color="gray.600">
                     {currMarker.description}

@@ -6,7 +6,8 @@ export const initializeMap = async (currUser, mapboxgl, map, markers, setCurrMar
     map.addControl(
         new MapboxGeocoder({
             accessToken: mapboxgl.accessToken,
-            mapboxgl: mapboxgl
+            mapboxgl: mapboxgl,
+            marker: false,
         })
     )
     map.addControl(
@@ -14,6 +15,7 @@ export const initializeMap = async (currUser, mapboxgl, map, markers, setCurrMar
             positionOptions: {
                 enableHighAccuracy: true,
             },
+            
             trackUserLocation: true
         })
     )
