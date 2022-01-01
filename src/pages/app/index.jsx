@@ -11,7 +11,7 @@ import MapScreen from "../../screens/App/Map/MapScreen";
 const MapPage = (props) => {
     const { currUser, markers } = props
     return (
-        <MapScreen currUser={currUser} markers={markers} canMakeNewMarkers={true} />
+        <MapScreen currUser={currUser} markers={markers} canMakeEdits={true} />
     )
 };
 

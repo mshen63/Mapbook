@@ -49,7 +49,8 @@ export default {
       updateMarker: "/api/marker/updateMarker"
     }, 
     comment: {
-      createComment: "/api/comment/createComment"
+      createComment: "/api/comment/createComment", 
+      deleteComment: "/api/comment/deleteComment"
     }
 
   },

@@ -9,7 +9,7 @@ mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY
 const ExplorePage = (props) => {
     const { markers } = props
     return (
-        <MapScreen markers={markers} canMakeNewMarkers={false} />
+        <MapScreen markers={markers} canMakeEdits={false} />
     )
 }
 

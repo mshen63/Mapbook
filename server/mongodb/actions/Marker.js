@@ -159,6 +159,16 @@ export const addComment = async (currUser, { markerId, commentId }) => {
   })
 }
 
+export const removeComment = async(currUser, {markerId, commentId}) => {
+  if (currUser == null || markerId == null || commentId == null) {
+    throw new Error("removeComment error!")
+  }
+  await mongoDB();
+  await Marker.findByIdAndUpdate(markerId, {
+    $pull: {comments: commentId}
+  })
+}
+
 export const getComments = async (currUser, { markerId }) => {
   if (currUser == null || markerId == null) {
     throw new Error("getComments error!")

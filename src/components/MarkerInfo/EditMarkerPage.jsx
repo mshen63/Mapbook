@@ -1,20 +1,16 @@
-import { FormLabel, Switch, Textarea, IconButton, Badge, Box, Button, chakra, Divider, Flex, Image, Input, InputGroup, InputRightElement, Text } from "@chakra-ui/react";
-import { parseISO } from "date-fns";
-import formatDistance from "date-fns/formatDistance";
+import { Badge, Box, Button, chakra, Flex, FormLabel, Input, Switch, Textarea } from "@chakra-ui/react";
 import Router, { useRouter } from "next/router";
-import React, { useState, useContext } from "react";
+import React, { useContext, useState } from "react";
 import toast from "react-hot-toast";
-import { AiOutlineArrowRight, AiOutlineEdit } from "react-icons/ai";
+import { AiOutlineArrowRight, AiOutlineCheck, AiOutlineClose, AiOutlineEdit } from "react-icons/ai";
 import { HiOutlineThumbUp, HiThumbUp } from "react-icons/hi";
 import { IoArrowBackCircleSharp } from "react-icons/io5";
 import urls from "../../../utils/urls";
 import { createComment } from "../../actions/Comment";
-import { likeMarker, unlikeMarker } from "../../actions/Marker";
-import { updateMarker } from "../../actions/Marker";
-import DeleteControl from "../DeleteControl";
+import { likeMarker, unlikeMarker, updateMarker } from "../../actions/Marker";
 import { UserContext } from "../../pages/_app";
 import DropzoneComponent from "../DropzoneComponent";
-import { AiFillFileAdd, AiOutlineCheck, AiOutlineClose } from "react-icons/ai"
+
 
 const CheckIcon = chakra(AiOutlineCheck)
 const BackIcon = chakra(IoArrowBackCircleSharp)
@@ -42,17 +38,19 @@ const EditMarkerPage = (props) => {
 
     const handleGoToProfile = (userId) => Router.replace(urls.pages.app.profile.get(userId))
     const addEdits = async (e) => {
-        let updates = { "name": name, "description": desc, "imgUrl": imgUrl, "priv":priv }
-        await updateMarker(currUser, { "markerId": currMarker._id, "updates": updates })
-        setEditing(false)
-        refreshData()
+        if (!name) {
+            toast.error("Please enter a marker name!")
+        } else {
+            let updates = { "name": name, "description": desc, "imgUrl": imgUrl, "priv": priv }
+            await updateMarker(currUser, { "markerId": currMarker._id, "updates": updates })
+            setEditing(false)
+            refreshData()
 
-        setName(currMarker.name)
-        setDesc(currMarker.description)
-        setImgUrl(currMarker.imgUrl)
-        setFile(null)
-
-
+            setName(currMarker.name)
+            setDesc(currMarker.description)
+            setImgUrl(currMarker.imgUrl)
+            setFile(null)
+        }
     }
 
     const cancelEdits = (e) => {
@@ -91,6 +89,7 @@ const EditMarkerPage = (props) => {
 
     return (
         <Box width="18vw" height="80vh" borderWidth='1px' borderRadius='lg' overflowY="scroll" position="relative">
+
             <div
                 bg="white"
             >
@@ -170,7 +169,6 @@ const EditMarkerPage = (props) => {
                                 </Button>
                             )
                         }
-
                     </Box>
                 </Box>
                 <Flex direction="column" align="center" justify="center">
@@ -180,42 +178,12 @@ const EditMarkerPage = (props) => {
                         onChange={e => setDesc(e.target.value)}
 
                     />
-                    <Flex marginTop = {3}>
+                    <Flex marginTop={3}>
                         <FormLabel htmlFor="private" >
                             Private
                         </FormLabel>
                         <Switch id="private" isChecked={priv} onChange={(e) => setPriv(!priv)}></Switch>
                     </Flex>
-                </Flex>
-                <Divider borderColor="gray.600" marginTop={3} marginBottom={3} />
-
-                <Box>Comments: </Box>
-                <Flex display='flex' mt='2' align='center' justify="center" direction="column">
-                    <InputGroup marginBottom={3}>
-
-                        <Input
-
-                            placeholder="Add Comment"
-                            value={comment}
-                            onChange={(event) => setComment(event.target.value)}
-                        />
-                        <InputRightElement
-                        >
-                            <Box onClick={handleComment} _hover={{ color: "gray.600", stroke: "gray.600" }} color="gray.300"><SendIcon ></SendIcon></Box>
-                        </InputRightElement>
-                    </InputGroup>
-
-                    {currMarker.comments && currMarker.comments.slice(0).reverse().map(comment => (<><Box rounded="md" width="100%" padding={3} bg="green.100" >
-                        <Text fontSize="xs" _hover={{ textDecoration: "underline" }} onClick={e => handleGoToProfile(comment.user._id)}>{comment.user.username}</Text>
-                        <Text fontSize="sm">{comment.content}</Text>
-
-
-                    </Box>
-                        <Text width="100%" marginBottom={2} fontSize="10px">{formatDistance(parseISO(comment.postDate), Date.now(), { addSuffix: true })}</Text>
-
-                    </>))}
-
-
                 </Flex>
             </Box>
         </Box>

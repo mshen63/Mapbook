@@ -2,7 +2,7 @@ import { setRTLTextPlugin } from "mapbox-gl"
 import { getMarker, createMarker } from "../../../actions/Marker"
 
 
-export const initializeMap = async (currUser, mapboxgl, map, markers, setCurrMarker, mapMarkers, setMapMarkers, canMakeNewMarkers) => {
+export const initializeMap = async (currUser, mapboxgl, map, markers, setCurrMarker, mapMarkers, setMapMarkers, canMakeEdits) => {
     map.addControl(
         new MapboxGeocoder({
             accessToken: mapboxgl.accessToken,
@@ -41,7 +41,7 @@ export const initializeMap = async (currUser, mapboxgl, map, markers, setCurrMar
         })
         setMapMarkers(mapmarks)
     }
-    if (canMakeNewMarkers) {
+    if (canMakeEdits) {
         map.on("click", async function (e) {
             var randomColor = "#" + (Math.floor(Math.random() * 16777215).toString(16));
             let marker = new mapboxgl.Marker({ color: randomColor }).setLngLat([e.lngLat.lng, e.lngLat.lat]).addTo(map)

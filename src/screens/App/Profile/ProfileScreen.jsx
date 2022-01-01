@@ -59,7 +59,7 @@ const ProfileScreen = (props) => {
                 })}
             </Flex>
             <Divider borderColor="gray.600" marginTop={3} marginBottom={3} />
-            <MapScreen currUser={specificUser} markers={markers} canMakeNewMarkers={false} />
+            <MapScreen currUser={specificUser} markers={markers} canMakeEdits={false} />
 
         </Flex>
     )

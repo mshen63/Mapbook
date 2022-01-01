@@ -4,7 +4,7 @@ import MarkersMenu from "./MarkersMenu";
 
 const MarkerInfo = (props) => {
 
-    const { initMarker, markers, map, canMakeNewMarkers } = props
+    const { initMarker, markers, map, canMakeEdits } = props
     const [currMarker, setCurrMarker] = useState(initMarker.marker)
     const [showMenu, setShowMenu] = useState(true)
 
@@ -38,7 +38,7 @@ const MarkerInfo = (props) => {
                 : (<MarkerCard
                     currMarker={currMarker}
                     setShowMenu={setShowMenu}
-                    canMakeNewMarkers = {canMakeNewMarkers}
+                    canMakeEdits = {canMakeEdits}
                 />)
             }
         </div>
