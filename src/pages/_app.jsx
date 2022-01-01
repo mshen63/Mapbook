@@ -50,7 +50,6 @@ MyApp.getInitialProps = async (appContext) => {
   let pageProps = {};
   try {
     currUser = await getCurrentUser(cookies);
-
     if (router.asPath === "/") {
       if (currUser == null) {
         console.log("reroute from / to login")
@@ -82,25 +81,6 @@ MyApp.getInitialProps = async (appContext) => {
       }
     }
 
-    if (router.asPath.startsWith("/login") && currUser != null) {
-      console.log("reroute from login to map")
-      if (res) {
-        res.writeHead(301, { Location: urls.pages.app.map });
-        res.end();
-      } else {
-        return Router.replace(urls.pages.app.map);
-      }
-    }
-
-    if (router.asPath.startsWith("/register") && currUser != null) {
-      console.log("reroute from login to map")
-      if (res) {
-        res.writeHead(301, { Location: urls.pages.app.map });
-        res.end();
-      } else {
-        return Router.replace(urls.pages.app.map);
-      }
-    }
 
   } catch {
     console.error("Error in _app.js")
