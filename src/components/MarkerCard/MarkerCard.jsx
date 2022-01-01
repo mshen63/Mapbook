@@ -15,28 +15,27 @@ import formatDistance from "date-fns/formatDistance";
 import { format, toDate, parseISO } from "date-fns"
 import Router from "next/router";
 import urls from "../../../utils/urls";
+import DeleteControl from "../DeleteControl";
 
 
 const BackIcon = chakra(IoArrowBackCircleSharp)
 const LikeIcon = chakra(HiThumbUp)
 const LikeOutlineIcon = chakra(HiOutlineThumbUp)
 const SendIcon = chakra(AiOutlineArrowRight)
-const DeleteIcon = chakra(HiOutlineTrash)
 const EditIcon = chakra(AiOutlineEdit)
 const MarkerCard = (props) => {
     const router = useRouter();
-    const { isOpen, onOpen, onClose } = useDisclosure()
     const { currUser, currMarker, setShowMenu, canMakeNewMarkers } = props
     const [likes, setLikes] = useState(currMarker.likes.length)
     const [isLiked, setIsLiked] = useState(currMarker.likes.includes(currUser.id))
     const [isRefreshing, setIsRefreshing] = useState(false)
     const [comment, setComment] = useState("")
+    const [editing, setEditing] = useState(false)
 
     const randomColor = "#" + (Math.floor(Math.random() * 16777215).toString(16));
     const handleGoToProfile = (userId) => Router.replace(urls.pages.app.profile.get(userId))
 
     const handleLikeButton = async (isLike) => {
-
         setIsLiked(isLike)
         if (isLike) {
             setLikes(likes + 1)
@@ -44,7 +43,6 @@ const MarkerCard = (props) => {
         } else {
             setLikes(likes - 1)
             await unlikeMarker(currUser, currMarker._id)
-
         }
         refreshData();
     }
@@ -60,46 +58,14 @@ const MarkerCard = (props) => {
     }
 
     const refreshData = () => {
-
         router.replace(router.asPath)
         setIsRefreshing(true)
     }
 
-    useEffect(() => {
-        setIsRefreshing(false);
-    }, [props])
-
-    const handleDeleteMarker = async () => {
-        await deleteMarker(currUser, currMarker._id)
-        refreshData()
-        goBack();
-    }
-
-    const goBack = (e) => {
-
-        setShowMenu(true)
-    }
     return (
         <Box width="18vw" height="80vh" borderWidth='1px' borderRadius='lg' overflowY="scroll" position="relative">
-            <Modal isOpen={isOpen} onClose={onClose}>
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>Delete Marker</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody>
-                        Are you sure you want to delete this marker?
-                    </ModalBody>
-
-                    <ModalFooter>
-                        <Button colorScheme='blue' mr={3} onClick={handleDeleteMarker}>
-                            Confirm
-                        </Button>
-                        <Button variant='ghost' onClick={onClose}>Close</Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
             <div
-                onClick={goBack}
+                onClick={e=>setShowMenu(true)}
                 bg="white"
             >
                 <BackIcon
@@ -107,8 +73,6 @@ const MarkerCard = (props) => {
                     position="absolute"
                     left="0px"
                     top="0px"
-
-
                 />
             </div>
             <Image src={currMarker.imgUrl} />
@@ -120,7 +84,6 @@ const MarkerCard = (props) => {
                         px='2'
                         variant="outline"
                         onClick={e => handleGoToProfile(currMarker.user._id)}
-                        // onClick = {e=>console.log(currMarker.user._id)}
                         _hover={{ textDecoration: "underline" }}
                     >
                         Creator: {currMarker.user.username}
@@ -133,15 +96,8 @@ const MarkerCard = (props) => {
                         textTransform='uppercase'
                         ml='2'
                     >
-
-
                         {canMakeNewMarkers
-                            && (<Button size="xs" bg="white" marginLeft={0} marginRight={0} onClick={onOpen} >
-                                <DeleteIcon
-                                    size={18}
-                                    marginBottom="3px"
-                                />
-                            </Button>)
+                            && (<DeleteControl setShowMenu = {setShowMenu} currUser = {currUser} currMarker = {currMarker}/>)
                         }
                         {canMakeNewMarkers
                             && (<Button size="xs" bg="white" marginLeft={0} marginRight={0}>

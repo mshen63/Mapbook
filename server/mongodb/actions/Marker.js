@@ -82,7 +82,18 @@ export async function createMarker(currUser, props) {
     return marker;
   })
 }
+ 
+export const updateMarker = async(currUser, {markerId, updates}) => {
+  if (currUser==null) {
+    throw new Error("error with currUser in editMarker (mongodb/actions/marker)");
+  } 
+  if (markerId==null || updates==null) {
+    throw new Error("error with params in editMarker (mongodb/actions/marker)");
+  }
+  await mongoDB()
+  const marker = await Marker.findOneAndUpdate({_id: markerId}, updates)
 
+}
 
 export const deleteMarker = async (currUser, { markerId }) => {
   if (currUser == null) {

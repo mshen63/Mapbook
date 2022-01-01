@@ -4,7 +4,7 @@ import { authedPostRequest, authedGetRequest } from "../../utils/requests";
 export const createMarker = (cookies, lat, lng, name, description, priv, imgUrl) =>
     authedPostRequest(
         urls.baseUrl + urls.api.marker.createMarker,
-        { lat, lng, name, description, priv, imgUrl},
+        { lat, lng, name, description, priv, imgUrl },
         cookies
     )
         .then((response) => response.json())
@@ -29,6 +29,22 @@ export const deleteMarker = (cookies, markerId) =>
         .then((data) => {
             if (data == null) {
                 throw new Error("deleteMarker src/action/marker");
+            } else if (!data.success) {
+                throw new Error(data.message);
+            }
+            return data.payload;
+        });
+
+export const updateMarker = (cookies, params) =>
+    authedPostRequest(
+        urls.baseUrl + urls.api.marker.updateMarker,
+        params,
+        cookies
+    )
+        .then((response) => response.json())
+        .then((data) => {
+            if (data == null) {
+                throw new Error("updateMarker src/action/marker");
             } else if (!data.success) {
                 throw new Error(data.message);
             }
