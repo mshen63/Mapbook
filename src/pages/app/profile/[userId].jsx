@@ -2,18 +2,8 @@ import React from "react";
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css"
 import { getCurrentUser, getUserFriends, getUserFriendRequests, getAllUsers, getSpecificUser, getUserMarkers } from "../../../actions/User";
-import { Divider, GridItem, Button, Grid, Flex, Text, Stack, Image, Box, Accordion, AccordionButton, AccordionPanel, AccordionItem, AccordionIcon } from "@chakra-ui/react";
-import formatDistance from "date-fns/formatDistance";
-import { format, toDate, parseISO } from "date-fns"
-import MapScreen from "../../../screens/App/Map";
-// import { useRouter } from "next/router";
-import Router from "next/router";
-import urls from "../../../../utils/urls";
 import PersonalProfileScreen from "../../../screens/App/PersonalProfile"
 import ProfileScreen from "../../../screens/App/Profile"
-
-
-
 
 const ProfilePage = (props) => {
     const { friendReqs, currUser, specificUser, specificUserFriends, markers, allUsers } = props
@@ -58,7 +48,6 @@ ProfilePage.getInitialProps = async ({ query, req }) => {
         }
         const returnbody = {
             markers,
-            currUser,
             specificUser,
             specificUserFriends, 
             friendReqs, 

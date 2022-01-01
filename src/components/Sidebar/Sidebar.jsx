@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { Toaster } from 'react-hot-toast'
-import AddMarkerForm from "./AddMarkerForm";
-import MarkerInfo from "./MarkerInfo"
+import React, { useEffect, useState } from "react";
+import { Toaster } from 'react-hot-toast';
+import AddMarkerForm from "../AddMarkerForm";
+import MarkerInfo from "../MarkerInfo/MarkerInfo";
 
 const Sidebar = (props) => {
-  const { currUser, currMarker, map, setCurrMarker, markers, setMapMarkers, canMakeNewMarkers } = props
+  const { currMarker, map, setCurrMarker, markers, setMapMarkers, canMakeNewMarkers } = props
   const [marks, setMarks] = useState(markers)
 
   useEffect(() => {
@@ -23,7 +23,6 @@ const Sidebar = (props) => {
 
       {currMarker.isNew
         ? (<AddMarkerForm
-          currUser={currUser}
           map={map}
           currMarker={currMarker}
           setCurrMarker={setCurrMarker}
@@ -35,7 +34,6 @@ const Sidebar = (props) => {
           initMarker={currMarker}
           markers={marks}
           map={map}
-          currUser={currUser}
           canMakeNewMarkers = {canMakeNewMarkers}
         />)
       }
@@ -43,10 +41,5 @@ const Sidebar = (props) => {
 
   )
 }
-
-// Sidebar.propTypes = {
-//   loggedIn: PropTypes.bool.isRequired,
-//   currentRoute: PropTypes.string.isRequired,
-// };
 
 export default Sidebar;

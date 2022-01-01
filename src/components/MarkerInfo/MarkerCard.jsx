@@ -1,21 +1,17 @@
-import {
-    ModalCloseButton, ModalBody, Lorem, ModalFooter,
-    Text, Flex, InputRightElement, InputGroup, Divider, Input, chakra, Box, Badge, Image, Stack,
-    Button, Accordion, AccordionButton, AccordionPanel, AccordionItem, AccordionIcon, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader,
-} from "@chakra-ui/react";
-import { IoArrowBackCircleSharp } from "react-icons/io5"
-import { HiThumbUp, HiOutlineThumbUp, HiOutlineTrash } from "react-icons/hi"
-import React, { useState, useEffect } from "react";
-import { deleteMarker, likeMarker, unlikeMarker } from "../../actions/Marker";
-import { createComment } from "../../actions/Comment"
-import { useRouter } from "next/router";
-import { AiOutlineArrowRight, AiOutlineEdit } from "react-icons/ai"
-import toast from "react-hot-toast";
+import { Badge, Box, Button, chakra, Divider, Flex, Image, Input, InputGroup, InputRightElement, Text } from "@chakra-ui/react";
+import { parseISO } from "date-fns";
 import formatDistance from "date-fns/formatDistance";
-import { format, toDate, parseISO } from "date-fns"
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
+import React, { useState, useContext } from "react";
+import toast from "react-hot-toast";
+import { AiOutlineArrowRight, AiOutlineEdit } from "react-icons/ai";
+import { HiOutlineThumbUp, HiThumbUp } from "react-icons/hi";
+import { IoArrowBackCircleSharp } from "react-icons/io5";
 import urls from "../../../utils/urls";
+import { createComment } from "../../actions/Comment";
+import { likeMarker, unlikeMarker } from "../../actions/Marker";
 import DeleteControl from "../DeleteControl";
+import { UserContext } from "../../pages/_app";
 
 
 const BackIcon = chakra(IoArrowBackCircleSharp)
@@ -25,7 +21,8 @@ const SendIcon = chakra(AiOutlineArrowRight)
 const EditIcon = chakra(AiOutlineEdit)
 const MarkerCard = (props) => {
     const router = useRouter();
-    const { currUser, currMarker, setShowMenu, canMakeNewMarkers } = props
+    const { currMarker, setShowMenu, canMakeNewMarkers } = props
+    const currUser = useContext(UserContext)
     const [likes, setLikes] = useState(currMarker.likes.length)
     const [isLiked, setIsLiked] = useState(currMarker.likes.includes(currUser.id))
     const [isRefreshing, setIsRefreshing] = useState(false)
@@ -97,7 +94,7 @@ const MarkerCard = (props) => {
                         ml='2'
                     >
                         {canMakeNewMarkers
-                            && (<DeleteControl setShowMenu = {setShowMenu} currUser = {currUser} currMarker = {currMarker}/>)
+                            && (<DeleteControl setShowMenu = {setShowMenu} currMarker = {currMarker}/>)
                         }
                         {canMakeNewMarkers
                             && (<Button size="xs" bg="white" marginLeft={0} marginRight={0}>

@@ -2,7 +2,7 @@ import { setRTLTextPlugin } from "mapbox-gl"
 import { getMarker, createMarker } from "../../../actions/Marker"
 
 
-export const initializeMap = async (mapboxgl, map, currUser, markers, setCurrMarker, setMapMarkers, canMakeNewMarkers) => {
+export const initializeMap = async (mapboxgl, map, markers, setCurrMarker, setMapMarkers, canMakeNewMarkers) => {
     map.addControl(
         new MapboxGeocoder({
             accessToken: mapboxgl.accessToken,

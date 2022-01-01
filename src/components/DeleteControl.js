@@ -1,14 +1,15 @@
 import {
-    ModalCloseButton, ModalBody, Lorem, ModalFooter,
-    Text, Flex, InputRightElement, InputGroup, Divider, Input, chakra, Box, Badge, Image, Stack,
-    Button, Accordion, AccordionButton, AccordionPanel, AccordionItem, AccordionIcon, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader,
+    Button, chakra, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure
 } from "@chakra-ui/react";
-import { HiOutlineTrash } from "react-icons/hi"
 import { useRouter } from "next/router";
+import { HiOutlineTrash } from "react-icons/hi";
 import { deleteMarker } from "../actions/Marker";
+import { useContext } from "react";
+import { UserContext } from "../pages/_app";
 
 const DeleteIcon = chakra(HiOutlineTrash)
-const DeleteControl = ({setShowMenu, currUser, currMarker}) => {
+const DeleteControl = ({setShowMenu, currMarker}) => {
+    const currUser = useContext(UserContext)
     const router = useRouter();
 
     const { isOpen, onOpen, onClose } = useDisclosure()

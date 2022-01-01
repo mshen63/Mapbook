@@ -1,15 +1,13 @@
-import React from "react";
+import { Flex, Image, Text } from "@chakra-ui/react";
 import clsx from "clsx";
-import PropTypes from "prop-types";
-import NavLink from "../NavLink";
-import routes from "./routes";
-import styles from "./Header.module.css";
-import { logout } from "../../actions/User";
 import Router from "next/router";
+import PropTypes from "prop-types";
+import React from "react";
 import urls from "../../../utils/urls";
-import { Image, InputGroup, InputLeftElement, Input, chakra, Grid, GridItem, Stack, Flex, Button, Text, Divider, Box } from "@chakra-ui/react";
-import router from "next/router";
-import { useRouter } from "next/router";
+import { logout } from "../../actions/User";
+import NavLink from "../NavLink";
+import styles from "./Header.module.css";
+import routes from "./routes";
 
 
 

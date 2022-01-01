@@ -1,28 +1,21 @@
 import {
-    Stack, Input, Checkbox, FormControl, Text, Divider, Flex,
-    Heading,
-    Button,
-    InputGroup,
-    Box,
-    Textarea,
-    FormLabel,
-    Switch,
-    Center,
-    useColorModeValue, Icon
+    Box, Button, Center, Divider, Flex, FormControl, FormLabel, Icon, Input, InputGroup, Stack, Switch, Text, Textarea
 } from "@chakra-ui/react";
-import React, { useState, useEffect, useCallback, useRef } from "react";
-import { createMarker } from "../../actions/Marker";
-const mapboxgl = require("mapbox-gl/dist/mapbox-gl.js")
 import { useRouter } from "next/router";
-mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY
-import toast from 'react-hot-toast'
-import { useDropzone } from "react-dropzone"
+import React, { useCallback, useEffect, useState, useContext } from "react";
+import { useDropzone } from "react-dropzone";
+import toast from 'react-hot-toast';
 import { AiFillFileAdd } from 'react-icons/ai';
+import { createMarker } from "../actions/Marker";
+import {UserContext} from "../pages/_app"
+
+const mapboxgl = require("mapbox-gl/dist/mapbox-gl.js")
+mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY
 const url = process.env.NEXT_PUBLIC_CLOUDINARY_URL
 const preset = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET
 
-const AddMarkerForm = ({ currUser, map, currMarker, setCurrMarker, setMarks, marks, setMapMarkers }) => {
-
+const AddMarkerForm = ({ map, currMarker, setCurrMarker, setMarks, marks, setMapMarkers }) => {
+    const currUser = useContext(UserContext)
     const [priv, setPriv] = useState(true)
     const [name, setName] = useState("")
     const [desc, setDesc] = useState("")
