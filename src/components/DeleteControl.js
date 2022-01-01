@@ -16,7 +16,8 @@ const DeleteControl = ({setShowMenu, currMarker}) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const handleDeleteMarker = async () => {
         mapMarkers[currMarker._id].remove()
-        setMapMarkers(mapMarkers.filter(mark=>!(currMarker._id in mark)))
+        delete mapMarkers[currMarker._id]
+        setMapMarkers(mapMarkers)
         await deleteMarker(currUser, currMarker._id)
         router.replace(router.asPath)
         setShowMenu(true)

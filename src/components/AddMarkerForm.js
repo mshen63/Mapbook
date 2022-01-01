@@ -29,10 +29,6 @@ const AddMarkerForm = ({ map, currMarker, setCurrMarker, setMarks, marks }) => {
         router.replace(router.asPath)
     }
 
-    // useEffect(() => {
-    //     console.log(imgUrl)
-    // }, [imgUrl])
-
     const onDrop = useCallback((acceptedFiles) => {
         const file = acceptedFiles[0]
         const formData = new FormData();
