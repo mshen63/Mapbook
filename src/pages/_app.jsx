@@ -34,7 +34,6 @@ const MyApp = ({ Component, pageProps, router, currUser }) => (
 );
 
 MyApp.getInitialProps = async (appContext) => {
-  console.log("got to _app first")
 
   // TODO: THIS AUTH SYSTEM IS NOT BEST PRACTICE:
   // https://github.com/vvo/iron-session
@@ -46,14 +45,11 @@ MyApp.getInitialProps = async (appContext) => {
 
   const cookies = req ? req.headers.cookie : null;
 
-  console.log(cookies)
   const route = ctx.asPath;
   let currUser = null;
   let pageProps = {};
   try {
     currUser = await getCurrentUser(cookies);
-    console.log(currUser)
-
 
     if (router.asPath === "/") {
       if (currUser == null) {

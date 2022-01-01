@@ -6,16 +6,18 @@ import React, { useCallback, useEffect, useState, useContext } from "react";
 import { useDropzone } from "react-dropzone";
 import toast from 'react-hot-toast';
 import { AiFillFileAdd } from 'react-icons/ai';
-import { createMarker } from "../actions/Marker";
-import {UserContext} from "../pages/_app"
+import { createMarker, getMarker } from "../actions/Marker";
+import { UserContext } from "../pages/_app"
+import { MarkersContext } from "../screens/App/Map/MapScreen";
 
 const mapboxgl = require("mapbox-gl/dist/mapbox-gl.js")
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY
 const url = process.env.NEXT_PUBLIC_CLOUDINARY_URL
 const preset = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET
 
-const AddMarkerForm = ({ map, currMarker, setCurrMarker, setMarks, marks, setMapMarkers }) => {
+const AddMarkerForm = ({ map, currMarker, setCurrMarker, setMarks, marks }) => {
     const currUser = useContext(UserContext)
+    const {mapMarkers, setMapMarkers} = useContext(MarkersContext)
     const [priv, setPriv] = useState(true)
     const [name, setName] = useState("")
     const [desc, setDesc] = useState("")
@@ -72,11 +74,15 @@ const AddMarkerForm = ({ map, currMarker, setCurrMarker, setMarks, marks, setMap
                     var randomColor = "#" + (Math.floor(Math.random() * 16777215).toString(16));
                     let marker = new mapboxgl.Marker({ color: randomColor }).setLngLat([currMarker.marker.getLngLat().lng, currMarker.marker.getLngLat().lat]).addTo(map)
                     marker.getElement().addEventListener('click', async (e) => {
-                        setCurrMarker({ isNew: false, marker: datamarker })
-                        map.flyTo({ center: [currMarker.marker.getLngLat().lng, currMarker.marker.getLngLat().lat], zoom: 8 })
                         e.stopPropagation();
+                        let updatedMarker = await getMarker(currUser, datamarker._id)
+                        setCurrMarker({ isNew: false, marker: updatedMarker })
+                        map.flyTo({ center: [currMarker.marker.getLngLat().lng, currMarker.marker.getLngLat().lat], zoom: 8 })
+
                     })
-                    setMapMarkers(mapMarkers => [...mapMarkers, marker])
+                    
+                    mapMarkers[datamarker._id] = marker
+                    setMapMarkers(mapMarkers)
                     setMarks(marks => [...marks, datamarker])
                     toast.success("Marker created!")
                 })

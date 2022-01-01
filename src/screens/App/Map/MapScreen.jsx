@@ -1,13 +1,15 @@
 import { HStack } from "@chakra-ui/react";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, createContext, useContext } from 'react';
 import Sidebar from "../../../components/Sidebar";
+import { UserContext } from "../../../pages/_app";
 import { initializeMap } from "./initializeMap";
 
 const mapboxgl = require("mapbox-gl/dist/mapbox-gl.js")
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY
 
+export const MarkersContext = createContext()
 const MapScreen = ({ markers, canMakeNewMarkers }) => {
-
+    const currUser = useContext(UserContext)
     const [pageIsMounted, setPageIsMounted] = useState(false);
     const [theMap, setTheMap] = useState(null);
     const [currMarker, setCurrMarker] = useState({ isNew: false, marker: null })
@@ -35,11 +37,12 @@ const MapScreen = ({ markers, canMakeNewMarkers }) => {
             });
             setTheMap(map)
 
-            initializeMap(mapboxgl, map, markers, setCurrMarker, setMapMarkers, canMakeNewMarkers)
+            initializeMap(currUser, mapboxgl, map, markers, setCurrMarker, mapMarkers, setMapMarkers, canMakeNewMarkers)
         }
     }, [pageIsMounted]);
 
     return (
+        <MarkersContext.Provider value={{mapMarkers, setMapMarkers}}>
         <div >
             <HStack spacing={8}>
 
@@ -57,6 +60,7 @@ const MapScreen = ({ markers, canMakeNewMarkers }) => {
                 </main>
             </HStack>
         </div >
+        </MarkersContext.Provider>
     );
 
 }
