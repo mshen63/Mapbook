@@ -36,14 +36,21 @@ export const getMarker = async (currUser, { markerId }) => {
     .populate({
       path: "user",
       model: "User",
-      select: "_id username",
+      select: "_id username"
     })
     .populate({
-      path: "likes",
-      model: "User",
-      select: "_id username",
+      path: "comments",
+      model: "Comment",
+      populate: {
+        path: "user",
+        model: "User",
+        select: "_id username"
+      },
+      select: "_id content postDate"
     })
+
     .exec()
+
 
 
   if (marker == null) {
@@ -62,7 +69,7 @@ export async function createMarker(currUser, props) {
 
     throw new Error("Please provide all fields!")
   }
-  
+
   let repMarker = await Marker.findOne({ user: currUser.id, name: name })
   if (repMarker != null) {
     throw new Error("Marker with that name already exists!")
@@ -82,16 +89,16 @@ export async function createMarker(currUser, props) {
     return marker;
   })
 }
- 
-export const updateMarker = async(currUser, {markerId, updates}) => {
-  if (currUser==null) {
+
+export const updateMarker = async (currUser, { markerId, updates }) => {
+  if (currUser == null) {
     throw new Error("error with currUser in editMarker (mongodb/actions/marker)");
-  } 
-  if (markerId==null || updates==null) {
+  }
+  if (markerId == null || updates == null) {
     throw new Error("error with params in editMarker (mongodb/actions/marker)");
   }
   await mongoDB()
-  const marker = await Marker.findOneAndUpdate({_id: markerId}, updates)
+  const marker = await Marker.findOneAndUpdate({ _id: markerId }, updates)
 
 }
 

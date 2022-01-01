@@ -1,19 +1,22 @@
 import {
     Button, chakra, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure
 } from "@chakra-ui/react";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import { HiOutlineTrash } from "react-icons/hi";
 import { deleteMarker } from "../actions/Marker";
 import { useContext } from "react";
 import { UserContext } from "../pages/_app";
+import { MarkersContext} from "../screens/App/Map/MapScreen"
 
 const DeleteIcon = chakra(HiOutlineTrash)
 const DeleteControl = ({setShowMenu, currMarker}) => {
     const currUser = useContext(UserContext)
     const router = useRouter();
-
+    const {mapMarkers, setMapMarkers} = useContext(MarkersContext)
     const { isOpen, onOpen, onClose } = useDisclosure()
     const handleDeleteMarker = async () => {
+        mapMarkers[currMarker._id].remove()
+        setMapMarkers(mapMarkers.filter(mark=>!(currMarker._id in mark)))
         await deleteMarker(currUser, currMarker._id)
         router.replace(router.asPath)
         setShowMenu(true)

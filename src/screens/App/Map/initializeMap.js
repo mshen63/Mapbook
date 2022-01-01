@@ -2,7 +2,7 @@ import { setRTLTextPlugin } from "mapbox-gl"
 import { getMarker, createMarker } from "../../../actions/Marker"
 
 
-export const initializeMap = async (mapboxgl, map, markers, setCurrMarker, setMapMarkers, canMakeNewMarkers) => {
+export const initializeMap = async (currUser, mapboxgl, map, markers, setCurrMarker, mapMarkers, setMapMarkers, canMakeNewMarkers) => {
     map.addControl(
         new MapboxGeocoder({
             accessToken: mapboxgl.accessToken,
@@ -20,17 +20,21 @@ export const initializeMap = async (mapboxgl, map, markers, setCurrMarker, setMa
     Array.prototype.slice.call(map.getContainer().getElementsByClassName('mapboxgl-ctrl-geolocate')).forEach((button) => button.click())
 
     if (markers) {
-        let mapmarks = []
+        let mapmarks = mapMarkers
         markers.forEach(marker => {
             var randomColor = "#" + (Math.floor(Math.random() * 16777215).toString(16));
             let mark = new mapboxgl.Marker({ color: randomColor })
                 .setLngLat([marker.lng, marker.lat])
                 .addTo(map)
-            mapmarks.push(mark)
+            mapmarks[marker._id] = mark
+           
             mark.getElement().addEventListener('click', async (e) => {
-                setCurrMarker({ isNew: false, marker: marker })
-                map.flyTo({ center: [marker.lng, marker.lat], zoom: 8 })
                 e.stopPropagation();
+                let updatedMarker = await getMarker(currUser, marker._id)
+                setCurrMarker({ isNew: false, marker: updatedMarker })
+                // setCurrMarker({ isNew: false, marker: marker })
+                map.flyTo({ center: [marker.lng, marker.lat], zoom: 8 })
+                
             })
         })
         setMapMarkers(mapmarks)
