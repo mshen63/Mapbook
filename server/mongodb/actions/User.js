@@ -24,7 +24,6 @@ export const verifyToken = async (req, res) => {
 }
 
 export const updateUser = async(currUser, updates) => {
-  console.log(updates)
   if (currUser==null || updates==null) {
     throw new Error("updateUser error!")
   }

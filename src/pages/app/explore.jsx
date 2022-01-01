@@ -8,6 +8,7 @@ mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY
 import MapScreen from "../../screens/App/Map/MapScreen";
 
 const ExplorePage = (props) => {
+    console.log(props)
     const { currUser, markers } = props
     return (
         // <div>Hello</div>
@@ -28,7 +29,6 @@ ExplorePage.getInitialProps = async ({ req }) => {
         markers = [].concat.apply([], markers)
 
         return {
-            currUser,
             markers
         }
     } catch (e) {
