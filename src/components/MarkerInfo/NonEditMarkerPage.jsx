@@ -1,16 +1,16 @@
-import { Badge, Box, Button, chakra, Divider, Flex, Image, Input, InputGroup, InputRightElement, Text } from "@chakra-ui/react";
+import { useDisclosure, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Badge, Box, Button, chakra, Divider, Flex, Image, Input, InputGroup, InputRightElement, Text } from "@chakra-ui/react";
 import { parseISO } from "date-fns";
 import formatDistance from "date-fns/formatDistance";
 import Router, { useRouter } from "next/router";
 import React, { useState, useContext } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineArrowRight, AiOutlineEdit } from "react-icons/ai";
-import { HiOutlineThumbUp, HiThumbUp } from "react-icons/hi";
+import { HiOutlineThumbUp, HiThumbUp, HiOutlineTrash } from "react-icons/hi";
 import { IoArrowBackCircleSharp } from "react-icons/io5";
 import urls from "../../../utils/urls";
-import { createComment } from "../../actions/Comment";
+import { createComment, deleteComment } from "../../actions/Comment";
 import { likeMarker, unlikeMarker } from "../../actions/Marker";
-import DeleteControl from "../DeleteControl";
+import DeleteControl from "../DeleteMarkerControl";
 import { UserContext } from "../../pages/_app";
 
 
@@ -19,14 +19,18 @@ const LikeIcon = chakra(HiThumbUp)
 const LikeOutlineIcon = chakra(HiOutlineThumbUp)
 const SendIcon = chakra(AiOutlineArrowRight)
 const EditIcon = chakra(AiOutlineEdit)
+const TrashIcon = chakra(HiOutlineTrash)
 const NonEditMarkerPage = (props) => {
+    const { isOpen, onOpen, onClose } = useDisclosure()
+
     const router = useRouter();
-    const { currMarker, setShowMenu, canMakeNewMarkers, setEditing } = props
+    const { currMarker, setShowMenu, canMakeEdits, setEditing } = props
     const currUser = useContext(UserContext)
     const [likes, setLikes] = useState(currMarker.likes.length)
     const [isLiked, setIsLiked] = useState(currMarker.likes.includes(currUser.id))
     const [isRefreshing, setIsRefreshing] = useState(false)
     const [comment, setComment] = useState("")
+    const [currComment, setCurrComment] = useState("")
 
     const randomColor = "#" + (Math.floor(Math.random() * 16777215).toString(16));
     const handleGoToProfile = (userId) => Router.replace(urls.pages.app.profile.get(userId))
@@ -53,6 +57,12 @@ const NonEditMarkerPage = (props) => {
         refreshData()
     }
 
+    const handleDeleteComment = async (e) => {
+        await deleteComment(currUser, currMarker._id, currComment)
+        onClose()
+        router.replace(router.asPath)
+    }
+
     const refreshData = () => {
         router.replace(router.asPath)
         setIsRefreshing(true)
@@ -60,6 +70,23 @@ const NonEditMarkerPage = (props) => {
 
     return (
         <Box width="18vw" height="80vh" borderWidth='1px' borderRadius='lg' overflowY="scroll" position="relative">
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Delete Comment</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        Are you sure you want to delete this comment?
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button colorScheme='blue' mr={3} onClick={handleDeleteComment}>
+                            Confirm
+                        </Button>
+                        <Button variant='ghost' onClick={onClose}>Close</Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
             <div
                 onClick={e => setShowMenu(true)}
                 bg="white"
@@ -100,10 +127,10 @@ const NonEditMarkerPage = (props) => {
                         textTransform='uppercase'
                         ml='2'
                     >
-                        {canMakeNewMarkers
+                        {canMakeEdits
                             && (<DeleteControl setShowMenu={setShowMenu} currMarker={currMarker} />)
                         }
-                        {canMakeNewMarkers
+                        {canMakeEdits
                             && (<Button size="xs" bg="white" marginLeft={0} marginRight={0} onClick={e => setEditing(true)}>
                                 <EditIcon
                                     size={18}
@@ -172,15 +199,32 @@ const NonEditMarkerPage = (props) => {
                         </InputRightElement>
                     </InputGroup>
 
-                    {currMarker.comments && currMarker.comments.slice(0).reverse().map(comment => (<><Box rounded="md" width="100%" padding={3} bg="green.100" >
-                        <Text fontSize="xs" _hover={{ textDecoration: "underline" }} onClick={e => handleGoToProfile(comment.user._id)}>{comment.user.username}</Text>
-                        <Text fontSize="sm">{comment.content}</Text>
+                    {currMarker.comments && currMarker.comments.slice(0).reverse().map(comment => (
+                        <>
+
+                            <Box rounded="md" width="100%" padding={3} bg="green.100" >
+                                <Flex justify="space-between" width="100%">
+                                    <Text fontSize="xs" _hover={{ textDecoration: "underline" }} onClick={e => handleGoToProfile(comment.user._id)}>{comment.user.username}</Text>
+                                    {canMakeEdits && (<Button size="2px" onClick={onOpen} bg="green.100" m={0} p={0}>
+                                        <TrashIcon
+                                            m={0} p={0}
+                                            size={15}
+                                            onClick={e => {
+                                                console.log("change comment!")
+                                                setCurrComment(comment._id)
+                                            }
+                                            }
+                                        />
+                                    </Button>)}
+
+                                </Flex>
+                                <Text fontSize="sm">{comment.content}</Text>
+                            </Box>
+                            <Text width="100%" marginBottom={2} fontSize="10px">{formatDistance(parseISO(comment.postDate), Date.now(), { addSuffix: true })}</Text>
 
 
-                    </Box>
-                        <Text width="100%" marginBottom={2} fontSize="10px">{formatDistance(parseISO(comment.postDate), Date.now(), { addSuffix: true })}</Text>
-
-                    </>))}
+                        </>
+                    ))}
 
 
                 </Flex>

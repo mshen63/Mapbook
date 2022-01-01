@@ -8,7 +8,7 @@ const mapboxgl = require("mapbox-gl/dist/mapbox-gl.js")
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY
 
 export const MarkersContext = createContext()
-const MapScreen = ({ markers, canMakeNewMarkers }) => {
+const MapScreen = ({ markers, canMakeEdits }) => {
     const currUser = useContext(UserContext)
     const [pageIsMounted, setPageIsMounted] = useState(false);
     const [theMap, setTheMap] = useState(null);
@@ -37,7 +37,7 @@ const MapScreen = ({ markers, canMakeNewMarkers }) => {
             });
             setTheMap(map)
 
-            initializeMap(currUser, mapboxgl, map, markers, setCurrMarker, mapMarkers, setMapMarkers, canMakeNewMarkers)
+            initializeMap(currUser, mapboxgl, map, markers, setCurrMarker, mapMarkers, setMapMarkers, canMakeEdits)
         }
     }, [pageIsMounted]);
 
@@ -52,7 +52,7 @@ const MapScreen = ({ markers, canMakeNewMarkers }) => {
                     setCurrMarker={setCurrMarker}
                     markers={markers}
                     setMapMarkers = {setMapMarkers}
-                    canMakeNewMarkers = {canMakeNewMarkers}
+                    canMakeEdits = {canMakeEdits}
                 />}
 
                 <main >

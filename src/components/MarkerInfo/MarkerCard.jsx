@@ -2,7 +2,7 @@ import { Badge, Box, Button, chakra, Divider, Flex, Image, Input, InputGroup, In
 import { parseISO } from "date-fns";
 import formatDistance from "date-fns/formatDistance";
 import Router, { useRouter } from "next/router";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineArrowRight, AiOutlineEdit } from "react-icons/ai";
 import { HiOutlineThumbUp, HiThumbUp } from "react-icons/hi";
@@ -10,7 +10,7 @@ import { IoArrowBackCircleSharp } from "react-icons/io5";
 import urls from "../../../utils/urls";
 import { createComment } from "../../actions/Comment";
 import { likeMarker, unlikeMarker } from "../../actions/Marker";
-import DeleteControl from "../DeleteControl";
+import DeleteControl from "../DeleteMarkerControl";
 import { UserContext } from "../../pages/_app";
 import NonEditMarkerPage from "./NonEditMarkerPage";
 import EditMarkerPage from "./EditMarkerPage";
@@ -22,8 +22,11 @@ const SendIcon = chakra(AiOutlineArrowRight)
 const EditIcon = chakra(AiOutlineEdit)
 
 const MarkerCard = (props) => {
-    const { currMarker, setShowMenu, canMakeNewMarkers } = props
+    const { currMarker, setShowMenu, canMakeEdits } = props
     const [editing, setEditing] = useState(false)
+    useEffect(()=> {
+        setEditing(false)
+    }, [currMarker])
     return (
         <>
             {editing
@@ -35,7 +38,7 @@ const MarkerCard = (props) => {
                 : (<NonEditMarkerPage
                     currMarker={currMarker}
                     setShowMenu={setShowMenu}
-                    canMakeNewMarkers={canMakeNewMarkers}
+                    canMakeEdits={canMakeEdits}
                     setEditing = {setEditing}
                 />)
             }

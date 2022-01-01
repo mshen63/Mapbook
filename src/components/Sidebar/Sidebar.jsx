@@ -4,7 +4,7 @@ import AddMarkerForm from "../AddMarkerForm";
 import MarkerInfo from "../MarkerInfo/MarkerInfo";
 
 const Sidebar = (props) => {
-  const { currMarker, map, setCurrMarker, markers, setMapMarkers, canMakeNewMarkers } = props
+  const { currMarker, map, setCurrMarker, markers, setMapMarkers, canMakeEdits } = props
   const [marks, setMarks] = useState(markers)
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const Sidebar = (props) => {
           initMarker={currMarker}
           markers={marks}
           map={map}
-          canMakeNewMarkers = {canMakeNewMarkers}
+          canMakeEdits = {canMakeEdits}
         />)
       }
     </>
