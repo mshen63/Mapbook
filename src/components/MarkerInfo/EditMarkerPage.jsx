@@ -1,4 +1,4 @@
-import { Textarea, IconButton, Badge, Box, Button, chakra, Divider, Flex, Image, Input, InputGroup, InputRightElement, Text } from "@chakra-ui/react";
+import { FormLabel, Switch, Textarea, IconButton, Badge, Box, Button, chakra, Divider, Flex, Image, Input, InputGroup, InputRightElement, Text } from "@chakra-ui/react";
 import { parseISO } from "date-fns";
 import formatDistance from "date-fns/formatDistance";
 import Router, { useRouter } from "next/router";
@@ -36,20 +36,21 @@ const EditMarkerPage = (props) => {
     const [name, setName] = useState(currMarker.name)
     const [desc, setDesc] = useState(currMarker.description)
     const [imgUrl, setImgUrl] = useState(currMarker.imgUrl)
+    const [priv, setPriv] = useState(currMarker.priv)
     const [file, setFile] = useState(null)
 
 
     const handleGoToProfile = (userId) => Router.replace(urls.pages.app.profile.get(userId))
     const addEdits = async (e) => {
-        let updates = { "name": name, "description": desc, "imgUrl": imgUrl }
+        let updates = { "name": name, "description": desc, "imgUrl": imgUrl, "priv":priv }
         await updateMarker(currUser, { "markerId": currMarker._id, "updates": updates })
         setEditing(false)
         refreshData()
 
-        // setName(currMarker.name)
-        // setDesc(currMarker.description)
-        // setImgUrl(currMarker.imgUrl)
-        // setFile(null)
+        setName(currMarker.name)
+        setDesc(currMarker.description)
+        setImgUrl(currMarker.imgUrl)
+        setFile(null)
 
 
     }
@@ -172,14 +173,20 @@ const EditMarkerPage = (props) => {
 
                     </Box>
                 </Box>
+                <Flex direction="column" align="center" justify="center">
+                    <Input value={name} marginTop={3} marginBottom={3} onChange={e => setName(e.target.value)} />
+                    <Textarea
+                        value={desc}
+                        onChange={e => setDesc(e.target.value)}
 
-                <Input value={name} marginTop={3} marginBottom={3} onChange={e => setName(e.target.value)} />
-                <Textarea
-                    value={desc}
-                    onChange={e => setDesc(e.target.value)}
-
-                />
-
+                    />
+                    <Flex marginTop = {3}>
+                        <FormLabel htmlFor="private" >
+                            Private
+                        </FormLabel>
+                        <Switch id="private" isChecked={priv} onChange={(e) => setPriv(!priv)}></Switch>
+                    </Flex>
+                </Flex>
                 <Divider borderColor="gray.600" marginTop={3} marginBottom={3} />
 
                 <Box>Comments: </Box>
