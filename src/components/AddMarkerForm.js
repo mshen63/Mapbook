@@ -1,54 +1,33 @@
 import {
-    Box, Button, Center, Divider, Flex, FormControl, FormLabel, Icon, Input, InputGroup, Stack, Switch, Text, Textarea
+    Box, Button, Divider, Flex, FormControl, FormLabel, Input, InputGroup, Stack, Switch, Text, Textarea
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import React, { useCallback, useEffect, useState, useContext } from "react";
-import { useDropzone } from "react-dropzone";
+import React, { useContext, useEffect, useState } from "react";
 import toast from 'react-hot-toast';
-import { AiFillFileAdd } from 'react-icons/ai';
 import { createMarker, getMarker } from "../actions/Marker";
-import { UserContext } from "../pages/_app"
+import { UserContext } from "../pages/_app";
 import { MarkersContext } from "../screens/App/Map/MapScreen";
+import DropzoneComponent from "./DropzoneComponent";
 
 const mapboxgl = require("mapbox-gl/dist/mapbox-gl.js")
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY
-const url = process.env.NEXT_PUBLIC_CLOUDINARY_URL
-const preset = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET
 
 const AddMarkerForm = ({ map, currMarker, setCurrMarker, setMarks, marks }) => {
     const currUser = useContext(UserContext)
-    const {mapMarkers, setMapMarkers} = useContext(MarkersContext)
+    const { mapMarkers, setMapMarkers } = useContext(MarkersContext)
     const [priv, setPriv] = useState(true)
     const [name, setName] = useState("")
     const [desc, setDesc] = useState("")
     const [imgUrl, setImgUrl] = useState("")
+    const [file, setFile] = useState(null)
+
     const router = useRouter();
     // the preview
-    const [file, setFile] = useState(null)
+
     const refreshData = () => {
         router.replace(router.asPath)
     }
 
-    const onDrop = useCallback((acceptedFiles) => {
-        const file = acceptedFiles[0]
-        const formData = new FormData();
-        formData.append("file", file)
-        formData.append("upload_preset", preset)
-        fetch(url, {
-            method: "POST",
-            body: formData
-        }).then(resp => {
-            return resp.text()
-        }).then((data) => {
-            setImgUrl(JSON.parse(data).secure_url)
-        }).then((e) => {
-            setFile(Object.assign(file, {
-                preview: URL.createObjectURL(file)
-            }))
-        }).catch(e => toast.error("Photo invalid or too large!"))
-    }, [])
-
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, maxFiles: 1, multiple: false })
 
     useEffect(() => {
         setName("")
@@ -76,7 +55,7 @@ const AddMarkerForm = ({ map, currMarker, setCurrMarker, setMarks, marks }) => {
                         map.flyTo({ center: [currMarker.marker.getLngLat().lng, currMarker.marker.getLngLat().lat], zoom: 8 })
 
                     })
-                    
+
                     mapMarkers[datamarker._id] = marker
                     setMapMarkers(mapMarkers)
                     setMarks(marks => [...marks, datamarker])
@@ -116,33 +95,11 @@ const AddMarkerForm = ({ map, currMarker, setCurrMarker, setMarks, marks }) => {
                                     />
                                 </InputGroup>
                             </FormControl>
-                            <Flex align="center" justify="center" width="100%" height="50%">
-                                {file
-                                    ? (<img src={file.preview} />)
-                                    : (<Center
-                                        p={10}
-                                        cursor="pointer"
-                                        bg={isDragActive ? "gray.100" : 'transparent'}
-                                        transition="background-color 0.2s ease"
-                                        borderRadius={4}
-                                        border="3px dashed"
-                                        borderColor="gray.300"
-                                        display="flex"
-                                        alignItems="center"
-                                        justifyContent="center"
-                                        flexDirection="column"
-                                        width="100%"
-                                        padding={20}
-                                        _hover={{ bg: "green.50", borderColor: "gray.400" }}
-                                        {...getRootProps()}
-                                    >
-                                        <input {...getInputProps()} padding={20} />
-                                        <Icon as={AiFillFileAdd} mr={2} />
-                                        <Text fontSize="12px" color="gray.500">Add Image Here</Text>
-                                    </Center>
-                                    )
-                                }
-                            </Flex>
+                            <DropzoneComponent 
+                            setImgUrl={setImgUrl}
+                            setFile = {setFile}
+                            file = {file}
+                            />
 
                             <FormControl>
                                 <InputGroup>

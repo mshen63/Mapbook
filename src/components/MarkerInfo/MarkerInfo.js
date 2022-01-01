@@ -6,8 +6,7 @@ const MarkerInfo = (props) => {
 
     const { initMarker, markers, map, canMakeNewMarkers } = props
     const [currMarker, setCurrMarker] = useState(initMarker.marker)
-    const [showMenu, setShowMenu] = useState(false)
-
+    const [showMenu, setShowMenu] = useState(true)
 
     useEffect(()=> {
         setShowMenu(false)
