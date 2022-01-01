@@ -1,4 +1,4 @@
-import { Text, Flex, Box, Stack, Button, Accordion, AccordionButton, AccordionPanel, AccordionItem, AccordionIcon, Divider } from "@chakra-ui/react";
+import { Box, Button, Divider, Flex, Stack, Text } from "@chakra-ui/react";
 
 const MarkersMenu = (props) => {
     const { markers, map, setCurrMarker, setShowMenu } = props

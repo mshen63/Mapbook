@@ -14,7 +14,7 @@ import "leaflet/dist/leaflet.css"
 
 export const UserContext = createContext()
 const MyApp = ({ Component, pageProps, router, currUser }) => (
-  <UserContext.Provider value = {currUser}>
+  <UserContext.Provider value={currUser}>
     <Head>
       <title>Next.js-Starter</title>
       <link
@@ -34,6 +34,7 @@ const MyApp = ({ Component, pageProps, router, currUser }) => (
 );
 
 MyApp.getInitialProps = async (appContext) => {
+  console.log("got to _app first")
 
   // TODO: THIS AUTH SYSTEM IS NOT BEST PRACTICE:
   // https://github.com/vvo/iron-session
@@ -45,16 +46,38 @@ MyApp.getInitialProps = async (appContext) => {
 
   const cookies = req ? req.headers.cookie : null;
 
+  console.log(cookies)
   const route = ctx.asPath;
   let currUser = null;
   let pageProps = {};
   try {
     currUser = await getCurrentUser(cookies);
+    console.log(currUser)
 
 
+    if (router.asPath === "/") {
+      if (currUser == null) {
+        console.log("reroute from / to login")
+        if (res) {
+          res.writeHead(301, { Location: urls.pages.login });
+          res.end();
+        } else {
+          return Router.push(urls.pages.login);
+        }
+      } else {
+        console.log("reroute from / to map")
+        if (res) {
+          res.writeHead(301, { Location: urls.pages.app.map });
+          res.end();
+        } else {
+          return Router.push(urls.pages.app.map);
+        }
+      }
 
+    }
 
     if (router.asPath.startsWith("/app") && currUser == null) {
+      console.log("reroute from app to login")
       if (res) {
         res.writeHead(301, { Location: urls.pages.login });
         res.end();
@@ -63,8 +86,34 @@ MyApp.getInitialProps = async (appContext) => {
       }
     }
 
+    if (router.asPath.startsWith("/login") && currUser != null) {
+      console.log("reroute from login to map")
+      if (res) {
+        res.writeHead(301, { Location: urls.pages.app.map });
+        res.end();
+      } else {
+        return Router.replace(urls.pages.app.map);
+      }
+    }
+
+    if (router.asPath.startsWith("/register") && currUser != null) {
+      console.log("reroute from login to map")
+      if (res) {
+        res.writeHead(301, { Location: urls.pages.app.map });
+        res.end();
+      } else {
+        return Router.replace(urls.pages.app.map);
+      }
+    }
+
   } catch {
     console.error("Error in _app.js")
+    // if (res) {
+    //   res.writeHead(301, { Location: urls.pages.login });
+    //   res.end();
+    // } else {
+    //   return Router.push(urls.pages.login);
+    // }
   }
   if (Component.getInitialProps) {
     pageProps = await Component.getInitialProps({

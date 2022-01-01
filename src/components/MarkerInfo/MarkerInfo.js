@@ -1,11 +1,10 @@
-import { Box, Accordion, AccordionButton, AccordionPanel, AccordionItem, AccordionIcon } from "@chakra-ui/react";
-import React, { useState, useEffect } from "react";
-import MarkersMenu from "../MarkersMenu";
-import MarkerCard from "../MarkerCard";
+import React, { useEffect, useState } from "react";
+import MarkerCard from "./MarkerCard";
+import MarkersMenu from "./MarkersMenu";
 
 const MarkerInfo = (props) => {
 
-    const { initMarker, markers, map, currUser, canMakeNewMarkers } = props
+    const { initMarker, markers, map, canMakeNewMarkers } = props
     const [currMarker, setCurrMarker] = useState(initMarker.marker)
     const [showMenu, setShowMenu] = useState(false)
 
@@ -40,7 +39,6 @@ const MarkerInfo = (props) => {
                 : (<MarkerCard
                     currMarker={currMarker}
                     setShowMenu={setShowMenu}
-                    currUser={currUser}
                     canMakeNewMarkers = {canMakeNewMarkers}
                 />)
             }

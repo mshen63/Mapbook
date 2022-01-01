@@ -53,7 +53,7 @@ export const updateMarker = (cookies, params) =>
 
 
 
-export const getMarker = (cookies, markerId) => {
+export const getMarker = (cookies, markerId) =>
     authedPostRequest(
         urls.baseUrl + urls.api.marker.getMarker,
         { markerId },
@@ -71,10 +71,9 @@ export const getMarker = (cookies, markerId) => {
             }
             return data.payload;
         })
-};
 
 
-export const likeMarker = (cookies, markerId) => {
+export const likeMarker = (cookies, markerId) =>
     authedPostRequest(
         urls.baseUrl + urls.api.marker.likeMarker,
         { markerId },
@@ -89,7 +88,7 @@ export const likeMarker = (cookies, markerId) => {
             }
             return data.payload;
         });
-}
+
 export const unlikeMarker = (cookies, markerId) =>
     authedPostRequest(
         urls.baseUrl + urls.api.marker.unlikeMarker,

@@ -1,18 +1,12 @@
-import PropTypes from "prop-types";
-import Router from "next/router";
-import urls from "../../../../utils/urls";
-import classes from "./MapScreen.module.css";
-import React, { useState, useEffect, useContext } from 'react';
-import { add, random } from "lodash";
-import { initializeMap } from "./initializeMap";
-import { createMarker } from "../../../actions/Marker";
-import Sidebar from "../../../components/Sidebar"
 import { HStack } from "@chakra-ui/react";
+import React, { useEffect, useState } from 'react';
+import Sidebar from "../../../components/Sidebar";
+import { initializeMap } from "./initializeMap";
 
 const mapboxgl = require("mapbox-gl/dist/mapbox-gl.js")
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY
 
-const MapScreen = ({ currUser, markers, canMakeNewMarkers }) => {
+const MapScreen = ({ markers, canMakeNewMarkers }) => {
 
     const [pageIsMounted, setPageIsMounted] = useState(false);
     const [theMap, setTheMap] = useState(null);
@@ -41,7 +35,7 @@ const MapScreen = ({ currUser, markers, canMakeNewMarkers }) => {
             });
             setTheMap(map)
 
-            initializeMap(mapboxgl, map, currUser, markers, setCurrMarker, setMapMarkers, canMakeNewMarkers)
+            initializeMap(mapboxgl, map, markers, setCurrMarker, setMapMarkers, canMakeNewMarkers)
         }
     }, [pageIsMounted]);
 
@@ -50,7 +44,6 @@ const MapScreen = ({ currUser, markers, canMakeNewMarkers }) => {
             <HStack spacing={8}>
 
                 {theMap && <Sidebar
-                    currUser={currUser}
                     currMarker={currMarker}
                     map={theMap}
                     setCurrMarker={setCurrMarker}
