@@ -25,7 +25,6 @@ MapPage.getInitialProps = async ({ req }) => {
         const markers = await getUserMarkers(cookies, currUser.id)
 
         return {
-            currUser,
             markers
         }
     } catch (e) {

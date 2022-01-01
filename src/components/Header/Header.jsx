@@ -53,10 +53,10 @@ const Header = ({ loggedIn, currentRoute, currUser }) => {
         </button>)
       }
       {loggedIn && (<Flex align="center" direction="row" marginRight={8}>
-        <Button bg="green.800" _hover={{ background: "green.500" }} onClick={handleGoToProfile}>
+        <button onClick={handleGoToProfile} className={clsx(styles.endRoute)}>
           <Image margin={1} src={currUser.profileImg} boxSize="20px" borderRadius="full" />
-          <Text marginRight={3} color="white" >{currUser.username} </Text>
-        </Button>
+          <Text marginLeft={1} color="white" >{currUser.username} </Text>
+        </button>
       </Flex>)}
 
 

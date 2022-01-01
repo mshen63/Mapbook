@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, createContext } from "react";
 import PropTypes from "prop-types";
 import App from "next/app";
 import Head from "next/head";
@@ -12,8 +12,9 @@ import "../../public/static/styles/App.css";
 import { ChakraProvider } from "@chakra-ui/react";
 import "leaflet/dist/leaflet.css"
 
+export const UserContext = createContext()
 const MyApp = ({ Component, pageProps, router, currUser }) => (
-  <>
+  <UserContext.Provider value = {currUser}>
     <Head>
       <title>Next.js-Starter</title>
       <link
@@ -23,13 +24,13 @@ const MyApp = ({ Component, pageProps, router, currUser }) => (
     <ChakraProvider>
       <div className="App">
         <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
-          <Header loggedIn={currUser != null} currentRoute={router.asPath} currUser= {currUser}/>
-          <div className="Content">
-            <Component {...pageProps} currUser={currUser} />
-          </div>
+        <Header loggedIn={currUser != null} currentRoute={router.asPath} currUser={currUser} />
+        <div className="Content">
+          <Component {...pageProps} currUser={currUser} />
+        </div>
       </div>
     </ChakraProvider>
-  </>
+  </UserContext.Provider>
 );
 
 MyApp.getInitialProps = async (appContext) => {
@@ -70,7 +71,7 @@ MyApp.getInitialProps = async (appContext) => {
       ...ctx,
       currUser,
     })
-  } 
+  }
 
   return {
     pageProps,
