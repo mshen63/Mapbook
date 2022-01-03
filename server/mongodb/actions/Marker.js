@@ -1,11 +1,10 @@
-import { FaMarker } from "react-icons/fa";
-import mongoDB from "../index"
-import Marker from "../models/Marker"
-import User from "../models/User"
-import { addMarker, removeMarker } from "./User"
-import multer from "multer"
-const uploader = multer({ dest: "/tmp" })
-import { v2 as cloudinary } from "cloudinary"
+import { v2 as cloudinary } from "cloudinary";
+import multer from "multer";
+import mongoDB from "../index";
+import Marker from "../models/Marker";
+import User from "../models/User";
+import Comment from "../models/Comment"
+import { addMarker, removeMarker } from "./User";
 
 if (process.env.CLOUDINARY_URL) {
   const {
@@ -19,6 +18,22 @@ if (process.env.CLOUDINARY_URL) {
     api_key,
     api_secret,
   });
+}
+
+export const getRandomMarkers = async (currUser) => {
+  if (currUser == null) {
+    throw new Error("error with currUser in getTenRandomMarkers (mongodb/actions/marker)");
+  }
+  await mongoDB();
+
+  const emptyMarkers = await Marker.aggregate([
+    { $match: { user: { $ne: currUser.id }, priv: false } },
+    { $sample: { size: 5 } }
+  ])
+  console.log(emptyMarkers)
+  const markers = await Promise.all(
+    emptyMarkers.map(mark => getMarker(currUser, { markerId: mark._id })))
+  return markers
 }
 
 
@@ -50,14 +65,12 @@ export const getMarker = async (currUser, { markerId }) => {
     })
 
     .exec()
-
-
-
-  if (marker == null) {
-    throw new Error("getMarker find error!")
-  } else {
-    return marker
-  }
+  return marker
+  // if (marker == null) {
+  //   throw new Error("getMarker find error!")
+  // } else {
+  //   return marker
+  // }
 };
 
 export async function createMarker(currUser, props) {
@@ -149,26 +162,7 @@ export const unlikeMarker = async (currUser, { markerId }) => {
   })
 }
 
-export const addComment = async (currUser, { markerId, commentId }) => {
-  if (currUser == null || markerId == null) {
-    throw new Error("addComment error!")
-  }
-  await mongoDB();
-  await Marker.findByIdAndUpdate(markerId, {
-    $push: { comments: commentId }
-  })
-}
-
-export const removeComment = async(currUser, {markerId, commentId}) => {
-  if (currUser == null || markerId == null || commentId == null) {
-    throw new Error("removeComment error!")
-  }
-  await mongoDB();
-  await Marker.findByIdAndUpdate(markerId, {
-    $pull: {comments: commentId}
-  })
-}
-
+// COMMENTS
 export const getComments = async (currUser, { markerId }) => {
   if (currUser == null || markerId == null) {
     throw new Error("getComments error!")
@@ -193,4 +187,24 @@ export const getComments = async (currUser, { markerId }) => {
   } else {
     return marker.comments
   }
+}
+
+export const addComment = async (currUser, { markerId, commentId }) => {
+  if (currUser == null || markerId == null) {
+    throw new Error("addComment error!")
+  }
+  await mongoDB();
+  await Marker.findByIdAndUpdate(markerId, {
+    $push: { comments: commentId }
+  })
+}
+
+export const removeComment = async (currUser, { markerId, commentId }) => {
+  if (currUser == null || markerId == null || commentId == null) {
+    throw new Error("removeComment error!")
+  }
+  await mongoDB();
+  await Marker.findByIdAndUpdate(markerId, {
+    $pull: { comments: commentId }
+  })
 }

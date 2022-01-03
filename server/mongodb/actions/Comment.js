@@ -1,7 +1,5 @@
 import mongoDB from "../index"
 import Comment from "../models/Comment"
-import User from "../models/User"
-import Marker from "../models/Marker"
 import { addComment, removeComment } from "./Marker"
 
 export async function createComment(currUser, { markerId, content }) {

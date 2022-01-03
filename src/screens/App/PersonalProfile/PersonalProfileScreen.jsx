@@ -35,8 +35,15 @@ const PersonalProfileScreen = (props) => {
     const addEdits = async(e) => {
         
         setIsEditing(false)
-        await updateUser(currUser, {username:username, bio:bio, profileImg:file})
+        const updates = {}
+        updates.bio = bio
+        if (file) {
+            updates.profileImg = file
+        }
+        
+        await updateUser(currUser, updates)
         setFile(null)
+        setBio(specificUser[0].bio)
         refreshData()
     }
 

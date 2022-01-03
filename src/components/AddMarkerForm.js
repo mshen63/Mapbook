@@ -46,8 +46,7 @@ const AddMarkerForm = ({ map, currMarker, setCurrMarker, setMarks, marks }) => {
         } else {
             await createMarker(currUser, currMarker.marker.getLngLat().lat, currMarker.marker.getLngLat().lng, name, desc, priv, imgUrl)
                 .then(datamarker => {
-                    var randomColor = "#" + (Math.floor(Math.random() * 16777215).toString(16));
-                    let marker = new mapboxgl.Marker({ color: randomColor }).setLngLat([currMarker.marker.getLngLat().lng, currMarker.marker.getLngLat().lat]).addTo(map)
+                    let marker = new mapboxgl.Marker({color: "#68D391"}).setLngLat([currMarker.marker.getLngLat().lng, currMarker.marker.getLngLat().lat]).addTo(map)
                     marker.getElement().addEventListener('click', async (e) => {
                         e.stopPropagation();
                         let updatedMarker = await getMarker(currUser, datamarker._id)

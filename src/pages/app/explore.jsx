@@ -1,29 +1,39 @@
 import "leaflet/dist/images/marker-shadow.png";
 import "leaflet/dist/leaflet.css";
-import React from "react";
-import { getCurrentUser, getUserFriends, getUserMarkers } from "../../actions/User";
+import React, { createContext } from "react";
+import { getMarker, getRandomMarkers } from "../../actions/Marker";
+import { getUserLikedMarkers } from "../../actions/User";
 import MapScreen from "../../screens/App/Map/MapScreen";
 const mapboxgl = require("mapbox-gl/dist/mapbox-gl.js")
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY
 
+export const LikedMarkerContext = createContext()
+
 const ExplorePage = (props) => {
-    const { markers } = props
+    const { markers, likedMarkers } = props
     return (
-        <MapScreen markers={markers} canMakeEdits={false} />
+        <LikedMarkerContext.Provider value={likedMarkers}>
+            <MapScreen markers={markers} canMakeEdits={false} />
+        </LikedMarkerContext.Provider>
     )
 }
 
 ExplorePage.getInitialProps = async ({ req }) => {
     const cookies = req ? req.headers.cookie : null;
     try {
-        const currUser = await getCurrentUser(cookies).catch(() => null)
-        const friends = await getUserFriends(cookies, currUser.id)
-        let markers = await Promise.all(
-            friends.map(friend=>getUserMarkers(cookies, friend._id))
+        const likedIds = await getUserLikedMarkers(cookies)
+        const markers = await getRandomMarkers(cookies)
+
+        // let markers = await Promise.all(
+        //     friends.map(friend=>getUserMarkers(cookies, friend._id))
+        // )
+        // markers = [].concat.apply([], markers)
+        let likedMarkers = await Promise.all(
+            likedIds.map(likedid => getMarker(cookies, likedid))
         )
-        markers = [].concat.apply([], markers)
         return {
-            markers
+            markers,
+            likedMarkers
         }
     } catch (e) {
         return { error: e.message }

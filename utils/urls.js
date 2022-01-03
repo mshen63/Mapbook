@@ -32,6 +32,7 @@ export default {
       getUserFriendRequests: "/api/user/getUserFriendRequests",
       getUserFriends: "/api/user/getUserFriends",
       getUserMarkers: "/api/user/getUserMarkers",
+      getUserLikedMarkers: "/api/user/getUserLikedMarkers",
       rejectFriendRequest: "/api/user/rejectFriendRequest",
       acceptFriendRequest: "/api/user/acceptFriendRequest",
       removeFriend: "/api/user/removeFriend",
@@ -46,7 +47,8 @@ export default {
       getMarker: "/api/marker/getMarker",
       likeMarker: "/api/marker/likeMarker", 
       unlikeMarker: "/api/marker/unlikeMarker", 
-      updateMarker: "/api/marker/updateMarker"
+      updateMarker: "/api/marker/updateMarker", 
+      getRandomMarkers: "/api/marker/getRandomMarkers"
     }, 
     comment: {
       createComment: "/api/comment/createComment", 
