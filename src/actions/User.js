@@ -295,6 +295,21 @@ export const getUserMarkers = (cookies, userId) =>
       return data.payload;
     });
 
+export const getUserLikedMarkers = (cookies) =>{
+  return authedGetRequest(
+    urls.baseUrl + urls.api.user.getUserLikedMarkers,
+    cookies
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      if (data == null) {
+        throw new Error("getUserLikedMarkers src/action/user");
+      } else if (!data.success) {
+        throw new Error(data.message);
+      }
+      return data.payload;
+    })};
+
 
 export const getSpecificUser = (cookies, userId) =>
 

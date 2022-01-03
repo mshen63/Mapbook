@@ -32,7 +32,6 @@ const NonEditMarkerPage = (props) => {
     const [comment, setComment] = useState("")
     const [currComment, setCurrComment] = useState("")
 
-    const randomColor = "#" + (Math.floor(Math.random() * 16777215).toString(16));
     const handleGoToProfile = (userId) => Router.replace(urls.pages.app.profile.get(userId))
 
     const handleLikeButton = async (isLike) => {
@@ -92,6 +91,8 @@ const NonEditMarkerPage = (props) => {
                 bg="white"
             >
                 <BackIcon
+                    bg = "white"
+                    borderRadius = "full"
                     size={40}
                     position="absolute"
                     left="0px"
@@ -210,7 +211,6 @@ const NonEditMarkerPage = (props) => {
                                             m={0} p={0}
                                             size={15}
                                             onClick={e => {
-                                                console.log("change comment!")
                                                 setCurrComment(comment._id)
                                             }
                                             }

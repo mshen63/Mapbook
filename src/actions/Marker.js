@@ -72,6 +72,24 @@ export const getMarker = (cookies, markerId) =>
             return data.payload;
         })
 
+export const getRandomMarkers = (cookies) =>
+    authedGetRequest(
+        urls.baseUrl + urls.api.marker.getRandomMarkers,
+        cookies
+    )
+        .then((response) => {
+            return response.json()
+        })
+        .then((data) => {
+
+            if (data == null) {
+                throw new Error("getRandomMarkers src/action/marker");
+            } else if (!data.success) {
+                throw new Error(data.message);
+            }
+            return data.payload;
+        })
+
 
 export const likeMarker = (cookies, markerId) =>
     authedPostRequest(

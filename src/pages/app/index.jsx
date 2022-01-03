@@ -2,16 +2,17 @@ import React, { useEffect, useState } from "react";
 import Head from "next/head"
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css"
-import { getCurrentUser, getUserFriendRequests, getUserMarkers } from "../../actions/User";
+import { getCurrentUser, getUserFriendRequests, getUserMarkers, getUserLikedMarkers } from "../../actions/User";
 const mapboxgl = require("mapbox-gl/dist/mapbox-gl.js")
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY
 import MapScreen from "../../screens/App/Map/MapScreen";
 
 const MapPage = (props) => {
-    const { currUser, markers } = props
+
+    const { markers } = props
     return (
-        <MapScreen currUser={currUser} markers={markers} canMakeEdits={true} />
+        <MapScreen markers={markers} canMakeEdits={true} />
     )
 };
 
@@ -20,7 +21,7 @@ MapPage.getInitialProps = async ({ req }) => {
     const cookies = req ? req.headers.cookie : null;
 
     try {
-        
+
         const currUser = await getCurrentUser(cookies).catch(() => null)
         const markers = await getUserMarkers(cookies, currUser.id)
 

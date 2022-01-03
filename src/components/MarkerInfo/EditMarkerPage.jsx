@@ -94,6 +94,8 @@ const EditMarkerPage = (props) => {
                 bg="white"
             >
                 <BackIcon
+                    bg="white"
+                    borderRadius="full"
                     size={40}
                     position="absolute"
                     left="0px"

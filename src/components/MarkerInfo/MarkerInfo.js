@@ -34,6 +34,7 @@ const MarkerInfo = (props) => {
                     map={map}
                     setCurrMarker={setCurrMarker}
                     setShowMenu={setShowMenu}
+                    canMakeEdits = {canMakeEdits}
                 />)
                 : (<MarkerCard
                     currMarker={currMarker}

@@ -1,12 +1,10 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { mongo } from "mongoose";
-import { string } from "prop-types";
 import mongoDB from "../index";
-import User from "../models/User";
 import Marker from "../models/Marker";
-import Comment from "../models/Comment";
-import { useRouter } from "next/router";
+import User from "../models/User";
+import Comment from "../models/Comment"
+import { getMarker } from "./Marker"
 
 export const verifyToken = async (req, res) => {
   const token = req.cookies?.token
@@ -23,12 +21,12 @@ export const verifyToken = async (req, res) => {
   })
 }
 
-export const updateUser = async(currUser, updates) => {
-  if (currUser==null || updates==null) {
+export const updateUser = async (currUser, updates) => {
+  if (currUser == null || updates == null) {
     throw new Error("updateUser error!")
   }
   await mongoDB()
-  const user = await User.findOneAndUpdate({_id: currUser.id}, updates)
+  const user = await User.findOneAndUpdate({ _id: currUser.id }, updates)
 }
 
 export const getBasicUser = async (token) => {
@@ -50,7 +48,7 @@ export const getBasicUser = async (token) => {
 
     return {
       id,
-      username: user.username, 
+      username: user.username,
       profileImg: user.profileImg
     };
   } catch (e) {
@@ -307,6 +305,23 @@ export const getUserMarkers = async (currUser, { userId }) => {
     throw new Error("getUserMarkers find error!")
   } else {
     return markers
+  }
+
+}
+
+export const getUserLikedMarkers = async (currUser) => {
+
+  if (currUser == null) {
+    throw new Error("getUserMarkers error!")
+  }
+  await mongoDB();
+
+  const user = await User.findById(currUser.id)
+
+  if (user == null) {
+    throw new Error("getUserLikedMarkers find error!")
+  } else {
+    return user.likedMarkers
   }
 
 }

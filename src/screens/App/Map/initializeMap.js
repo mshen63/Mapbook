@@ -24,8 +24,7 @@ export const initializeMap = async (currUser, mapboxgl, map, markers, setCurrMar
     if (markers) {
         let mapmarks = mapMarkers
         markers.forEach(marker => {
-            var randomColor = "#" + (Math.floor(Math.random() * 16777215).toString(16));
-            let mark = new mapboxgl.Marker({ color: randomColor })
+            let mark = new mapboxgl.Marker({color: "#68D391"})
                 .setLngLat([marker.lng, marker.lat])
                 .addTo(map)
             mapmarks[marker._id] = mark
@@ -43,8 +42,7 @@ export const initializeMap = async (currUser, mapboxgl, map, markers, setCurrMar
     }
     if (canMakeEdits) {
         map.on("click", async function (e) {
-            var randomColor = "#" + (Math.floor(Math.random() * 16777215).toString(16));
-            let marker = new mapboxgl.Marker({ color: randomColor }).setLngLat([e.lngLat.lng, e.lngLat.lat]).addTo(map)
+            let marker = new mapboxgl.Marker({color: "#68D391"}).setLngLat([e.lngLat.lng, e.lngLat.lat]).addTo(map)
             setCurrMarker({
                 isNew: true,
                 marker: marker

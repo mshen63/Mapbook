@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
-const bcrypt = require('bcrypt')
-const { DateTime } = require('luxon')
 const { isEmail } = require('validator')
 
 const UserSchema = new Schema({
@@ -67,17 +65,6 @@ const UserSchema = new Schema({
 
 
 }
-// , {
-//   toJSON: {
-//     virtuals: true
-//   }
-// }
 );
-
-// UserSchema
-//   .virtual('formattedRegisterDate')
-//   .get(function () {
-//     return DateTime.fromJSDate(this.registerDate).toLocaleString(DateTime.DATE_MED)
-//   })
 
 export default mongoose.models.User ?? mongoose.model("User", UserSchema);
