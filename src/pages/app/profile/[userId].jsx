@@ -12,7 +12,7 @@ const ProfilePage = (props) => {
 
     useEffect(()=> {
         router.replace(router.asPath)
-    }, [specificUser])
+    }, [])
     return (<>
         {
             currUser.id === specificUser[0]._id
@@ -51,6 +51,7 @@ ProfilePage.getInitialProps = async ({ query, req }) => {
             friendReqs = await getUserFriendRequests(cookies)
             allUsers = await getAllUsers(cookies)
         }
+        
         const returnbody = {
             markers,
             specificUser,
@@ -58,6 +59,7 @@ ProfilePage.getInitialProps = async ({ query, req }) => {
             friendReqs, 
             allUsers
         }
+        console.log(returnbody)
         return returnbody
     } catch (e) {
         return { error: e.message }
