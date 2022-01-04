@@ -14,8 +14,9 @@ import routes from "./routes";
 const Header = ({ loggedIn, currentRoute, currUser }) => {
   const router = useRouter()
   const handleLogout = async() => {
-    router.replace(urls.pages.login)
     const resp = await logout().catch(e=>window.alert(e))
+    router.replace(urls.pages.login)
+
     
     // return (logout()
     //   .then(() => Router.replace(urls.pages.login))
