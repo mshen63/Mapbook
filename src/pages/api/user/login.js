@@ -8,7 +8,6 @@ const handler = (req, res) =>
   login(req.body)
     .then((token) => {
       res.setHeader("Set-Cookie", createCookie(token, 604800));
-
       return res.status(200).json({
         success: true,
         payload: token,
