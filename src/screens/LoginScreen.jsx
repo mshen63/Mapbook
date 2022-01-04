@@ -20,14 +20,14 @@ const LoginScreen = () => {
     setShowPassword(!showPassword)
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-
-    return login(username, password)
-      .then(() => Router.replace(urls.pages.app.map))
-      .catch((error) =>
-        toast(error.message)
-      );
+    try {
+      await login(username, password);
+      return await Router.replace(urls.pages.app.map);
+    } catch (error) {
+      return toast(error.message);
+    }
   };
 
   return (
@@ -64,7 +64,6 @@ const LoginScreen = () => {
             <Stack
               spacing={4}
               p="1rem"
-
               boxShadow="md"
             >
               <FormControl>
@@ -74,7 +73,6 @@ const LoginScreen = () => {
                     children={<CFaUserAlt color="gray.300" />}
                   />
                   <Input
-
                     placeholder="Username"
                     value={username}
                     onChange={(event) => setUsername(event.target.value)}
@@ -91,20 +89,16 @@ const LoginScreen = () => {
                   <Input
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
-
                     id="password"
-
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
                   />
-
                   <InputRightElement width="4.5rem">
                     <Button h="1.75rem" size="sm" onClick={handleShowClick}>
                       {showPassword ? "Hide" : "Show"}
                     </Button>
                   </InputRightElement>
                 </InputGroup>
-               
               </FormControl>
               <Button
                 borderRadius={0}
@@ -127,9 +121,7 @@ const LoginScreen = () => {
         </Link>
       </Box>
     </Flex>
-
   );
-
 };
 
 export default LoginScreen;

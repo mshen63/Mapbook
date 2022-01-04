@@ -36,7 +36,6 @@ const MapScreen = ({ markers, canMakeEdits }) => {
                 zoom: 5,
             });
             setTheMap(map)
-
             initializeMap(currUser, mapboxgl, map, markers, setCurrMarker, mapMarkers, setMapMarkers, canMakeEdits)
         }
     }, [pageIsMounted, markers]);

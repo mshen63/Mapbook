@@ -33,7 +33,7 @@ const RegisterScreen = () => {
         let error_mess = (error.message.split(": ")[2].split(",")[0]).split("_")[0]
         if (error_mess === "username") {
           toast.error('Username taken!');
-        } else if (error_mess==="email") {
+        } else if (error_mess === "email") {
           toast.error("Email taken!")
         }
       });
@@ -74,7 +74,6 @@ const RegisterScreen = () => {
             <Stack
               spacing={4}
               p="1rem"
-
               boxShadow="md"
             >
               <FormControl>
@@ -84,8 +83,6 @@ const RegisterScreen = () => {
                     children={<CFaMailBulk color="gray.300" />}
                   />
                   <Input
-
-
                     placeholder="Email"
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
@@ -99,8 +96,6 @@ const RegisterScreen = () => {
                     children={<CFaUserAlt color="gray.300" />}
                   />
                   <Input
-
-
                     placeholder="Username"
                     value={username}
                     onChange={(event) => setUsername(event.target.value)}
@@ -117,9 +112,7 @@ const RegisterScreen = () => {
                   <Input
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
-
                     id="password"
-
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
                   />
@@ -153,7 +146,6 @@ const RegisterScreen = () => {
         </Link>
       </Box>
     </Flex>
-
   );
 };
 
