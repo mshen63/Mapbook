@@ -39,7 +39,7 @@ const FriendsSection = (props) => {
       direction="column"
       justify="center"
     >
-      {friendRequests.length!=0 
+      {friendRequests && friendRequests.length!=0 
         && (
           <><Text textAlign="left">Friend Requests</Text>
             <Grid

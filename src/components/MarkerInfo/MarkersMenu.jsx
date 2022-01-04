@@ -12,7 +12,6 @@ const MarkersMenu = (props) => {
 
     if (router.asPath.includes("/explore")) {
         likedMarkers = useContext(LikedMarkerContext)
-        console.log(likedMarkers)
         title = "Suggested Markers"
     } else if (router.asPath.includes("/profile")) {
         title = "User Markers"
@@ -30,9 +29,8 @@ const MarkersMenu = (props) => {
         >
             <Text>{title}</Text>
             <Divider borderColor="gray.600" marginTop={3} marginBottom={3} />
-            {markers.length != 0 && markers.map((mark) => {
+            {markers && markers.length != 0 && markers.map((mark) => {
                 if (mark) {
-                    console.log(mark)
                     return (
                         <Stack margin="5px" key={mark._id} width="90%">
                             <Button onClick={(e) => {
@@ -56,13 +54,13 @@ const MarkersMenu = (props) => {
                 }
             })
             }
-            {markers.length == 0 && <Text color="gray.600">{instr}</Text>}
+            {markers && markers.length == 0 && <Text color="gray.600">{instr}</Text>}
 
             {router.asPath.includes("/explore") &&
                 <>
                     <Text marginTop={5}>Liked Markers</Text>
                     <Divider borderColor="gray.600" marginTop={3} marginBottom={3} />
-                    {likedMarkers.length != 0 && likedMarkers.map(mark => (
+                    {likedMarkers && likedMarkers.length != 0 && likedMarkers.map(mark => (
                         <Stack margin="5px" key={mark._id} width="90%">
                             <Button onClick={(e) => {
                                 map.flyTo({ center: [mark.lng, mark.lat], zoom: 8 })
@@ -80,7 +78,7 @@ const MarkersMenu = (props) => {
                             </Button>
                         </Stack>
                     ))}
-                    {likedMarkers.length == 0 && <Text color="gray.600">Like a marker to add to this list!</Text>}
+                    {likedMarkers && likedMarkers.length == 0 && <Text color="gray.600">Like a marker to add to this list!</Text>}
 
                 </>
             }

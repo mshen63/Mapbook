@@ -26,7 +26,6 @@ const RegisterScreen = () => {
     return signUp(email, username, password)
       .then(() => Router.replace(urls.pages.app.map))
       .catch((error) => {
-        // console.log(error.message)
         if (!error.message.includes("E1100")) {
           toast.error(error.message)
           return;

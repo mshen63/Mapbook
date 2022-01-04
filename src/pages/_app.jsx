@@ -49,7 +49,6 @@ MyApp.getInitialProps = async (appContext) => {
     currUser = await getCurrentUser(cookies);
 
     if (router.asPath.startsWith("/app") && currUser == null) {
-      console.log("reroute from app to login")
       if (res) {
         res.writeHead(301, { Location: urls.pages.login });
         res.end();
