@@ -1,6 +1,8 @@
 import { Flex, Image, Text } from "@chakra-ui/react";
 import clsx from "clsx";
-import Router from "next/router";
+
+import Router, {useRouter} from "next/router";
+
 import PropTypes from "prop-types";
 import React from "react";
 import urls from "../../../utils/urls";
@@ -10,13 +12,15 @@ import styles from "./Header.module.css";
 import routes from "./routes";
 
 const Header = ({ loggedIn, currentRoute, currUser }) => {
-
-  const handleLogout = () => {
-    console.log("logout")
-    return (logout()
-      .then(() => Router.replace(urls.pages.login))
-      .catch((e) => window.alert(e))
-    )
+  const router = useRouter()
+  const handleLogout = async() => {
+    router.replace(urls.pages.login)
+    const resp = await logout().catch(e=>window.alert(e))
+    
+    // return (logout()
+    //   .then(() => Router.replace(urls.pages.login))
+    //   .catch((e) => window.alert(e))
+    // )
   };
 
   const handleGoToProfile = () => Router.replace(urls.pages.app.profile.get(currUser.id))
