@@ -1,5 +1,5 @@
 import { getCurrentUser } from "../actions/User";
-import LoginScreen from "../screens/Login";
+import LoginScreen from "../screens/LoginScreen.jsx";
 import Router from "next/router";
 import urls from "../../utils/urls";
 

@@ -1,5 +1,5 @@
 import { getCurrentUser } from "../actions/User";
-import RegisterScreen from "../screens/Register";
+import RegisterScreen from "../screens/RegisterScreen.jsx";
 import Router from "next/router";
 import urls from "../../utils/urls";
 

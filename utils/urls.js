@@ -8,11 +8,11 @@ export default {
     index: "/",
     ssr: "/ssr",
     login: "/login",
-    register: "/register", 
+    register: "/register",
     app: {
       map: "/app",
       profile: {
-        get: (userId)=>{return("/app/profile/" + userId)},
+        get: (userId) => { return ("/app/profile/" + userId) },
       },
       explore: "/app/explore"
 
@@ -25,7 +25,7 @@ export default {
       login: "/api/user/login",
       logout: "/api/user/logout",
       getCurrent: "/api/user/get-current",
-      getSpecificUser: "/api/user/getSpecificUser", 
+      getSpecificUser: "/api/user/getSpecificUser",
       addFriend: "/api/user/addFriend",
       addMarker: "/api/user/addMarker",
       getAllUsers: "/api/user/getAllUsers",
@@ -39,19 +39,19 @@ export default {
       removeMarker: "/api/user/removeMarker",
       sendFriendRequest: "/api/user/sendFriendRequest",
       updateUser: "/api/user/updateUser"
-      
+
     },
     marker: {
       createMarker: "/api/marker/createMarker",
       deleteMarker: "/api/marker/deleteMarker",
       getMarker: "/api/marker/getMarker",
-      likeMarker: "/api/marker/likeMarker", 
-      unlikeMarker: "/api/marker/unlikeMarker", 
-      updateMarker: "/api/marker/updateMarker", 
+      likeMarker: "/api/marker/likeMarker",
+      unlikeMarker: "/api/marker/unlikeMarker",
+      updateMarker: "/api/marker/updateMarker",
       getRandomMarkers: "/api/marker/getRandomMarkers"
-    }, 
+    },
     comment: {
-      createComment: "/api/comment/createComment", 
+      createComment: "/api/comment/createComment",
       deleteComment: "/api/comment/deleteComment"
     }
 

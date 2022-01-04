@@ -33,7 +33,7 @@ export const deleteComment = async (currUser, { commentId }) => {
     }
     await mongoDB();
 
-    return Comment.findOneAndDelete({ _id: commentId}).then(async (deleted) => {
+    return Comment.findOneAndDelete({ _id: commentId }).then(async (deleted) => {
         if (deleted == null) {
             throw new Error(
                 "No marker found to delete!"

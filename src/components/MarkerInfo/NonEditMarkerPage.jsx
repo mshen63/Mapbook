@@ -13,19 +13,19 @@ import { likeMarker, unlikeMarker } from "../../actions/Marker";
 import DeleteControl from "../DeleteMarkerControl";
 import { UserContext } from "../../pages/_app";
 
-
 const BackIcon = chakra(IoArrowBackCircleSharp)
 const LikeIcon = chakra(HiThumbUp)
 const LikeOutlineIcon = chakra(HiOutlineThumbUp)
 const SendIcon = chakra(AiOutlineArrowRight)
 const EditIcon = chakra(AiOutlineEdit)
 const TrashIcon = chakra(HiOutlineTrash)
-const NonEditMarkerPage = (props) => {
-    const { isOpen, onOpen, onClose } = useDisclosure()
 
-    const router = useRouter();
+const NonEditMarkerPage = (props) => {
     const { currMarker, setShowMenu, canMakeEdits, setEditing } = props
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const router = useRouter();
     const currUser = useContext(UserContext)
+
     const [likes, setLikes] = useState(currMarker.likes.length)
     const [isLiked, setIsLiked] = useState(currMarker.likes.includes(currUser.id))
     const [isRefreshing, setIsRefreshing] = useState(false)
@@ -86,10 +86,7 @@ const NonEditMarkerPage = (props) => {
                     </ModalFooter>
                 </ModalContent>
             </Modal>
-            <div
-                onClick={e => setShowMenu(true)}
-                bg="white"
-            >
+            <div onClick={e => setShowMenu(true)} bg="white">
                 <BackIcon
                     bg = "white"
                     borderRadius = "full"
@@ -100,7 +97,6 @@ const NonEditMarkerPage = (props) => {
                 />
             </div>
             <Image src={currMarker.imgUrl} />
-
             <Box p='6'>
                 <Box display='flex' alignItems='baseline' justifyContent="space-between">
                     <Badge
@@ -112,6 +108,7 @@ const NonEditMarkerPage = (props) => {
                     >
                         Creator: {currMarker.user.username}
                     </Badge>
+
                     {currMarker.priv && (<Badge
                         borderRadius='full'
                         px='2'
@@ -147,8 +144,6 @@ const NonEditMarkerPage = (props) => {
                                         size={18}
                                         marginBottom="5px"
                                         marginLeft="2px"
-
-
                                     />
                                 </Button>
                             )
@@ -159,15 +154,12 @@ const NonEditMarkerPage = (props) => {
                                         size={18}
                                         marginBottom="3px"
                                         marginLeft="2px"
-
                                     />
                                 </Button>
                             )
                         }
-
                     </Box>
                 </Box>
-
                 <Box
                     mt='1'
                     fontWeight='semibold'
@@ -178,31 +170,25 @@ const NonEditMarkerPage = (props) => {
                     {currMarker.name}
                 </Box>
                 <Box fontSize={10}>{(new Date(currMarker.post_date)).toDateString()}</Box>
-
                 <Box color="gray.600">
                     {currMarker.description}
                 </Box>
                 <Divider borderColor="gray.600" marginTop={3} marginBottom={3} />
-
                 <Box>Comments: </Box>
                 <Flex display='flex' mt='2' align='center' justify="center" direction="column">
                     <InputGroup marginBottom={3}>
-
                         <Input
-
                             placeholder="Add Comment"
                             value={comment}
                             onChange={(event) => setComment(event.target.value)}
                         />
-                        <InputRightElement
-                        >
+                        <InputRightElement>
                             <Box onClick={handleComment} _hover={{ color: "gray.600", stroke: "gray.600" }} color="gray.300"><SendIcon ></SendIcon></Box>
                         </InputRightElement>
                     </InputGroup>
 
                     {currMarker.comments && currMarker.comments.slice(0).reverse().map(comment => (
                         <>
-
                             <Box rounded="md" width="100%" padding={3} bg="green.100" >
                                 <Flex justify="space-between" width="100%">
                                     <Text fontSize="xs" _hover={{ textDecoration: "underline" }} onClick={e => handleGoToProfile(comment.user._id)}>{comment.user.username}</Text>
@@ -212,21 +198,15 @@ const NonEditMarkerPage = (props) => {
                                             size={15}
                                             onClick={e => {
                                                 setCurrComment(comment._id)
-                                            }
-                                            }
+                                            }}
                                         />
                                     </Button>)}
-
                                 </Flex>
                                 <Text fontSize="sm">{comment.content}</Text>
                             </Box>
                             <Text width="100%" marginBottom={2} fontSize="10px">{formatDistance(parseISO(comment.postDate), Date.now(), { addSuffix: true })}</Text>
-
-
                         </>
                     ))}
-
-
                 </Flex>
             </Box>
         </Box>

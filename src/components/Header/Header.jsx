@@ -9,8 +9,6 @@ import NavLink from "../NavLink";
 import styles from "./Header.module.css";
 import routes from "./routes";
 
-
-
 const Header = ({ loggedIn, currentRoute, currUser }) => {
 
   const handleLogout = () =>
@@ -24,8 +22,6 @@ const Header = ({ loggedIn, currentRoute, currUser }) => {
   return (
     <div className={styles.root}>
       {routes
-        // show the routes which don't require auth
-        // and the ones that require auth and being logged in
         .filter((route) => (loggedIn && route.auth) || (!loggedIn && !route.auth))
         .map(({ name, link, atEnd }) => (
           <NavLink
@@ -39,7 +35,6 @@ const Header = ({ loggedIn, currentRoute, currUser }) => {
             {name}
           </NavLink>
         )
-
         )}
       {loggedIn &&
         (<button
@@ -56,9 +51,6 @@ const Header = ({ loggedIn, currentRoute, currUser }) => {
           <Text marginLeft={1} color="white" >{currUser.username} </Text>
         </button>
       </Flex>)}
-
-
-
     </div >
   )
 }

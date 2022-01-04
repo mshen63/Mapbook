@@ -1,4 +1,3 @@
-import { ModalBody } from "@chakra-ui/react";
 
 export const authedFetch = (url, options, cookies) => {
 

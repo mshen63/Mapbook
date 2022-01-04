@@ -1,5 +1,5 @@
+import { authedGetRequest, authedPostRequest } from "../../utils/requests";
 import urls from "../../utils/urls";
-import { authedPostRequest, authedGetRequest } from "../../utils/requests";
 
 export const signUp = (email, username, password) =>
   fetch(urls.baseUrl + urls.api.user.signUp, {
@@ -295,7 +295,7 @@ export const getUserMarkers = (cookies, userId) =>
       return data.payload;
     });
 
-export const getUserLikedMarkers = (cookies) =>{
+export const getUserLikedMarkers = (cookies) => {
   return authedGetRequest(
     urls.baseUrl + urls.api.user.getUserLikedMarkers,
     cookies
@@ -308,7 +308,8 @@ export const getUserLikedMarkers = (cookies) =>{
         throw new Error(data.message);
       }
       return data.payload;
-    })};
+    })
+};
 
 
 export const getSpecificUser = (cookies, userId) =>

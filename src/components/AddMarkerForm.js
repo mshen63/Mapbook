@@ -14,20 +14,18 @@ mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY
 
 const AddMarkerForm = ({ map, currMarker, setCurrMarker, setMarks, marks }) => {
     const currUser = useContext(UserContext)
+    const router = useRouter();
     const { mapMarkers, setMapMarkers } = useContext(MarkersContext)
+
     const [priv, setPriv] = useState(true)
     const [name, setName] = useState("")
     const [desc, setDesc] = useState("")
     const [imgUrl, setImgUrl] = useState("")
     const [file, setFile] = useState(null)
 
-    const router = useRouter();
-    // the preview
-
     const refreshData = () => {
         router.replace(router.asPath)
     }
-
 
     useEffect(() => {
         setName("")
@@ -46,7 +44,7 @@ const AddMarkerForm = ({ map, currMarker, setCurrMarker, setMarks, marks }) => {
         } else {
             await createMarker(currUser, currMarker.marker.getLngLat().lat, currMarker.marker.getLngLat().lng, name, desc, priv, imgUrl)
                 .then(datamarker => {
-                    let marker = new mapboxgl.Marker({color: "#68D391"}).setLngLat([currMarker.marker.getLngLat().lng, currMarker.marker.getLngLat().lat]).addTo(map)
+                    let marker = new mapboxgl.Marker({ color: "#68D391" }).setLngLat([currMarker.marker.getLngLat().lng, currMarker.marker.getLngLat().lat]).addTo(map)
                     marker.getElement().addEventListener('click', async (e) => {
                         e.stopPropagation();
                         let updatedMarker = await getMarker(currUser, datamarker._id)
@@ -62,7 +60,6 @@ const AddMarkerForm = ({ map, currMarker, setCurrMarker, setMarks, marks }) => {
                 })
                 .catch(e => toast.error(e.message))
             refreshData();
-
         }
     }
 
@@ -94,12 +91,11 @@ const AddMarkerForm = ({ map, currMarker, setCurrMarker, setMarks, marks }) => {
                                     />
                                 </InputGroup>
                             </FormControl>
-                            <DropzoneComponent 
-                            setImgUrl={setImgUrl}
-                            setFile = {setFile}
-                            file = {file}
+                            <DropzoneComponent
+                                setImgUrl={setImgUrl}
+                                setFile={setFile}
+                                file={file}
                             />
-
                             <FormControl>
                                 <InputGroup>
                                     <Textarea
@@ -115,8 +111,7 @@ const AddMarkerForm = ({ map, currMarker, setCurrMarker, setMarks, marks }) => {
                                 </InputGroup>
                             </FormControl>
                             <FormControl display='flex' alignItems='center' justifyContent="center">
-
-                                <FormLabel htmlFor="private"  >
+                                <FormLabel htmlFor="private">
                                     Private
                                 </FormLabel>
                                 <Switch id="private" isChecked={priv} onChange={(e) => setPriv(!priv)}></Switch>

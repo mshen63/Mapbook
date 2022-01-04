@@ -1,56 +1,33 @@
-import { useState } from "react";
-import Router from "next/router";
-import { login, signUp } from "../../actions/User";
-import urls from "../../../utils/urls";
-import classes from "./RegisterScreen.module.css";
 import {
-  Flex,
-  Heading,
-  Input,
-  Button,
-  InputGroup,
-  Stack,
-  InputLeftElement,
-  chakra,
-  Box,
-  Link,
-  Avatar,
-  FormControl,
-  FormHelperText,
-  InputRightElement
+  Avatar, Box, Button, chakra, Flex, FormControl, Heading,
+  Input, InputGroup, InputLeftElement, InputRightElement, Link, Stack
 } from "@chakra-ui/react";
-import { FaUserAlt, FaLock, FaMailBulk } from "react-icons/fa";
-import toast, {Toaster} from 'react-hot-toast'
-
+import Router from "next/router";
+import { useState } from "react";
+import toast, { Toaster } from 'react-hot-toast';
+import { FaLock, FaUserAlt } from "react-icons/fa";
+import urls from "../../utils/urls";
+import { login } from "../actions/User";
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
-const CFaMailBulk = chakra(FaMailBulk);
-const RegisterScreen = () => {
+const LoginScreen = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleShowClick = () => setShowPassword(!showPassword);
+  const handleShowClick = () => {
+    setShowPassword(!showPassword)
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    return signUp(email, username, password)
-      .then(() => Router.replace(urls.pages.app.map))
-      .catch((error) => {
-        if (error.message.includes("3")) {
-          toast.error(error.message)
-          return;
-        }
-        let error_mess = error.message.split(": ")[2].split(",")[0]
-        if (error_mess.split(" ")[1] === "dup") {
-          toast.error('Username taken!');
-        } else {
-          toast.error(error_mess)
-        }
-      });
 
+    return login(username, password)
+      .then(() => Router.replace(urls.pages.app.map))
+      .catch((error) =>
+        toast(error.message)
+      );
   };
 
   return (
@@ -64,11 +41,11 @@ const RegisterScreen = () => {
       alignItems="center"
     >
       <Toaster
-      toastOptions = {{
-        style: {
-          textAlign: "center"
-        }
-      }}
+        toastOptions={{
+          style: {
+            textAlign: "center"
+          }
+        }}
       />
       <Stack
         flexDir="column"
@@ -79,8 +56,8 @@ const RegisterScreen = () => {
         p="5rem"
         rounded="2xl"
       >
-        <Avatar bg="teal.500" />
-        <Heading color="teal.400">Create an Account</Heading>
+        <Avatar bg="green.600" />
+        <Heading color="green.700">Welcome</Heading>
         <Box minW={{ base: "90%", md: "468px" }}>
 
           <form onSubmit={handleSubmit}>
@@ -94,26 +71,10 @@ const RegisterScreen = () => {
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
-                    children={<CFaMailBulk color="gray.300" />}
-                  />
-                  <Input
-           
-                   
-                    placeholder="Email"
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}
-                  />
-                </InputGroup>
-              </FormControl>
-              <FormControl>
-                <InputGroup>
-                  <InputLeftElement
-                    pointerEvents="none"
                     children={<CFaUserAlt color="gray.300" />}
                   />
                   <Input
-               
- 
+
                     placeholder="Username"
                     value={username}
                     onChange={(event) => setUsername(event.target.value)}
@@ -130,9 +91,9 @@ const RegisterScreen = () => {
                   <Input
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
-             
+
                     id="password"
-                    
+
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
                   />
@@ -143,38 +104,41 @@ const RegisterScreen = () => {
                     </Button>
                   </InputRightElement>
                 </InputGroup>
-
+               
               </FormControl>
               <Button
                 borderRadius={0}
                 type="submit"
                 variant="solid"
-                colorScheme="teal"
+                bg="green.700"
                 width="full"
+                color="white"
               >
-                Register
+                Login
               </Button>
             </Stack>
           </form>
         </Box>
       </Stack>
-      {/* <p className={classes.switchText}>
-          Don't have an account?
-          <a className={classes.buttonText} onClick={() => Router.replace(urls.pages.register)}>
-            Register now
-          </a>
-        </p> */}
       <Box>
-        Already have an account?{" "}
-        <Link color="teal.500" href={urls.pages.login}>
-          Log in here!
+        Don't have an account?{" "}
+        <Link color="green.600" href={urls.pages.register}>
+          Register here!
         </Link>
       </Box>
     </Flex>
 
   );
+
 };
 
-export default RegisterScreen;
+export default LoginScreen;
+
+
+
+
+
+
+
 
 

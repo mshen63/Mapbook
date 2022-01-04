@@ -24,6 +24,6 @@ IndexPage.getInitialProps = async ({ req, res }) => {
         }
     }
 
-    return {currUser}
+    return { currUser }
 }
 export default IndexPage;

@@ -1,28 +1,23 @@
-import React, { useState, useCallback, useEffect } from "react";
-import dynamic from "next/dynamic";
-import "leaflet/dist/leaflet.css"
-import { Textarea, Icon, Center, Input, ButtonIcon, ButtonGroup, chakra, Editable, EditablePreview, EditableInput, IconButton, useEditableControls, Divider, GridItem, Button, Grid, Flex, Text, Stack, Image, Box, Accordion, AccordionButton, AccordionPanel, AccordionItem, AccordionIcon } from "@chakra-ui/react";
+import { Box, Center, chakra, Divider, Flex, Icon, IconButton, Image, Text, Textarea } from "@chakra-ui/react";
+import { parseISO } from "date-fns";
 import formatDistance from "date-fns/formatDistance";
-import { format, toDate, parseISO } from "date-fns"
-import MapScreen from "../Map/MapScreen";
-import { useDropzone } from "react-dropzone"
+import "leaflet/dist/leaflet.css";
 import { useRouter } from "next/router";
-// import { useRouter } from "next/router";
-import Router from "next/router";
-import { updateUser } from "../../../actions/User";
+import React, { useCallback, useState } from "react";
+import { useDropzone } from "react-dropzone";
+import toast from "react-hot-toast";
+import { AiFillFileAdd, AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
+import { FiEdit } from "react-icons/fi";
+import { updateUser } from "../../actions/User";
+import FriendsSection from "../../components/FriendsSection";
 
-import toast from  "react-hot-toast";
-import FriendsScreen from "../Friends";
-import urls from "../../../../utils/urls";
-// import { AiFillFileAdd } from 'react-icons/ai';
-import { FiEdit } from "react-icons/fi"
-import { AiFillFileAdd, AiOutlineCheck, AiOutlineClose } from "react-icons/ai"
 
 const EditIcon = chakra(FiEdit)
 const CheckIcon = chakra(AiOutlineCheck)
 const CloseIcon = chakra(AiOutlineClose)
 const url = process.env.NEXT_PUBLIC_CLOUDINARY_URL
 const preset = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET
+
 const PersonalProfileScreen = (props) => {
 
     const { currUser, friendReqs, specificUser, specificUserFriends, allUsers } = props
@@ -33,25 +28,22 @@ const PersonalProfileScreen = (props) => {
     const router = useRouter();
 
     const addEdits = async(e) => {
-        
-        setIsEditing(false)
         const updates = {}
         updates.bio = bio
         if (file) {
             updates.profileImg = file
         }
-        
         await updateUser(currUser, updates)
-        setFile(null)
-        setBio(specificUser[0].bio)
+        clearEdits()
         refreshData()
     }
 
-    const cancelEdits = async(e) => {
+    const clearEdits = async(e) => {
         setIsEditing(false)
         setFile(null)
         setBio(specificUser[0].bio)
     }
+
     const refreshData = () => {
         router.replace(router.asPath)
     }
@@ -65,14 +57,13 @@ const PersonalProfileScreen = (props) => {
             method: "POST",
             body: formData
         }).then(resp => {
-
             return resp.text()
         }).then((data) => {
             setFile(JSON.parse(data).secure_url)
         }).catch(e => toast.error("Photo invalid or too large!"))
     }, [])
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, maxFiles: 1, multiple: false })
 
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, maxFiles: 1, multiple: false })
 
     return (
         <Flex
@@ -97,7 +88,7 @@ const PersonalProfileScreen = (props) => {
                         <IconButton
 
                             children={<CloseIcon />}
-                            onClick={cancelEdits}
+                            onClick={clearEdits}
                             bg="white"
                             p={0}
                             marginBottom="90px"
@@ -165,15 +156,13 @@ const PersonalProfileScreen = (props) => {
                 </Flex>)
             }
 
-
             <Divider borderColor="gray.600" marginTop={3} marginBottom={3} />
 
-            <FriendsScreen
+            <FriendsSection
                 currUser={currUser}
                 initialFriends={specificUserFriends}
                 friendReqs={friendReqs}
                 allUsers={allUsers}
-
             />
 
         </Flex>

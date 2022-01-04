@@ -1,5 +1,5 @@
+import { authedPostRequest } from "../../utils/requests";
 import urls from "../../utils/urls";
-import { authedPostRequest, authedGetRequest } from "../../utils/requests";
 
 export const createComment = (cookies, markerId, content) =>
     authedPostRequest(

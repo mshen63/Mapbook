@@ -1,5 +1,5 @@
+import { authedGetRequest, authedPostRequest } from "../../utils/requests";
 import urls from "../../utils/urls";
-import { authedPostRequest, authedGetRequest } from "../../utils/requests";
 
 export const createMarker = (cookies, lat, lng, name, description, priv, imgUrl) =>
     authedPostRequest(

@@ -1,19 +1,20 @@
 import {
     Button, chakra, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure
 } from "@chakra-ui/react";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
+import { useContext } from "react";
 import { HiOutlineTrash } from "react-icons/hi";
 import { deleteMarker } from "../actions/Marker";
-import { useContext } from "react";
 import { UserContext } from "../pages/_app";
-import { MarkersContext} from "../screens/App/Map/MapScreen"
+import { MarkersContext } from "../screens/App/Map/MapScreen";
 
 const DeleteIcon = chakra(HiOutlineTrash)
 const DeleteControl = ({setShowMenu, currMarker}) => {
-    const currUser = useContext(UserContext)
     const router = useRouter();
+    const currUser = useContext(UserContext)
     const {mapMarkers, setMapMarkers} = useContext(MarkersContext)
     const { isOpen, onOpen, onClose } = useDisclosure()
+
     const handleDeleteMarker = async () => {
         mapMarkers[currMarker._id].remove()
         delete mapMarkers[currMarker._id]
@@ -39,7 +40,6 @@ const DeleteControl = ({setShowMenu, currMarker}) => {
                     <ModalBody>
                         Are you sure you want to delete this marker?
                     </ModalBody>
-
                     <ModalFooter>
                         <Button colorScheme='blue' mr={3} onClick={handleDeleteMarker}>
                             Confirm

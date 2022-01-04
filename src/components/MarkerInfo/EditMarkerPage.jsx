@@ -2,11 +2,10 @@ import { Badge, Box, Button, chakra, Flex, FormLabel, Input, Switch, Textarea } 
 import Router, { useRouter } from "next/router";
 import React, { useContext, useState } from "react";
 import toast from "react-hot-toast";
-import { AiOutlineArrowRight, AiOutlineCheck, AiOutlineClose, AiOutlineEdit } from "react-icons/ai";
+import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
 import { HiOutlineThumbUp, HiThumbUp } from "react-icons/hi";
 import { IoArrowBackCircleSharp } from "react-icons/io5";
 import urls from "../../../utils/urls";
-import { createComment } from "../../actions/Comment";
 import { likeMarker, unlikeMarker, updateMarker } from "../../actions/Marker";
 import { UserContext } from "../../pages/_app";
 import DropzoneComponent from "../DropzoneComponent";
@@ -16,8 +15,6 @@ const CheckIcon = chakra(AiOutlineCheck)
 const BackIcon = chakra(IoArrowBackCircleSharp)
 const LikeIcon = chakra(HiThumbUp)
 const LikeOutlineIcon = chakra(HiOutlineThumbUp)
-const SendIcon = chakra(AiOutlineArrowRight)
-const EditIcon = chakra(AiOutlineEdit)
 const CloseIcon = chakra(AiOutlineClose)
 
 const EditMarkerPage = (props) => {
@@ -35,7 +32,6 @@ const EditMarkerPage = (props) => {
     const [priv, setPriv] = useState(currMarker.priv)
     const [file, setFile] = useState(null)
 
-
     const handleGoToProfile = (userId) => Router.replace(urls.pages.app.profile.get(userId))
     const addEdits = async (e) => {
         if (!name) {
@@ -43,23 +39,19 @@ const EditMarkerPage = (props) => {
         } else {
             let updates = { "name": name, "description": desc, "imgUrl": imgUrl, "priv": priv }
             await updateMarker(currUser, { "markerId": currMarker._id, "updates": updates })
-            setEditing(false)
             refreshData()
-
-            setName(currMarker.name)
-            setDesc(currMarker.description)
-            setImgUrl(currMarker.imgUrl)
-            setFile(null)
+            clearEdits()
         }
     }
 
-    const cancelEdits = (e) => {
+    const clearEdits = (e) => {
         setEditing(false)
         setName(currMarker.name)
         setDesc(currMarker.description)
         setImgUrl(currMarker.imgUrl)
         setFile(null)
     }
+
     const handleLikeButton = async (isLike) => {
         setIsLiked(isLike)
         if (isLike) {
@@ -72,16 +64,6 @@ const EditMarkerPage = (props) => {
         refreshData();
     }
 
-    const handleComment = async () => {
-        if (!comment) {
-            toast.error("Please enter a comment!")
-        } else {
-            await createComment(currUser, currMarker._id, comment)
-            setComment("")
-        }
-        refreshData()
-    }
-
     const refreshData = () => {
         router.replace(router.asPath)
         setIsRefreshing(true)
@@ -89,10 +71,7 @@ const EditMarkerPage = (props) => {
 
     return (
         <Box width="18vw" height="80vh" borderWidth='1px' borderRadius='lg' overflowY="scroll" position="relative">
-
-            <div
-                bg="white"
-            >
+            <div bg="white">
                 <BackIcon
                     bg="white"
                     borderRadius="full"
@@ -111,7 +90,6 @@ const EditMarkerPage = (props) => {
                     file={file}
                 />
             </div>
-
 
             <Box p='6'>
                 <Box display='flex' alignItems='baseline' justifyContent="space-between">
@@ -139,7 +117,7 @@ const EditMarkerPage = (props) => {
                             />
                         </Button>
 
-                        <Button size="xs" bg="white" marginLeft={0} marginRight={0} onClick={cancelEdits}>
+                        <Button size="xs" bg="white" marginLeft={0} marginRight={0} onClick={clearEdits}>
                             <CloseIcon
                                 size={18}
                                 marginBottom="3px"
@@ -154,8 +132,6 @@ const EditMarkerPage = (props) => {
                                         size={18}
                                         marginBottom="5px"
                                         marginLeft="2px"
-
-
                                     />
                                 </Button>
                             )
@@ -166,7 +142,6 @@ const EditMarkerPage = (props) => {
                                         size={18}
                                         marginBottom="3px"
                                         marginLeft="2px"
-
                                     />
                                 </Button>
                             )
@@ -178,7 +153,6 @@ const EditMarkerPage = (props) => {
                     <Textarea
                         value={desc}
                         onChange={e => setDesc(e.target.value)}
-
                     />
                     <Flex marginTop={3}>
                         <FormLabel htmlFor="private" >

@@ -14,6 +14,9 @@ const UserSchema = new Schema({
     validate: [isEmail, "Please enter a valid email!"]
 
   },
+  emailToken: {
+    type: String
+  },
   username: {
     type: String,
     required: [true, "Please enter a username!"],
@@ -56,14 +59,11 @@ const UserSchema = new Schema({
     type: [Schema.Types.ObjectId], 
     ref: 'Marker'
   }, 
+
   likedMarkers: {
     type: [Schema.Types.ObjectId], 
     ref: 'Marker'
   }
-
-  
-
-
 }
 );
 

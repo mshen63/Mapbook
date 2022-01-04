@@ -5,9 +5,11 @@ import NonEditMarkerPage from "./NonEditMarkerPage";
 const MarkerCard = (props) => {
     const { currMarker, setShowMenu, canMakeEdits } = props
     const [editing, setEditing] = useState(false)
+
     useEffect(()=> {
         setEditing(false)
     }, [currMarker])
+    
     return (
         <>
             {editing

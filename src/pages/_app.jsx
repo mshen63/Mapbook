@@ -40,9 +40,6 @@ MyApp.getInitialProps = async (appContext) => {
 
   const { Component, router, ctx } = appContext;
   const { req, res } = ctx;
-  // const appProps = await App.getInitialProps(appContext);
-
-
   const cookies = req ? req.headers.cookie : null;
 
   const route = ctx.asPath;
@@ -50,26 +47,6 @@ MyApp.getInitialProps = async (appContext) => {
   let pageProps = {};
   try {
     currUser = await getCurrentUser(cookies);
-    if (router.asPath === "/") {
-      if (currUser == null) {
-        console.log("reroute from / to login")
-        if (res) {
-          res.writeHead(301, { Location: urls.pages.login });
-          res.end();
-        } else {
-          return Router.push(urls.pages.login);
-        }
-      } else {
-        console.log("reroute from / to map")
-        if (res) {
-          res.writeHead(301, { Location: urls.pages.app.map });
-          res.end();
-        } else {
-          return Router.push(urls.pages.app.map);
-        }
-      }
-
-    }
 
     if (router.asPath.startsWith("/app") && currUser == null) {
       console.log("reroute from app to login")
@@ -81,15 +58,8 @@ MyApp.getInitialProps = async (appContext) => {
       }
     }
 
-
   } catch {
     console.error("Error in _app.js")
-    // if (res) {
-    //   res.writeHead(301, { Location: urls.pages.login });
-    //   res.end();
-    // } else {
-    //   return Router.push(urls.pages.login);
-    // }
   }
   if (Component.getInitialProps) {
     pageProps = await Component.getInitialProps({

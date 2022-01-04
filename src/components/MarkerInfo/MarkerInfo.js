@@ -24,8 +24,6 @@ const MarkerInfo = (props) => {
 
     }, [markers])
 
-
-
     return (
         <div>
             {showMenu || currMarker == null

@@ -43,7 +43,7 @@ const MapScreen = ({ markers, canMakeEdits }) => {
 
     return (
         <MarkersContext.Provider value={{mapMarkers, setMapMarkers}}>
-        <div >
+        <div>
             <HStack spacing={8}>
 
                 {theMap && <Sidebar

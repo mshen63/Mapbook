@@ -2,8 +2,8 @@ import React from "react";
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css"
 import { getCurrentUser, getUserFriends, getUserFriendRequests, getAllUsers, getSpecificUser, getUserMarkers } from "../../../actions/User";
-import PersonalProfileScreen from "../../../screens/App/PersonalProfile"
-import ProfileScreen from "../../../screens/App/Profile"
+import PersonalProfileScreen from "../../../screens/App/PersonalProfileScreen"
+import ProfileScreen from "../../../screens/App/ProfileScreen"
 
 const ProfilePage = (props) => {
     const { friendReqs, currUser, specificUser, specificUserFriends, markers, allUsers } = props

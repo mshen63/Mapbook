@@ -3,8 +3,6 @@ import jwt from "jsonwebtoken";
 import mongoDB from "../index";
 import Marker from "../models/Marker";
 import User from "../models/User";
-import Comment from "../models/Comment"
-import { getMarker } from "./Marker"
 
 export const verifyToken = async (req, res) => {
   const token = req.cookies?.token

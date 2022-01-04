@@ -1,28 +1,22 @@
+import { Box, Button, chakra, Flex, Grid, GridItem, Image, Input, InputGroup, InputLeftElement, Link, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
-import PropTypes from "prop-types";
-import Router from "next/router";
-import { logout } from "../../../actions/User";
-import urls from "../../../../utils/urls";
-import classes from "./FriendsScreen.module.css";
-import { sendFriendRequest, acceptFriendRequest } from "../../../actions/User";
-import { Link, Image, InputGroup, InputLeftElement, Input, chakra, Grid, GridItem, Stack, Flex, Button, Text, Divider, Box } from "@chakra-ui/react";
-import { FaSearch, FaLock, FaUserClock, FaUserCheck } from "react-icons/fa";
-import { AiOutlineUserAdd } from "react-icons/ai"
 import toast from "react-hot-toast";
-// const CFaUserAlt = chakra(FaUserAlt)a;
+import { AiOutlineUserAdd } from "react-icons/ai";
+import { FaSearch, FaUserCheck, FaUserClock } from "react-icons/fa";
+import urls from "../../utils/urls";
+import { acceptFriendRequest, sendFriendRequest } from "../actions/User";
+
 const SearchIcon = chakra(FaSearch);
 const AddIcon = chakra(AiOutlineUserAdd)
 const SentIcon = chakra(FaUserClock)
 const FriendIcon = chakra(FaUserCheck)
-// { currUser, initialFriends, initialFriendReqs, initialSentReqs, allUsers }
-const ProfileScreen = (props) => {
+
+const FriendsSection = (props) => {
   const { currUser, initialFriends, friendReqs, allUsers } = props
   const [friends, setFriends] = useState(initialFriends)
   const [friendRequests, setFriendRequests] = useState(friendReqs)
   const [sentReqs, setSentReqs] = useState([])
   const [search, setSearch] = useState("")
-
-  // const handleGoToProfile = (userId) => Router.replace(urls.pages.app.profile.get(userId))
 
   const sendFriendReq = async (friend) => {
     await sendFriendRequest(currUser, friend._id)
@@ -35,19 +29,18 @@ const ProfileScreen = (props) => {
       .then((e) => {
         setFriends([...friends, friend])
         setFriendRequests(friendRequests.filter(elem => elem._id != friend._id))
-
       })
       .catch(e => toast.error(e.message))
-
   }
+
   return (
     <Flex
-      className={classes.root}
       align="center"
-
+      direction="column"
+      justify="center"
     >
-      {friendRequests && friendRequests.length
-        ? (
+      {friendRequests.length!=0 
+        && (
           <><Text textAlign="left">Friend Requests</Text>
             <Grid
               w="80vw"
@@ -67,22 +60,19 @@ const ProfileScreen = (props) => {
                     <Flex align="center" justifyContent="space-between">
                       <Flex align="center" direction="row" >
                         <Image margin={1} src={user.profileImg} boxSize="20px" borderRadius="full"></Image>
-                        <Link href = {urls.pages.app.profile.get(user._id)}>{user.username}</Link>
+                        <Link href={urls.pages.app.profile.get(user._id)}>{user.username}</Link>
                       </Flex>
                       <Button rounded="xs" size="xs" onClick={(e) => acceptFriendReq(user)}>
                         Accept<FriendIcon marginLeft={1}></FriendIcon>
                       </Button>
                     </Flex>
-
-
-
                   </GridItem>
                 )
               })}
             </Grid></>
         )
-        : <></>
       }
+
 
       <p>Friends</p>
       <Grid
@@ -100,22 +90,19 @@ const ProfileScreen = (props) => {
               key={user._id}
               _hover={{ bg: "green.200" }}
             >
-
               <Flex align="center" justifyContent="space-between">
                 <Flex align="center" direction="row" >
                   <Image margin={1} src={user.profileImg} boxSize="20px" borderRadius="full"></Image>
-                  <Link href = {urls.pages.app.profile.get(user._id)}>{user.username}</Link>
+                  <Link href={urls.pages.app.profile.get(user._id)}>{user.username}</Link>
                 </Flex>
                 <Button rounded="xs" size="xs" isDisabled>
                   Friends<FriendIcon marginLeft={1}></FriendIcon>
                 </Button>
               </Flex>
-
             </GridItem>
           )
         })}
       </Grid>
-
 
 
       <Box
@@ -123,7 +110,9 @@ const ProfileScreen = (props) => {
         borderTop="3px"
         borderBottom="10px"
         borderColor="red.800"
-      >Suggested Friends</Box>
+      >
+        Suggested Friends
+      </Box>
       <InputGroup
         margin={3}
         width="80vw"
@@ -138,14 +127,12 @@ const ProfileScreen = (props) => {
           placeholder={`Search Users`}
         />
       </InputGroup>
-
       <Grid
         w="80vw"
         templateColumns='repeat(5, 2fr)'
         gap={5}
         margin={3}
       >
-        {/* all users that are not current user, friend, sent user friend request, or have search term */}
         {allUsers && allUsers
           .filter(user => user.username != currUser.username)
           .filter(user => user.username.toLowerCase().includes(search.toLowerCase()))
@@ -160,16 +147,10 @@ const ProfileScreen = (props) => {
                 key={user._id}
                 _hover={{ bg: "green.100" }}
               >
-
-                {/* friends.includes(user) */}
                 <Flex align="center" justifyContent="space-between">
-
-
                   <Flex align="center" direction="row" >
-
                     <Image margin={1} src={user.profileImg} boxSize="20px" borderRadius="full"></Image>
-                    <Link href = {urls.pages.app.profile.get(user._id)}>{user.username}</Link>
-
+                    <Link href={urls.pages.app.profile.get(user._id)}>{user.username}</Link>
                   </Flex>
                   {
                     user.pendingFRequests.find(elem => elem._id === currUser._id) || sentReqs.includes(user._id)
@@ -180,27 +161,13 @@ const ProfileScreen = (props) => {
                         Add<AddIcon marginLeft={1}></AddIcon>
                       </Button>)
                   }
-
-
-
                 </Flex>
-
               </GridItem>
             )
           })}
-
-
       </Grid>
-
     </Flex >
   )
 };
 
-// ProfileScreen.propTypes = {
-//   currUser: PropTypes.shape({
-//     id: PropTypes.string.isRequired,
-//     username: PropTypes.string.isRequired,
-//   }).isRequired,
-// };
-
-export default ProfileScreen;
+export default FriendsSection;

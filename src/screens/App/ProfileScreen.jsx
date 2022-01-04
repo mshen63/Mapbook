@@ -1,13 +1,11 @@
-import React from "react";
-import dynamic from "next/dynamic";
-import "leaflet/dist/leaflet.css"
-import { Divider, GridItem, Button, Grid, Flex, Text, Stack, Image, Box, Accordion, AccordionButton, AccordionPanel, AccordionItem, AccordionIcon } from "@chakra-ui/react";
+import { Box, Button, Divider, Flex, Image, Text } from "@chakra-ui/react";
+import { parseISO } from "date-fns";
 import formatDistance from "date-fns/formatDistance";
-import { format, toDate, parseISO } from "date-fns"
-import MapScreen from "../Map/MapScreen";
-// import { useRouter } from "next/router";
+import "leaflet/dist/leaflet.css";
 import Router from "next/router";
-import urls from "../../../../utils/urls";
+import React from "react";
+import urls from "../../../utils/urls";
+import MapScreen from "./Map/MapScreen";
 
 const ProfileScreen = (props) => {
     const { specificUser, specificUserFriends, markers } = props

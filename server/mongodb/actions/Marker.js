@@ -1,9 +1,7 @@
 import { v2 as cloudinary } from "cloudinary";
-import multer from "multer";
 import mongoDB from "../index";
 import Marker from "../models/Marker";
 import User from "../models/User";
-import Comment from "../models/Comment"
 import { addMarker, removeMarker } from "./User";
 
 if (process.env.CLOUDINARY_URL) {
@@ -30,7 +28,6 @@ export const getRandomMarkers = async (currUser) => {
     { $match: { user: { $ne: currUser.id }, priv: false } },
     { $sample: { size: 5 } }
   ])
-  console.log(emptyMarkers)
   const markers = await Promise.all(
     emptyMarkers.map(mark => getMarker(currUser, { markerId: mark._id })))
   return markers

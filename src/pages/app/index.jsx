@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
-import Head from "next/head"
-import dynamic from "next/dynamic";
-import "leaflet/dist/leaflet.css"
-import { getCurrentUser, getUserFriendRequests, getUserMarkers, getUserLikedMarkers } from "../../actions/User";
+import "leaflet/dist/leaflet.css";
+import React from "react";
+import { getCurrentUser, getUserMarkers } from "../../actions/User";
+import MapScreen from "../../screens/App/Map/MapScreen";
 const mapboxgl = require("mapbox-gl/dist/mapbox-gl.js")
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY
-import MapScreen from "../../screens/App/Map/MapScreen";
 
 const MapPage = (props) => {
 
