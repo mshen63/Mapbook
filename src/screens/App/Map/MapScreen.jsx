@@ -39,7 +39,7 @@ const MapScreen = ({ markers, canMakeEdits }) => {
 
             initializeMap(currUser, mapboxgl, map, markers, setCurrMarker, mapMarkers, setMapMarkers, canMakeEdits)
         }
-    }, [pageIsMounted]);
+    }, [pageIsMounted, markers]);
 
     return (
         <MarkersContext.Provider value={{mapMarkers, setMapMarkers}}>

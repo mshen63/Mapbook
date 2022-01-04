@@ -10,9 +10,9 @@ const ProfilePage = (props) => {
     const { friendReqs, currUser, specificUser, specificUserFriends, markers, allUsers } = props
     const router = useRouter();
 
-    useEffect(()=> {
-        router.replace(router.asPath)
-    }, [])
+    // useEffect(()=> {
+    //     router.reload(window.location.pathname)
+    // }, [specificUser])
     return (<>
         {
             currUser.id === specificUser[0]._id
@@ -41,6 +41,7 @@ ProfilePage.getInitialProps = async ({ query, req }) => {
     const cookies = req ? req.headers.cookie : null;
 
     try {
+        console.log("redid props for userid: " + userId)
         let friendReqs;
         let allUsers;
         const currUser = await getCurrentUser(cookies)
@@ -50,6 +51,7 @@ ProfilePage.getInitialProps = async ({ query, req }) => {
         if (currUser.id === specificUser[0]._id) {
             friendReqs = await getUserFriendRequests(cookies)
             allUsers = await getAllUsers(cookies)
+
         }
         
         const returnbody = {
@@ -59,7 +61,6 @@ ProfilePage.getInitialProps = async ({ query, req }) => {
             friendReqs, 
             allUsers
         }
-        console.log(returnbody)
         return returnbody
     } catch (e) {
         return { error: e.message }

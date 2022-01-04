@@ -1,6 +1,7 @@
 import { Box, Button, chakra, Flex, Grid, GridItem, Image, Input, InputGroup, InputLeftElement, Link, Text } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 import { AiOutlineUserAdd } from "react-icons/ai";
 import { FaSearch, FaUserCheck, FaUserClock } from "react-icons/fa";
 import urls from "../../utils/urls";
@@ -12,25 +13,22 @@ const SentIcon = chakra(FaUserClock)
 const FriendIcon = chakra(FaUserCheck)
 
 const FriendsSection = (props) => {
+  const router = useRouter()
   const { currUser, initialFriends, friendReqs, allUsers } = props
-  const [friends, setFriends] = useState(initialFriends)
-  const [friendRequests, setFriendRequests] = useState(friendReqs)
-  const [sentReqs, setSentReqs] = useState([])
   const [search, setSearch] = useState("")
+
+  const refreshData = () => {
+    router.replace(router.asPath)
+  }
 
   const sendFriendReq = async (friend) => {
     await sendFriendRequest(currUser, friend._id)
-      .then((e) => setSentReqs([...sentReqs, friend._id]))
-      .catch(e => toast.error(e.message))
+    refreshData()
   }
 
   const acceptFriendReq = async (friend) => {
     await acceptFriendRequest(currUser, friend._id)
-      .then((e) => {
-        setFriends([...friends, friend])
-        setFriendRequests(friendRequests.filter(elem => elem._id != friend._id))
-      })
-      .catch(e => toast.error(e.message))
+    refreshData()
   }
 
   return (
@@ -39,7 +37,7 @@ const FriendsSection = (props) => {
       direction="column"
       justify="center"
     >
-      {friendRequests && friendRequests.length!=0 
+      {friendReqs && friendReqs.length != 0
         && (
           <><Text textAlign="left">Friend Requests</Text>
             <Grid
@@ -48,7 +46,7 @@ const FriendsSection = (props) => {
               gap={5}
               margin={3}
             >
-              {friendRequests.map(user => {
+              {friendReqs.map(user => {
                 return (
                   <GridItem
                     bg='green.400'
@@ -81,7 +79,7 @@ const FriendsSection = (props) => {
         gap={5}
         margin={3}
       >
-        {friends && friends.map(user => {
+        {initialFriends && initialFriends.map(user => {
           return (
             <GridItem
               bg='green.300'
@@ -137,7 +135,7 @@ const FriendsSection = (props) => {
           .filter(user => user.username != currUser.username)
           .filter(user => user.username.toLowerCase().includes(search.toLowerCase()))
           .filter(user => !friendReqs.find(elem => elem._id === user._id))
-          .filter(user => !friends.find(elem => elem._id === user._id))
+          .filter(user => !initialFriends.find(elem => elem._id === user._id))
           .map(user => {
             return (
               <GridItem
@@ -153,7 +151,7 @@ const FriendsSection = (props) => {
                     <Link href={urls.pages.app.profile.get(user._id)}>{user.username}</Link>
                   </Flex>
                   {
-                    user.pendingFRequests.find(elem => elem._id === currUser._id) || sentReqs.includes(user._id)
+                    user.pendingFRequests.find(elem => elem === currUser.id)
                       ? (<Button rounded="xs" size="xs" isDisabled>
                         Sent<SentIcon marginLeft={1}></SentIcon>
                       </Button>)

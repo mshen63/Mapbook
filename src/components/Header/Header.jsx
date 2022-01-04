@@ -11,10 +11,13 @@ import routes from "./routes";
 
 const Header = ({ loggedIn, currentRoute, currUser }) => {
 
-  const handleLogout = () =>
-    logout()
+  const handleLogout = () => {
+    console.log("logout")
+    return (logout()
       .then(() => Router.replace(urls.pages.login))
-      .catch((e) => window.alert(e));
+      .catch((e) => window.alert(e))
+    )
+  };
 
   const handleGoToProfile = () => Router.replace(urls.pages.app.profile.get(currUser.id))
 

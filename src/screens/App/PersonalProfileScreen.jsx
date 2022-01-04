@@ -18,7 +18,6 @@ const CloseIcon = chakra(AiOutlineClose)
 const url = process.env.NEXT_PUBLIC_CLOUDINARY_URL
 const preset = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET
 const PersonalProfileScreen = (props) => {
-
     const { currUser, friendReqs, specificUser, specificUserFriends, allUsers } = props
     const [isEditing, setIsEditing] = useState(false)
     const [username, setUsername] = useState(specificUser[0].username)
