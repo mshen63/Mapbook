@@ -8,6 +8,9 @@ const prod = process.env.NODE_ENV === "production";
 // }
 
 module.exports = withImages({
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   env: {
     BASE_URL: process.env.BASE_URL,
     MONGO_DB: process.env.MONGO_DB,

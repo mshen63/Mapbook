@@ -7,15 +7,15 @@
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module"
-  },
-  "extends": [
-    "eslint:recommended",
-    "plugin:prettier/recommended"
-  ],
-  "rules": {
-    "no-underscore-dangle": "off",
-    "implicit-arrow-linebreak": "off",
-    "no-console": "off",
-    "import/prefer-default-export": "off"
   }
+  // "extends": [
+  //   "eslint:recommended",
+  //   "plugin:prettier/recommended"
+  // ],
+  // "rules": {
+  //   "no-underscore-dangle": "off",
+  //   "implicit-arrow-linebreak": "off",
+  //   "no-console": "off",
+  //   "import/prefer-default-export": "off"
+  // }
 }

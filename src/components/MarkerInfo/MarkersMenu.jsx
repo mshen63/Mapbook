@@ -8,6 +8,7 @@ const MarkersMenu = (props) => {
     const { markers, map, setCurrMarker, setShowMenu, canMakeEdits } = props
     let likedMarkers
     let title = "Your Markers"
+    let instr = "Tap anywhere on the map to add a Marker!"
 
     if (router.asPath.includes("/explore")) {
         likedMarkers = useContext(LikedMarkerContext)
@@ -15,6 +16,7 @@ const MarkersMenu = (props) => {
         title = "Suggested Markers"
     } else if (router.asPath.includes("/profile")) {
         title = "User Markers"
+        instr = "User has no public markers!"
     }
 
     return (
@@ -54,7 +56,7 @@ const MarkersMenu = (props) => {
                 }
             })
             }
-            {markers.length == 0 && <Text color="gray.600">Tap anywhere on the map to add a Marker!</Text>}
+            {markers.length == 0 && <Text color="gray.600">{instr}</Text>}
 
             {router.asPath.includes("/explore") &&
                 <>
