@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css"
+import { useRouter } from "next/router";
 import { getCurrentUser, getUserFriends, getUserFriendRequests, getAllUsers, getSpecificUser, getUserMarkers } from "../../../actions/User";
 import PersonalProfileScreen from "../../../screens/App/PersonalProfileScreen"
 import ProfileScreen from "../../../screens/App/ProfileScreen"
 
 const ProfilePage = (props) => {
     const { friendReqs, currUser, specificUser, specificUserFriends, markers, allUsers } = props
+    const router = useRouter();
 
+    useEffect(()=> {
+        router.replace(router.asPath)
+    }, [specificUser])
     return (<>
         {
             currUser.id === specificUser[0]._id

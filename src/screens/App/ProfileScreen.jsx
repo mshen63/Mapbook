@@ -18,6 +18,7 @@ const ProfileScreen = (props) => {
                     src={specificUser[0].profileImg}
                     boxSize="200px"
                     marginTop={3}
+                    marginRight ={3}
                 />
                 <Box>
                     <Text>Username: {specificUser[0].username}</Text>
