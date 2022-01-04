@@ -3,7 +3,7 @@ import { parseISO } from "date-fns";
 import formatDistance from "date-fns/formatDistance";
 import "leaflet/dist/leaflet.css";
 import { useRouter } from "next/router";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import toast from "react-hot-toast";
 import { AiFillFileAdd, AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
@@ -17,7 +17,6 @@ const CheckIcon = chakra(AiOutlineCheck)
 const CloseIcon = chakra(AiOutlineClose)
 const url = process.env.NEXT_PUBLIC_CLOUDINARY_URL
 const preset = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET
-
 const PersonalProfileScreen = (props) => {
 
     const { currUser, friendReqs, specificUser, specificUserFriends, allUsers } = props
@@ -27,23 +26,30 @@ const PersonalProfileScreen = (props) => {
     const [file, setFile] = useState(null)
     const router = useRouter();
 
+    useEffect(()=> {
+        setFile(null)
+        setBio(specificUser[0].bio)
+        setIsEditing(false)
+    }, [specificUser])
+
     const addEdits = async(e) => {
+        
         const updates = {}
         updates.bio = bio
         if (file) {
             updates.profileImg = file
         }
+        
         await updateUser(currUser, updates)
-        clearEdits()
         refreshData()
+        
     }
 
-    const clearEdits = async(e) => {
+    const cancelEdits = async(e) => {
         setIsEditing(false)
         setFile(null)
         setBio(specificUser[0].bio)
     }
-
     const refreshData = () => {
         router.replace(router.asPath)
     }
@@ -57,13 +63,14 @@ const PersonalProfileScreen = (props) => {
             method: "POST",
             body: formData
         }).then(resp => {
+
             return resp.text()
         }).then((data) => {
             setFile(JSON.parse(data).secure_url)
         }).catch(e => toast.error("Photo invalid or too large!"))
     }, [])
-
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, maxFiles: 1, multiple: false })
+
 
     return (
         <Flex
@@ -88,7 +95,7 @@ const PersonalProfileScreen = (props) => {
                         <IconButton
 
                             children={<CloseIcon />}
-                            onClick={clearEdits}
+                            onClick={cancelEdits}
                             bg="white"
                             p={0}
                             marginBottom="90px"
@@ -155,6 +162,7 @@ const PersonalProfileScreen = (props) => {
                     </Box>
                 </Flex>)
             }
+
 
             <Divider borderColor="gray.600" marginTop={3} marginBottom={3} />
 

@@ -26,15 +26,16 @@ const RegisterScreen = () => {
     return signUp(email, username, password)
       .then(() => Router.replace(urls.pages.app.map))
       .catch((error) => {
-        if (error.message.includes("3")) {
+        // console.log(error.message)
+        if (!error.message.includes("E1100")) {
           toast.error(error.message)
           return;
         }
-        let error_mess = error.message.split(": ")[2].split(",")[0]
-        if (error_mess.split(" ")[1] === "dup") {
+        let error_mess = (error.message.split(": ")[2].split(",")[0]).split("_")[0]
+        if (error_mess === "username") {
           toast.error('Username taken!');
-        } else {
-          toast.error(error_mess)
+        } else if (error_mess==="email") {
+          toast.error("Email taken!")
         }
       });
 

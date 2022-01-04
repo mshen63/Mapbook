@@ -2,6 +2,7 @@ import { v2 as cloudinary } from "cloudinary";
 import mongoDB from "../index";
 import Marker from "../models/Marker";
 import User from "../models/User";
+import Comment from "../models/Comment"
 import { addMarker, removeMarker } from "./User";
 
 if (process.env.CLOUDINARY_URL) {

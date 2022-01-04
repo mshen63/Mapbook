@@ -13,6 +13,8 @@ const MarkersMenu = (props) => {
         likedMarkers = useContext(LikedMarkerContext)
         console.log(likedMarkers)
         title = "Suggested Markers"
+    } else if (router.asPath.includes("/profile")) {
+        title = "User Markers"
     }
 
     return (
@@ -26,8 +28,8 @@ const MarkersMenu = (props) => {
         >
             <Text>{title}</Text>
             <Divider borderColor="gray.600" marginTop={3} marginBottom={3} />
-            {markers && markers.map((mark) => {
-                if(mark) {
+            {markers.length != 0 && markers.map((mark) => {
+                if (mark) {
                     console.log(mark)
                     return (
                         <Stack margin="5px" key={mark._id} width="90%">
@@ -50,13 +52,15 @@ const MarkersMenu = (props) => {
                 } else {
                     return (<></>)
                 }
-            })}
+            })
+            }
+            {markers.length == 0 && <Text color="gray.600">Tap anywhere on the map to add a Marker!</Text>}
 
             {router.asPath.includes("/explore") &&
                 <>
-                    <Text marginTop = {5}>Liked Markers</Text>
+                    <Text marginTop={5}>Liked Markers</Text>
                     <Divider borderColor="gray.600" marginTop={3} marginBottom={3} />
-                    {likedMarkers.length && likedMarkers.map(mark => (
+                    {likedMarkers.length != 0 && likedMarkers.map(mark => (
                         <Stack margin="5px" key={mark._id} width="90%">
                             <Button onClick={(e) => {
                                 map.flyTo({ center: [mark.lng, mark.lat], zoom: 8 })
@@ -74,6 +78,8 @@ const MarkersMenu = (props) => {
                             </Button>
                         </Stack>
                     ))}
+                    {likedMarkers.length == 0 && <Text color="gray.600">Like a marker to add to this list!</Text>}
+
                 </>
             }
         </Flex>
