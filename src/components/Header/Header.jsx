@@ -11,7 +11,11 @@ import NavLink from "../NavLink";
 import styles from "./Header.module.css";
 import routes from "./routes";
 
-const Header = ({ loggedIn, currentRoute, currUser }) => {
+const Header = (props) => {
+  const { currentRoute, currUser } = props
+  const loggedIn = currUser!=null
+  console.log("reloaded header with props")
+  console.log(props)
   const router = useRouter()
   const handleLogout = async() => {
     const resp = await logout().catch(e=>window.alert(e))
