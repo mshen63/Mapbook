@@ -34,6 +34,7 @@ const MyApp = ({ Component, pageProps, router, currUser }) => (
 );
 
 MyApp.getInitialProps = async (appContext) => {
+  console.log("reload props!")
 
   // TODO: THIS AUTH SYSTEM IS NOT BEST PRACTICE:
   // https://github.com/vvo/iron-session

@@ -10,8 +10,6 @@ import MapScreen from "./Map/MapScreen";
 const ProfileScreen = (props) => {
 
     const { specificUser, specificUserFriends, markers } = props
-    console.log("specific user in profile screen")
-    console.log(specificUser)
     const handleGoToProfile = (userId) => Router.replace(urls.pages.app.profile.get(userId))
 
     return (

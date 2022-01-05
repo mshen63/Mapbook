@@ -8,6 +8,5 @@ export const createCookie = (token, maxAge) =>
 
 export const removeCookie = () => {
   const tok = `token=""; Max-Age=0; SameSite=Lax; Path=/; HttpOnly${prod ? "; Secure" : ""}`
-  console.log(tok)
   return (tok)
 };

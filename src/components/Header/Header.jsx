@@ -16,6 +16,7 @@ const Header = ({ loggedIn, currentRoute, currUser }) => {
   const handleLogout = async() => {
     const resp = await logout().catch(e=>window.alert(e))
     router.replace(urls.pages.login)
+    
 
   };
 

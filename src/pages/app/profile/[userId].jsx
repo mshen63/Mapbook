@@ -41,7 +41,6 @@ ProfilePage.getInitialProps = async ({ query, req }) => {
     const cookies = req ? req.headers.cookie : null;
 
     try {
-        console.log("redid props for userid: " + userId)
         let friendReqs;
         let allUsers;
         const currUser = await getCurrentUser(cookies)
