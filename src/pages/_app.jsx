@@ -48,14 +48,14 @@ MyApp.getInitialProps = async (appContext) => {
   try {
     currUser = await getCurrentUser(cookies);
 
-    if (router.asPath.startsWith("/app") && currUser == null) {
-      if (res) {
-        res.writeHead(301, { Location: urls.pages.login });
-        res.end();
-      } else {
-        return Router.push(urls.pages.login);
-      }
-    }
+    // if (router.asPath.startsWith("/app") && currUser == null) {
+    //   if (res) {
+    //     res.writeHead(301, { Location: urls.pages.login });
+    //     res.end();
+    //   } else {
+    //     return Router.push(urls.pages.login);
+    //   }
+    // }
 
   } catch {
     console.error("Error in _app.js")

@@ -1,6 +1,7 @@
 import { HStack } from "@chakra-ui/react";
 import React, { useEffect, useState, createContext, useContext } from 'react';
 import Sidebar from "../../../components/Sidebar";
+import { LikedMarkerContext } from "../../../pages/app/explore";
 import { UserContext } from "../../../pages/_app";
 import { initializeMap } from "./initializeMap";
 
@@ -10,6 +11,7 @@ mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY
 export const MarkersContext = createContext()
 const MapScreen = ({ markers, canMakeEdits }) => {
     const currUser = useContext(UserContext)
+    const likedMarkers = useContext(LikedMarkerContext)
     const [pageIsMounted, setPageIsMounted] = useState(false);
     const [theMap, setTheMap] = useState(null);
     const [currMarker, setCurrMarker] = useState({ isNew: false, marker: null })
@@ -36,7 +38,7 @@ const MapScreen = ({ markers, canMakeEdits }) => {
                 zoom: 5,
             });
             setTheMap(map)
-            initializeMap(currUser, mapboxgl, map, markers, setCurrMarker, mapMarkers, setMapMarkers, canMakeEdits)
+            initializeMap(currUser, mapboxgl, map, markers, setCurrMarker, mapMarkers, setMapMarkers, canMakeEdits, likedMarkers)
         }
     }, [pageIsMounted, markers]);
 

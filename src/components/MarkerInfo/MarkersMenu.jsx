@@ -6,6 +6,7 @@ import { LikedMarkerContext } from "../../pages/app/explore";
 const MarkersMenu = (props) => {
     const router = useRouter();
     const { markers, map, setCurrMarker, setShowMenu, canMakeEdits } = props
+    console.log(markers)
     let likedMarkers
     let title = "Your Markers"
     let instr = "Tap anywhere on the map to add a Marker!"

@@ -17,11 +17,6 @@ const Header = ({ loggedIn, currentRoute, currUser }) => {
     const resp = await logout().catch(e=>window.alert(e))
     router.replace(urls.pages.login)
 
-    
-    // return (logout()
-    //   .then(() => Router.replace(urls.pages.login))
-    //   .catch((e) => window.alert(e))
-    // )
   };
 
   const handleGoToProfile = () => Router.replace(urls.pages.app.profile.get(currUser.id))
