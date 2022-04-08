@@ -24,7 +24,7 @@ const LoginScreen = () => {
     event.preventDefault();
     try {
       await login(username, password);
-      return await Router.replace(urls.pages.app.map);
+      return await Router.replace(urls.pages.app.explore);
     } catch (error) {
       return toast(error.message);
     }
